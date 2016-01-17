@@ -1,0 +1,14 @@
+{
+    "editor.insertSpaces": true,
+    "diffEditor.ignoreTrimWhitespace": true,
+    "files.exclude": {
+        "node_modules": true,
+        "out": true,
+        "typings": true
+    },
+    "files.trimTrailingWhitespace": true,
+    "search.exclude": {
+        "out": true
+    },
+    "typescript.tsdk": "./node_modules/typescript/lib"
+}

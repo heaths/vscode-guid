@@ -1,0 +1,39 @@
+{
+    "name": "vscode-guid",
+    "version": "0.0.1",
+    "publisher": "heaths",
+    "displayName": "Insert GUID",
+    "description": "Insert GUIDs in different formats directly into the editor.",
+    "author": "Heath Stewart (https://github.com/heaths)",
+    "categories": [
+        "Other"
+    ],
+    "contributes": {
+        "commands": [
+            {
+                "command": "guid.insert",
+                "title": "Insert GUID",
+                "description": "Insert a GUID at the current position."
+            }
+        ]
+    },
+    "activationEvents": [
+        "onCommand:guid.insert"
+    ],
+    "main": "./out/src/extension",
+    "scripts": {
+        "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
+        "compile": "node ./node_modules/vscode/bin/compile -watch -p ./"
+    },
+    "engines": {
+        "vscode": "^0.10.1"
+    },
+    "dependencies": {
+        "node-uuid": "^1.4.7"
+    },
+    "devDependencies": {
+        "typescript": "^1.6.2",
+        "vscode": "0.10.x"
+    },
+    "private": true
+}
