@@ -4,7 +4,8 @@
     "files.exclude": {
         "node_modules": true,
         "out": true,
-        "typings": true
+        "typings": true,
+        "npm-debug.log": true
     },
     "files.trimTrailingWhitespace": true,
     "search.exclude": {
