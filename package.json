@@ -39,5 +39,7 @@
         "type": "git",
         "url": "https://github.com/heaths/vscode-guid.git"
     },
+    "homepage": "https://github.com/heaths/vscode-guid/blob/master/README.md",
+    "bugs": "https://github.com/heaths/vscode-guid/issues",
     "private": true
 }
