@@ -50,8 +50,13 @@ class GuidPickItem implements vscode.QuickPickItem {
     }
 
     get text() : string {
-        return this._format.preface(this._guid) +
-               this._format.format(this._guid);
+        let s = '';
+
+        if (typeof this._format.preface === 'function') {
+            s = this._format.preface(this._guid);
+        }
+
+        return s + this._format.format(this._guid);
     }
 
     get named() : boolean {
