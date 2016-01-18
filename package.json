@@ -1,6 +1,6 @@
 {
     "name": "vscode-guid",
-    "version": "0.1.0",
+    "version": "0.1.2",
     "publisher": "heaths",
     "displayName": "Insert GUID",
     "description": "Insert GUIDs in different formats directly into the editor.",
@@ -20,6 +20,11 @@
     "activationEvents": [
         "onCommand:guid.insert"
     ],
+    "logo": "res/logo.svg",
+    "galleryBanner": {
+        "color": "#252526",
+        "theme": "dark"
+    },
     "main": "./out/src/extension",
     "scripts": {
         "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
