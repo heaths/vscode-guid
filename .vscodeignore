@@ -3,7 +3,10 @@ typings/**
 out/test/**
 test/**
 src/**
+res/**
 **/*.map
+**/*.vsix
 .gitignore
+gulpfile.js
 tsconfig.json
 tsd.json
