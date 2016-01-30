@@ -23,7 +23,6 @@
 var gulp = require('gulp');
 var clean = require('gulp-clean');
 var merge = require('gulp-merge');
-var mocha = require('gulp-mocha');
 var svgmin = require('gulp-svgmin');
 var ts = require('gulp-typescript');
 
@@ -46,11 +45,6 @@ gulp.task('watch', ['compile'], function() {
 gulp.task('clean', function() {
     return gulp.src(['out', '**/*.vsix'])
         .pipe(clean({read: false}));
-});
-
-gulp.task('test', ['compile'], function() {
-    return gulp.src('out/test/**/*.js')
-        .pipe(mocha({ui: 'tdd'}));
 });
 
 gulp.task('default', ['test']);

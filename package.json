@@ -1,6 +1,6 @@
 {
   "name": "vscode-guid",
-  "version": "0.1.5",
+  "version": "1.0.0",
   "publisher": "heaths",
   "displayName": "Insert GUID",
   "description": "Insert GUIDs in different formats directly into the editor.",
@@ -15,6 +15,14 @@
         "title": "Insert GUID",
         "description": "Insert a GUID at the current position."
       }
+    ],
+    "keybindings": [
+      {
+        "command": "guid.insert",
+        "key": "ctrl+shift+[",
+        "mac": "cmd+shift+[",
+        "when": "editorTextFocus"
+      }
     ]
   },
   "activationEvents": [
@@ -28,8 +36,7 @@
   "main": "./out/src/extension",
   "scripts": {
     "vscode:prepublish": "gulp compile",
-    "compile": "gulp watch",
-    "test": "gulp test"
+    "compile": "gulp watch"
   },
   "engines": {
     "vscode": "^0.10.1"
@@ -41,10 +48,8 @@
     "gulp": "^3.9.0",
     "gulp-clean": "^0.3.1",
     "gulp-merge": "^0.1.1",
-    "gulp-mocha": "^2.2.0",
     "gulp-svgmin": "^1.2.1",
     "gulp-typescript": "^2.10.0",
-    "mocha": "^2.4.5",
     "tsd": "^0.6.5",
     "typescript": "^1.6.2",
     "vscode": "0.10.x"
