@@ -25,24 +25,25 @@ import * as util from 'util';
 import {Guid} from './guid';
 
 interface GuidPickFormat {
-    label : string;
     format : (g : Guid) => string;
     preface? : (g : Guid) => string;
+    epilogue? : (g : Guid) => string;
     named? : boolean;
 }
 
 class GuidPickItem implements vscode.QuickPickItem {
+    private _index : number;
     private _guid : Guid;
     private _format : GuidPickFormat;
 
-    constructor(_guid : Guid, format : GuidPickFormat) {
-        this._guid = _guid;
+    constructor(index : number, guid : Guid, format : GuidPickFormat) {
+        this._index = index;
+        this._guid = guid;
         this._format = format;
     }
 
-    // TODO: Localize?
     get label() : string {
-        return this._format.label;
+        return this._index.toString();
     }
 
     get description() : string {
@@ -56,7 +57,13 @@ class GuidPickItem implements vscode.QuickPickItem {
             s = this._format.preface(this._guid);
         }
 
-        return s + this._format.format(this._guid);
+        s += this._format.format(this._guid);
+
+        if (typeof this._format.epilogue === 'function') {
+            s += this._format.epilogue(this._guid);
+        }
+
+        return s;
     }
 
     get named() : boolean {
@@ -73,35 +80,37 @@ export class GuidCommands {
     private static _NAME : string = '__NAME__';
     private static _formats : GuidPickFormat[] = [
         {
-            label: 'String',
             format: (g) => {
                 return g.toString();
             }
         },
         {
-            label: 'Registry',
             format: (g) => {
                 return g.toString('braced');
             }
         },
         {
-            label: 'C structure',
             named: true,
             format: (g) => {
                 return util.format('static const struct GUID %s = %s;', GuidCommands._NAME, g.toString('struct'));
             },
             preface: (g) => {
                 return util.format('// %s\n', g.toString('braced'));
+            },
+            epilogue: (g) => {
+                return '\n';
             }
         },
         {
-            label: 'C macro',
             named: true,
             format: (g) => {
                 return util.format('DEFINE_GUID(%s, %s);', GuidCommands._NAME, g.toString('struct').replace(/[\{\}]/g, ''));
             },
             preface: (g) => {
                 return util.format('// %s\n', g.toString('braced'));
+            },
+            epilogue: (g) => {
+                return '\n';
             }
         }
     ];
@@ -113,12 +122,7 @@ export class GuidCommands {
      */
     static insertCommand(textEditor : vscode.TextEditor, edit : vscode.TextEditorEdit) {
         let g = new Guid();
-        let items : GuidPickItem[] = [];
-
-        GuidCommands._formats.forEach(format => {
-            let item = new GuidPickItem(g, format);
-            items.push(item);
-        });
+        let items = GuidCommands.getQuickPickItems(g);
 
         // Prompt the user for a format.
         vscode.window.showQuickPick<GuidPickItem>(items)
@@ -144,5 +148,21 @@ export class GuidCommands {
                     }
                 });
             });
+    }
+
+    /**
+     * Gets an array of items to display in the Quick Pick window.
+     * @param guid The GUID to render in each Quick Pick item.
+     * @returns An array of items to display in the Quick Pick window.
+     */
+    static getQuickPickItems(guid : Guid) : GuidPickItem[] {
+        let items : GuidPickItem[] = [];
+
+        GuidCommands._formats.forEach((format, index) => {
+            let item = new GuidPickItem(index + 1, guid, format);
+            items.push(item);
+        });
+
+        return items;
     }
 }
