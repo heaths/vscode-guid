@@ -1,6 +1,6 @@
 {
   "name": "vscode-guid",
-  "version": "0.1.5",
+  "version": "1.0.0",
   "publisher": "heaths",
   "displayName": "Insert GUID",
   "description": "Insert GUIDs in different formats directly into the editor.",
