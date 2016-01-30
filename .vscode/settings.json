@@ -5,6 +5,7 @@
         "node_modules": true,
         "out": true,
         "typings": true,
+        "**/*.vsix": true,
         "npm-debug.log": true
     },
     "files.trimTrailingWhitespace": true,
