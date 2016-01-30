@@ -15,6 +15,14 @@
         "title": "Insert GUID",
         "description": "Insert a GUID at the current position."
       }
+    ],
+    "keybindings": [
+      {
+        "command": "guid.insert",
+        "key": "ctrl+shift+[",
+        "mac": "cmd+shift+[",
+        "when": "editorTextFocus"
+      }
     ]
   },
   "activationEvents": [
