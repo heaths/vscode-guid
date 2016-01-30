@@ -7,7 +7,7 @@ A simple command extension for [Visual Studio Code](https://code.visualstudio.co
 This provides the same useful formats as _Create GUID_ that ships with Visual Studio, but without specific language syntaxes for some formats and without unwanted line feeds. Currently, formats supported include:
 
 * String: `11d4dc2e-375a-4b89-9ad4-aa30105385aa`
-* Registry `{11d4dc2e-375a-4b89-9ad4-aa30105385aa}`
+* Registry: `{11d4dc2e-375a-4b89-9ad4-aa30105385aa}`
 * C structure: `static const struct GUID __NAME__ = {0x11d4dc2e, 0x375a, 0x4b89, {0x9a, 0xd4, 0xaa, 0x30, 0x10, 0x53, 0x85, 0xaa}};`
 * C macro: `DEFINE_GUID(__NAME__, {x11d4dc2e, 0x375a, 0x4b89, 0x9a, 0xd4, 0xaa, 0x30, 0x10, 0x53, 0x85, 0xaa);`
 
