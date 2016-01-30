@@ -20,7 +20,7 @@
   "activationEvents": [
     "onCommand:guid.insert"
   ],
-  "icon": "res/logo.svg",
+  "icon": "out/res/logo.svg",
   "galleryBanner": {
     "color": "#252526",
     "theme": "dark"
