@@ -47,4 +47,4 @@ gulp.task('clean', function() {
         .pipe(clean({read: false}));
 });
 
-gulp.task('default', ['test']);
+gulp.task('default', ['compile']);
