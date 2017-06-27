@@ -16,6 +16,26 @@
         "description": "Insert a GUID at the current position."
       }
     ],
+    "configuration": {
+      "title": "Insert GUID configuration",
+        "properties": {
+            "insertGuid.showLowercase": {
+              "type": "boolean",
+              "default": true,
+              "description": "Show lowercase GUIDs (with and without braces) when presenting possible GUID formats to insert."
+            },
+            "insertGuid.showUppercase": {
+              "type": "boolean",
+              "default": false,
+              "description": "Show uppercase GUIDs (with and without braces) when presenting possible GUID formats to insert."
+            },
+            "insertGuid.showCodeSnippets": {
+              "type": "boolean",
+              "default": true,
+              "description": "Show code snippets for C++ when presenting possible GUID formats to insert."
+            }
+        }
+    },
     "keybindings": [
       {
         "command": "guid.insert",
