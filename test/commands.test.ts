@@ -73,7 +73,7 @@ suite('GuidCommands', () => {
         );
     });
 
-    test('quick pick iterms are correct with only lowercase enabled', () => {
+    test('quick pick items are correct with only lowercase enabled', () => {
         const g = Guid.parse('12341234-dead-beef-1234-123412341234');
         const items = GuidCommands.getQuickPickItems(g, true, false, false);
 
@@ -90,7 +90,7 @@ suite('GuidCommands', () => {
         assert.equal(item2.text, '{12341234-dead-beef-1234-123412341234}');
     });
 
-    test('quick pick iterms are correct with only uppercase enabled', () => {
+    test('quick pick items are correct with only uppercase enabled', () => {
         const g = Guid.parse('12341234-dead-beef-1234-123412341234');
         const items = GuidCommands.getQuickPickItems(g, false, true, false);
 
@@ -108,7 +108,7 @@ suite('GuidCommands', () => {
     });
 
 
-    test('quick pick iterms are correct with only code snippets enabled', () => {
+    test('quick pick items are correct with only code snippets enabled', () => {
         const g = Guid.parse('12341234-dead-beef-1234-123412341234');
         const items = GuidCommands.getQuickPickItems(g, false, true, false);
 
@@ -135,7 +135,7 @@ suite('GuidCommands', () => {
         );
     });
 
-    test('quick pick iterms are correct with no code snippets enabled', () => {
+    test('quick pick items are correct with no code snippets enabled', () => {
         var g = Guid.parse('12341234-1234-1234-1234-123412341234');
         var items = GuidCommands.getQuickPickItems(g, false, false, false);
 
