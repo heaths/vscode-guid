@@ -26,6 +26,64 @@ import {Guid} from '../src/guid';
 import {GuidCommands} from '../src/commands';
 
 suite('GuidCommands', () => {
+    test('quick pick 1 is simple string with default options', () => {
+        var g = Guid.parse('12341234-1234-1234-1234-123412341234');
+        var items = GuidCommands.getQuickPickItems(g, true, false, true);
+
+        assert.equal(items.length, 4);
+
+        var item = items[0];
+        assert.strictEqual(item.label, '1');
+        assert.equal(item.description, '12341234-1234-1234-1234-123412341234');
+        assert.equal(item.text, '12341234-1234-1234-1234-123412341234');
+    });
+
+    test('quick pick 2 is registry string with default options', () => {
+        var g = Guid.parse('12341234-1234-1234-1234-123412341234');
+        var items = GuidCommands.getQuickPickItems(g, true, false, true);
+
+        assert.equal(items.length, 4);
+
+        var item = items[1];
+        assert.strictEqual(item.label, '2');
+        assert.equal(item.description, '{12341234-1234-1234-1234-123412341234}');
+        assert.equal(item.text, '{12341234-1234-1234-1234-123412341234}');
+    });
+
+    test('quick pick 3 is C structure with default options', () => {
+        var g = Guid.parse('12341234-1234-1234-1234-123412341234');
+        var items = GuidCommands.getQuickPickItems(g, true, false, true);
+
+        assert.equal(items.length, 4);
+
+        var item = items[2];
+        assert.strictEqual(item.label, '3');
+        assert.equal(item.description,
+            'static const struct GUID __NAME__ = {0x12341234, 0x1234, 0x1234, {0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34}};'
+        );
+        assert.equal(item.text,
+            '// {12341234-1234-1234-1234-123412341234}\n' +
+            'static const struct GUID __NAME__ = {0x12341234, 0x1234, 0x1234, {0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34}};\n'
+        );
+    });
+
+    test('quick pick 4 is C macro with default options', () => {
+        var g = Guid.parse('12341234-1234-1234-1234-123412341234');
+        var items = GuidCommands.getQuickPickItems(g, true, false, true);
+
+        assert.equal(items.length, 4);
+
+        var item = items[3];
+        assert.strictEqual(item.label, '4');
+        assert.equal(item.description,
+            'DEFINE_GUID(__NAME__, 0x12341234, 0x1234, 0x1234, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34);'
+        );
+        assert.equal(item.text,
+            '// {12341234-1234-1234-1234-123412341234}\n' +
+            'DEFINE_GUID(__NAME__, 0x12341234, 0x1234, 0x1234, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34);\n'
+        );
+    });
+
     test('quick pick items are correct when all settings are true', () => {
         const g = Guid.parse('12341234-dead-beef-1234-123412341234');
         const items = GuidCommands.getQuickPickItems(g, true, true, true);
