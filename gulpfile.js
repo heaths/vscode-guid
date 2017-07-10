@@ -24,14 +24,14 @@ var gulp = require('gulp');
 var clean = require('gulp-clean');
 var merge = require('gulp-merge');
 var sourcemaps = require('gulp-sourcemaps');
-var svgmin = require('gulp-svgmin');
+var svg2png = require('gulp-svg2png');
 var ts = require('gulp-typescript');
 
 gulp.task('compile', function() {
     var project = ts.createProject('tsconfig.json');
     return merge(
         gulp.src('res/**/*.svg')
-            .pipe(svgmin())
+            .pipe(svg2png())
             .pipe(gulp.dest('out/res/')),
         project.src()
             .pipe(sourcemaps.init())
