@@ -2,7 +2,7 @@
 
 A simple command extension for [Visual Studio Code](https://code.visualstudio.com) to insert globally unique identifiers (GUIDs) into the Code text editor in a variety of formats.
 
-![Insert GUID](http://i.giphy.com/l2JI7IDkCA2ZzPoSk.gif)
+![Insert GUID](https://i.giphy.com/l2JI7IDkCA2ZzPoSk.gif)
 
 This provides the same useful formats as _Create GUID_ that ships with Visual Studio, but without specific language syntaxes for some formats and without unwanted line feeds. Currently, formats supported include:
 
@@ -37,6 +37,14 @@ Whenever you want to insert a new GUID at the cursor or replace the currently se
 3. Press __Enter__ and select the desired format by typing the number or using the arrow keys.
 
 You can also skip right to step 3 using the default keyboard binding, __Ctrl+Shift+[__. This is more easily remembered as __Ctrl+{__ as with the curly brace used in the registry string format, or as __Cmd+{__ on the Mac.
+
+### Options
+
+You can set different configuration options to control the format of GUIDs that can be inserted.
+
+* insertGuid.showLowercase: Show lowercase GUIDs (with and without braces) when presenting possible GUID formats to insert. The default is `true`.
+* insertGuid.showUppercase: Show uppercase GUIDs (with and without braces) when presenting possible GUID formats to insert. The default is `false`.
+* insertGuid.showCodeSnippets: Show code snippets for C++ when presenting possible GUID formats to insert. The default is `true`.
 
 ## License
 
