@@ -18,23 +18,23 @@
     ],
     "configuration": {
       "title": "Insert GUID configuration",
-        "properties": {
-            "insertGuid.showLowercase": {
-              "type": "boolean",
-              "default": true,
-              "description": "Show lowercase GUIDs (with and without braces) when presenting possible GUID formats to insert."
-            },
-            "insertGuid.showUppercase": {
-              "type": "boolean",
-              "default": false,
-              "description": "Show uppercase GUIDs (with and without braces) when presenting possible GUID formats to insert."
-            },
-            "insertGuid.showCodeSnippets": {
-              "type": "boolean",
-              "default": true,
-              "description": "Show code snippets for C++ when presenting possible GUID formats to insert."
-            }
+      "properties": {
+        "insertGuid.showLowercase": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show lowercase GUIDs (with and without braces) when presenting possible GUID formats to insert."
+        },
+        "insertGuid.showUppercase": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show uppercase GUIDs (with and without braces) when presenting possible GUID formats to insert."
+        },
+        "insertGuid.showCodeSnippets": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show code snippets for C++ when presenting possible GUID formats to insert."
         }
+      }
     },
     "keybindings": [
       {
@@ -48,7 +48,7 @@
   "activationEvents": [
     "onCommand:guid.insert"
   ],
-  "icon": "out/res/logo.svg",
+  "icon": "out/res/logo.png",
   "galleryBanner": {
     "color": "#252526",
     "theme": "dark"
@@ -68,8 +68,8 @@
     "gulp": "^3.9.0",
     "gulp-clean": "^0.3.1",
     "gulp-merge": "^0.1.1",
-    "gulp-svgmin": "^1.2.1",
     "gulp-sourcemaps": "^2.6.0",
+    "gulp-svg2png": "^2.0.2",
     "gulp-typescript": "^2.10.0",
     "tsd": "^0.6.5",
     "typescript": "^1.6.2",

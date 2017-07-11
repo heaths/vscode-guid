@@ -116,17 +116,17 @@ suite('GuidCommands', () => {
             'static const struct GUID __NAME__ = {0x12341234, 0xdead, 0xbeef, {0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34}};'
         );
         assert.equal(item5.text,
-            '// {12341234-1234-1234-1234-123412341234}\n' +
+            '// {12341234-dead-beef-1234-123412341234}\n' +
             'static const struct GUID __NAME__ = {0x12341234, 0xdead, 0xbeef, {0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34}};\n'
         );
 
         const item6 = items[5];
-        assert.strictEqual(item5.label, '6');
+        assert.strictEqual(item6.label, '6');
         assert.equal(item6.description,
             'DEFINE_GUID(__NAME__, 0x12341234, 0xdead, 0xbeef, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34);'
         );
         assert.equal(item6.text,
-            '// {12341234-1234-1234-1234-123412341234}\n' +
+            '// {12341234-dead-beef-1234-123412341234}\n' +
             'DEFINE_GUID(__NAME__, 0x12341234, 0xdead, 0xbeef, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34);\n'
         );
     });
@@ -168,33 +168,33 @@ suite('GuidCommands', () => {
 
     test('quick pick items are correct with only code snippets enabled', () => {
         const g = Guid.parse('12341234-dead-beef-1234-123412341234');
-        const items = GuidCommands.getQuickPickItems(g, false, true, false);
+        const items = GuidCommands.getQuickPickItems(g, false, false, true);
 
         assert.equal(items.length, 2);
 
         const item1 = items[0];
-        assert.strictEqual(item1.label, '5');
+        assert.strictEqual(item1.label, '1');
         assert.equal(item1.description,
             'static const struct GUID __NAME__ = {0x12341234, 0xdead, 0xbeef, {0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34}};'
         );
         assert.equal(item1.text,
-            '// {12341234-1234-1234-1234-123412341234}\n' +
+            '// {12341234-dead-beef-1234-123412341234}\n' +
             'static const struct GUID __NAME__ = {0x12341234, 0xdead, 0xbeef, {0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34}};\n'
         );
 
         const item2 = items[1];
-        assert.strictEqual(item1.label, '6');
+        assert.strictEqual(item2.label, '2');
         assert.equal(item2.description,
             'DEFINE_GUID(__NAME__, 0x12341234, 0xdead, 0xbeef, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34);'
         );
         assert.equal(item2.text,
-            '// {12341234-1234-1234-1234-123412341234}\n' +
+            '// {12341234-dead-beef-1234-123412341234}\n' +
             'DEFINE_GUID(__NAME__, 0x12341234, 0xdead, 0xbeef, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34);\n'
         );
     });
 
     test('quick pick items are correct with no code snippets enabled', () => {
-        var g = Guid.parse('12341234-1234-1234-1234-123412341234');
+        var g = Guid.parse('12341234-dead-beef-1234-123412341234');
         var items = GuidCommands.getQuickPickItems(g, false, false, false);
 
         assert.equal(items.length, 2);
