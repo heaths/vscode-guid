@@ -59,21 +59,23 @@
     "compile": "gulp watch"
   },
   "engines": {
-    "vscode": "^0.10.1"
+    "vscode": "^0.11.18"
   },
   "dependencies": {
     "node-uuid": "^1.4.7"
   },
   "devDependencies": {
+    "graceful-fs": "^4.1.11",
     "gulp": "^3.9.0",
     "gulp-clean": "^0.3.1",
     "gulp-merge": "^0.1.1",
     "gulp-sourcemaps": "^2.6.0",
     "gulp-svg2png": "^2.0.2",
     "gulp-typescript": "^2.10.0",
+    "minimatch": "^3.0.2",
     "tsd": "^0.6.5",
     "typescript": "^1.6.2",
-    "vscode": "0.10.x"
+    "vscode": "^0.11.18"
   },
   "repository": {
     "type": "git",
