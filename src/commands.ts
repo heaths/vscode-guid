@@ -78,7 +78,8 @@ export class GuidCommands {
 
     // Use placeholder token that completely selects with double click.
     private static _NAME : string = '__NAME__';
-    private static _formats : GuidPickFormat[] = [
+
+    private static _basicFormats : GuidPickFormat[] = [
         {
             format: (g) => {
                 return g.toString();
@@ -88,7 +89,9 @@ export class GuidCommands {
             format: (g) => {
                 return g.toString('braced');
             }
-        },
+        }
+    ];
+    private static _codeSnippets : GuidPickFormat[] = [
         {
             named: true,
             format: (g) => {
@@ -121,8 +124,12 @@ export class GuidCommands {
      * @param edit {vscode.TextEditorEdit} A text edit builder for the intended change.
      */
     static insertCommand(textEditor : vscode.TextEditor, edit : vscode.TextEditorEdit) {
-        let g = new Guid();
-        let items = GuidCommands.getQuickPickItems(g);
+        const g = new Guid();
+        const settings = vscode.workspace.getConfiguration('insertGuid');
+        const showLowercase = settings.get<boolean>('showLowercase');
+        const showUppercase = settings.get<boolean>('showUppercase');
+        const showCodeSnippets = settings.get<boolean>('showCodeSnippets');
+        const items = GuidCommands.getQuickPickItems(g, showLowercase, showUppercase, showCodeSnippets);
 
         // Prompt the user for a format.
         vscode.window.showQuickPick<GuidPickItem>(items)
@@ -153,15 +160,35 @@ export class GuidCommands {
     /**
      * Gets an array of items to display in the Quick Pick window.
      * @param guid The GUID to render in each Quick Pick item.
+     * @param showLowercase Indicates whether lowercase options should be included in the array.
+     * @param showUppercase Indicates whether uppercase options should be included in the array.
+     * @param showCodeSnippets Indicates whether code snippet options should be included in the array.
      * @returns An array of items to display in the Quick Pick window.
      */
-    static getQuickPickItems(guid : Guid) : GuidPickItem[] {
+    static getQuickPickItems(guid : Guid, showLowercase : boolean, showUppercase : boolean, showCodeSnippets : boolean) : GuidPickItem[] {
         let items : GuidPickItem[] = [];
+        let nextIndex = 0;
 
-        GuidCommands._formats.forEach((format, index) => {
-            let item = new GuidPickItem(index + 1, guid, format);
-            items.push(item);
-        });
+        if (showLowercase || (!showUppercase && !showCodeSnippets)) {
+            for (const format of GuidCommands._basicFormats) {
+                const item = new GuidPickItem(++nextIndex, guid, format);
+                items.push(item);
+            }
+        }
+        if (showUppercase) {
+            for (const lowercaseFormat of GuidCommands._basicFormats) {
+                const item = new GuidPickItem(++nextIndex, guid, {
+                    format: g => lowercaseFormat.format(g).toUpperCase()
+                });
+                items.push(item);
+            }
+        }
+        if (showCodeSnippets) {
+            for (const format of GuidCommands._codeSnippets) {
+                const item = new GuidPickItem(++nextIndex, guid, format);
+                items.push(item);
+            }
+        }
 
         return items;
     }

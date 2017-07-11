@@ -23,6 +23,7 @@
 var gulp = require('gulp');
 var clean = require('gulp-clean');
 var merge = require('gulp-merge');
+var sourcemaps = require('gulp-sourcemaps');
 var svgmin = require('gulp-svgmin');
 var ts = require('gulp-typescript');
 
@@ -33,8 +34,11 @@ gulp.task('compile', function() {
             .pipe(svgmin())
             .pipe(gulp.dest('out/res/')),
         project.src()
+            .pipe(sourcemaps.init())
             .pipe(ts(project))
-            .js.pipe(gulp.dest('out'))
+            .js
+            .pipe(sourcemaps.write('./', { sourceRoot: '../' }))
+            .pipe(gulp.dest('out'))
     );
 });
 
