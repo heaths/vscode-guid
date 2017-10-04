@@ -141,13 +141,12 @@ export class GuidCommands {
 
                 // 'edit' no longer valid so start a new edit.
                 textEditor.edit(edit => {
-
-                    let current = textEditor.selection;
-
-                    if (current.isEmpty) {
-                        edit.insert(current.start, item.text);
-                    } else {
-                        edit.replace(current, item.text);
+                    for (const selection of textEditor.selections) {
+                        if (selection.isEmpty) {
+                            edit.insert(selection.start, item.text);
+                        } else {
+                            edit.replace(selection, item.text);
+                        }
                     }
 
                     if (item.named) {
