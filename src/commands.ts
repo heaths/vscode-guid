@@ -87,6 +87,11 @@ export class GuidCommands {
         },
         {
             format: (g) => {
+                return g.toString('no-hyphen')
+            }
+        },
+        {
+            format: (g) => {
                 return g.toString('braced');
             }
         }

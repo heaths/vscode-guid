@@ -33,11 +33,6 @@
           "type": "boolean",
           "default": true,
           "description": "Show code snippets for C++ when presenting possible GUID formats to insert."
-        },
-        "insertGuid.includeHyphens": {
-          "type": "boolean",
-          "default": true,
-          "description": "Include hyphens in generated GUIDs."
         }
       }
     },

@@ -28,7 +28,6 @@ import * as util from 'util';
  */
 export class Guid {
     private _buffer : Buffer;
-    private _includeHyphens : boolean;
 
     /**
      * Creates a new globally unique identifier.
@@ -36,8 +35,6 @@ export class Guid {
     constructor() {
         this._buffer = new Buffer(16);
         this._buffer = v4(null, this._buffer);
-        const settings = workspace.getConfiguration('insertGuid');
-        this._includeHyphens = settings.get<boolean>('includeHyphens');
     }
 
     /**
@@ -80,9 +77,10 @@ export class Guid {
                 b.toString('hex', 13, 14), b.toString('hex', 14, 15), b.toString('hex', 15, 16));
         } else if (format === 'braced' || format === 'b') {
             return util.format('{%s}', this.toString());
+        } else if (format === 'no-hyphen') {
+            return this.toString().replace(/-/g,'')
         } else {
-            const response = unparse(this._buffer);
-            return this._includeHyphens ? response : response.replace(/-/g,'') ;
+            return unparse(this._buffer);
         }
     }
 }
