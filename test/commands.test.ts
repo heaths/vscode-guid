@@ -30,7 +30,7 @@ suite('GuidCommands', () => {
         var g = Guid.parse('12341234-1234-1234-1234-123412341234');
         var items = GuidCommands.getQuickPickItems(g, true, false, true);
 
-        assert.equal(items.length, 4);
+        assert.equal(items.length, 5);
 
         var item = items[0];
         assert.strictEqual(item.label, '1');
@@ -42,7 +42,7 @@ suite('GuidCommands', () => {
         var g = Guid.parse('12341234-1234-1234-1234-123412341234');
         var items = GuidCommands.getQuickPickItems(g, true, false, true);
 
-        assert.equal(items.length, 4);
+        assert.equal(items.length, 5);
 
         var item = items[1];
         assert.strictEqual(item.label, '2');
@@ -54,7 +54,7 @@ suite('GuidCommands', () => {
         var g = Guid.parse('12341234-1234-1234-1234-123412341234');
         var items = GuidCommands.getQuickPickItems(g, true, false, true);
 
-        assert.equal(items.length, 4);
+        assert.equal(items.length, 5);
 
         var item = items[2];
         assert.strictEqual(item.label, '3');
@@ -71,7 +71,7 @@ suite('GuidCommands', () => {
         var g = Guid.parse('12341234-1234-1234-1234-123412341234');
         var items = GuidCommands.getQuickPickItems(g, true, false, true);
 
-        assert.equal(items.length, 4);
+        assert.equal(items.length, 5);
 
         var item = items[3];
         assert.strictEqual(item.label, '4');
@@ -84,11 +84,23 @@ suite('GuidCommands', () => {
         );
     });
 
+    test('quick pick 5 is simple non-hyphenated string with default options', () => {
+        var g = Guid.parse('12341234-1234-1234-1234-123412341234');
+        var items = GuidCommands.getQuickPickItems(g, true, false, true);
+
+        assert.equal(items.length, 5);
+
+        var item = items[4];
+        assert.strictEqual(item.label, '5');
+        assert.equal(item.description, '12341234123412341234123412341234');
+        assert.equal(item.text, '12341234123412341234123412341234');
+    });
+
     test('quick pick items are correct when all settings are true', () => {
         const g = Guid.parse('12341234-dead-beef-1234-123412341234');
         const items = GuidCommands.getQuickPickItems(g, true, true, true);
 
-        assert.equal(items.length, 6);
+        assert.equal(items.length, 8);
 
         const item1 = items[0];
         assert.strictEqual(item1.label, '1');
@@ -129,13 +141,23 @@ suite('GuidCommands', () => {
             '// {12341234-dead-beef-1234-123412341234}\n' +
             'DEFINE_GUID(__NAME__, 0x12341234, 0xdead, 0xbeef, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34);\n'
         );
+
+        const item7 = items[6];
+        assert.strictEqual(item7.label, '7');
+        assert.equal(item7.description, '12341234deadbeef1234123412341234');
+        assert.equal(item7.text, '12341234deadbeef1234123412341234');
+
+        const item8 = items[7];
+        assert.strictEqual(item8.label, '8');
+        assert.equal(item8.description, '12341234DEADBEEF1234123412341234');
+        assert.equal(item8.text, '12341234DEADBEEF1234123412341234');
     });
 
     test('quick pick items are correct with only lowercase enabled', () => {
         const g = Guid.parse('12341234-dead-beef-1234-123412341234');
         const items = GuidCommands.getQuickPickItems(g, true, false, false);
 
-        assert.equal(items.length, 2);
+        assert.equal(items.length, 3);
 
         const item1 = items[0];
         assert.strictEqual(item1.label, '1');
@@ -146,13 +168,18 @@ suite('GuidCommands', () => {
         assert.strictEqual(item2.label, '2');
         assert.equal(item2.description, '{12341234-dead-beef-1234-123412341234}');
         assert.equal(item2.text, '{12341234-dead-beef-1234-123412341234}');
+
+        const item3 = items[2];
+        assert.strictEqual(item3.label, '3');
+        assert.equal(item3.description, '12341234deadbeef1234123412341234');
+        assert.equal(item3.text, '12341234deadbeef1234123412341234');
     });
 
     test('quick pick items are correct with only uppercase enabled', () => {
         const g = Guid.parse('12341234-dead-beef-1234-123412341234');
         const items = GuidCommands.getQuickPickItems(g, false, true, false);
 
-        assert.equal(items.length, 2);
+        assert.equal(items.length, 3);
 
         const item1 = items[0];
         assert.strictEqual(item1.label, '1');
@@ -163,6 +190,11 @@ suite('GuidCommands', () => {
         assert.strictEqual(item2.label, '2');
         assert.equal(item2.description, '{12341234-DEAD-BEEF-1234-123412341234}');
         assert.equal(item2.text, '{12341234-DEAD-BEEF-1234-123412341234}');
+
+        const item3 = items[2];
+        assert.strictEqual(item3.label, '3');
+        assert.equal(item3.description, '12341234DEADBEEF1234123412341234');
+        assert.equal(item3.text, '12341234DEADBEEF1234123412341234');
     });
 
 
@@ -197,7 +229,7 @@ suite('GuidCommands', () => {
         var g = Guid.parse('12341234-dead-beef-1234-123412341234');
         var items = GuidCommands.getQuickPickItems(g, false, false, false);
 
-        assert.equal(items.length, 2);
+        assert.equal(items.length, 3);
 
         // with all options set to false, only the lowercase options are shown
         const item1 = items[0];
@@ -209,5 +241,10 @@ suite('GuidCommands', () => {
         assert.strictEqual(item2.label, '2');
         assert.equal(item2.description, '{12341234-dead-beef-1234-123412341234}');
         assert.equal(item2.text, '{12341234-dead-beef-1234-123412341234}');
+
+        const item3 = items[2];
+        assert.strictEqual(item3.label, '3');
+        assert.equal(item3.description, '12341234deadbeef1234123412341234');
+        assert.equal(item3.text, '12341234deadbeef1234123412341234');
     });
 });
