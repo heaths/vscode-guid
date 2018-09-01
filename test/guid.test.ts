@@ -93,6 +93,11 @@ suite('Guid', () => {
         assert.equal(g.toString('braced'), '{01234567-89ab-cdef-0123-456789abcdef}');
     });
 
+    test('returns proper "no-hyphen" format', () => {
+        var g = Guid.parse('01234567-89ab-cdef-0123-456789abcdef');
+        assert.equal(g.toString('no-hyphen'), '0123456789abcdef0123456789abcdef');
+    });
+
     test('returns proper string for missing format', () => {
         var g = Guid.parse('01234567-89ab-cdef-0123-456789abcdef');
         assert.equal(g.toString(), '01234567-89ab-cdef-0123-456789abcdef');

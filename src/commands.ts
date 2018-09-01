@@ -24,8 +24,15 @@ import * as vscode from 'vscode';
 import * as util from 'util';
 import {Guid} from './guid';
 
+enum FormatType {
+    LOWERCASE,
+    UPPERCASE,
+    SNIPPET,
+};
+
 interface GuidPickFormat {
     format : (g : Guid) => string;
+    type : FormatType;
     preface? : (g : Guid) => string;
     epilogue? : (g : Guid) => string;
     named? : boolean;
@@ -79,19 +86,31 @@ export class GuidCommands {
     // Use placeholder token that completely selects with double click.
     private static _NAME : string = '__NAME__';
 
-    private static _basicFormats : GuidPickFormat[] = [
+    private static _formats : GuidPickFormat[] = [
         {
             format: (g) => {
                 return g.toString();
-            }
+            },
+            type: FormatType.LOWERCASE
         },
         {
             format: (g) => {
                 return g.toString('braced');
-            }
-        }
-    ];
-    private static _codeSnippets : GuidPickFormat[] = [
+            },
+            type: FormatType.LOWERCASE
+        },
+        {
+            format: (g) => {
+                return g.toString().toUpperCase();
+            },
+            type: FormatType.UPPERCASE
+        },
+        {
+            format: (g) => {
+                return g.toString('braced').toUpperCase();
+            },
+            type: FormatType.UPPERCASE
+        },
         {
             named: true,
             format: (g) => {
@@ -102,7 +121,8 @@ export class GuidCommands {
             },
             epilogue: (g) => {
                 return '\n';
-            }
+            },
+            type: FormatType.SNIPPET
         },
         {
             named: true,
@@ -114,7 +134,20 @@ export class GuidCommands {
             },
             epilogue: (g) => {
                 return '\n';
-            }
+            },
+            type: FormatType.SNIPPET
+        },
+        {
+            format: (g) => {
+                return g.toString('no-hyphen')
+            },
+            type: FormatType.LOWERCASE
+        },
+        {
+            format: (g) => {
+                return g.toString('no-hyphen').toUpperCase();
+            },
+            type: FormatType.UPPERCASE
         }
     ];
 
@@ -141,13 +174,12 @@ export class GuidCommands {
 
                 // 'edit' no longer valid so start a new edit.
                 textEditor.edit(edit => {
-
-                    let current = textEditor.selection;
-
-                    if (current.isEmpty) {
-                        edit.insert(current.start, item.text);
-                    } else {
-                        edit.replace(current, item.text);
+                    for (const selection of textEditor.selections) {
+                        if (selection.isEmpty) {
+                            edit.insert(selection.start, item.text);
+                        } else {
+                            edit.replace(selection, item.text);
+                        }
                     }
 
                     if (item.named) {
@@ -169,25 +201,13 @@ export class GuidCommands {
         let items : GuidPickItem[] = [];
         let nextIndex = 0;
 
-        if (showLowercase || (!showUppercase && !showCodeSnippets)) {
-            for (const format of GuidCommands._basicFormats) {
-                const item = new GuidPickItem(++nextIndex, guid, format);
-                items.push(item);
-            }
-        }
-        if (showUppercase) {
-            for (const lowercaseFormat of GuidCommands._basicFormats) {
-                const item = new GuidPickItem(++nextIndex, guid, {
-                    format: g => lowercaseFormat.format(g).toUpperCase()
-                });
-                items.push(item);
-            }
-        }
-        if (showCodeSnippets) {
-            for (const format of GuidCommands._codeSnippets) {
-                const item = new GuidPickItem(++nextIndex, guid, format);
-                items.push(item);
-            }
+        for (const format of GuidCommands._formats) {
+            if (((showLowercase || (!showUppercase && !showCodeSnippets)) && format.type == FormatType.LOWERCASE) ||
+                (showUppercase && format.type == FormatType.UPPERCASE) ||
+                (showCodeSnippets && format.type == FormatType.SNIPPET)) {
+                    const item = new GuidPickItem(++nextIndex, guid, format);
+                    items.push(item);
+                }
         }
 
         return items;
