@@ -13,7 +13,12 @@
       {
         "command": "guid.insert",
         "title": "Insert GUID",
-        "description": "Insert a GUID at the current position."
+        "description": "Insert a GUID at the current position(s)."
+      },
+      {
+        "command": "guid.insertMany",
+        "title": "Insert many GUIDs",
+        "description": "Insert unique GUIDs at each position."
       }
     ],
     "configuration": {
@@ -46,7 +51,8 @@
     ]
   },
   "activationEvents": [
-    "onCommand:guid.insert"
+    "onCommand:guid.insert",
+    "onCommand:guid.insertMany"
   ],
   "icon": "out/res/logo.png",
   "galleryBanner": {
@@ -56,10 +62,13 @@
   "main": "./out/src/extension",
   "scripts": {
     "vscode:prepublish": "gulp compile",
-    "compile": "gulp watch"
+    "compile": "gulp compile",
+    "watch": "gulp watch",
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "test": "npm run compile && node ./node_modules/vscode/bin/test"
   },
   "engines": {
-    "vscode": "^0.11.18"
+    "vscode": "^1.26.0"
   },
   "dependencies": {
     "node-uuid": "^1.4.7"
@@ -74,8 +83,9 @@
     "gulp-typescript": "^2.10.0",
     "minimatch": "^3.0.2",
     "tsd": "^0.6.5",
-    "typescript": "^1.6.2",
-    "vscode": "^0.11.18"
+    "tslint": "^5.8.0",
+    "typescript": "^2.6.1",
+    "vscode": "^1.1.21"
   },
   "repository": {
     "type": "git",

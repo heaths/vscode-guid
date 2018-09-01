@@ -28,7 +28,7 @@ enum FormatType {
     LOWERCASE,
     UPPERCASE,
     SNIPPET,
-};
+}
 
 interface GuidPickFormat {
     format : (g : Guid) => string;
@@ -75,6 +75,10 @@ class GuidPickItem implements vscode.QuickPickItem {
 
     get named() : boolean {
         return this._format.named || false;
+    }
+
+    generate() {
+        this._guid = new Guid();
     }
 }
 
@@ -139,7 +143,7 @@ export class GuidCommands {
         },
         {
             format: (g) => {
-                return g.toString('no-hyphen')
+                return g.toString('no-hyphen');
             },
             type: FormatType.LOWERCASE
         },
@@ -152,16 +156,29 @@ export class GuidCommands {
     ];
 
     /**
-     * Inserts GUID at the cursor position or replaces active selection.
+     * Inserts GUID at the cursor position(s) or replaces active selection(s).
      * @param textEditor {vscode.TextEditor} The active text editor.
      * @param edit {vscode.TextEditorEdit} A text edit builder for the intended change.
      */
     static insertCommand(textEditor : vscode.TextEditor, edit : vscode.TextEditorEdit) {
+        GuidCommands.insertCommandImpl(textEditor, edit, false);
+    }
+
+        /**
+     * Inserts unique GUIDs at eacg cursor position or replaces active selection(s).
+     * @param textEditor {vscode.TextEditor} The active text editor.
+     * @param edit {vscode.TextEditorEdit} A text edit builder for the intended change.
+     */
+    static insertManyCommand(textEditor : vscode.TextEditor, edit : vscode.TextEditorEdit) {
+        GuidCommands.insertCommandImpl(textEditor, edit, true);
+    }
+
+    static insertCommandImpl(textEditor : vscode.TextEditor, edit : vscode.TextEditorEdit, unique: boolean) {
         const g = new Guid();
         const settings = vscode.workspace.getConfiguration('insertGuid');
-        const showLowercase = settings.get<boolean>('showLowercase');
-        const showUppercase = settings.get<boolean>('showUppercase');
-        const showCodeSnippets = settings.get<boolean>('showCodeSnippets');
+        const showLowercase = settings.get<boolean>('showLowercase') || true;
+        const showUppercase = settings.get<boolean>('showUppercase') || false;
+        const showCodeSnippets = settings.get<boolean>('showCodeSnippets') || true;
         const items = GuidCommands.getQuickPickItems(g, showLowercase, showUppercase, showCodeSnippets);
 
         // Prompt the user for a format.
@@ -179,6 +196,10 @@ export class GuidCommands {
                             edit.insert(selection.start, item.text);
                         } else {
                             edit.replace(selection, item.text);
+                        }
+
+                        if (unique) {
+                            item.generate();
                         }
                     }
 
@@ -202,9 +223,9 @@ export class GuidCommands {
         let nextIndex = 0;
 
         for (const format of GuidCommands._formats) {
-            if (((showLowercase || (!showUppercase && !showCodeSnippets)) && format.type == FormatType.LOWERCASE) ||
-                (showUppercase && format.type == FormatType.UPPERCASE) ||
-                (showCodeSnippets && format.type == FormatType.SNIPPET)) {
+            if (((showLowercase || (!showUppercase && !showCodeSnippets)) && format.type === FormatType.LOWERCASE) ||
+                (showUppercase && format.type === FormatType.UPPERCASE) ||
+                (showCodeSnippets && format.type === FormatType.SNIPPET)) {
                     const item = new GuidPickItem(++nextIndex, guid, format);
                     items.push(item);
                 }
