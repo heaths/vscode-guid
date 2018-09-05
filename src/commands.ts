@@ -164,8 +164,8 @@ export class GuidCommands {
         GuidCommands.insertCommandImpl(textEditor, edit, false);
     }
 
-        /**
-     * Inserts unique GUIDs at eacg cursor position or replaces active selection(s).
+    /**
+     * Inserts unique GUIDs at each cursor position or replaces active selection(s).
      * @param textEditor {vscode.TextEditor} The active text editor.
      * @param edit {vscode.TextEditorEdit} A text edit builder for the intended change.
      */
