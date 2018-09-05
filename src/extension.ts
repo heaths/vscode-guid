@@ -25,6 +25,8 @@ import {GuidCommands} from './commands';
 
 export function activate(context: vscode.ExtensionContext) {
 
-    let disposable = vscode.commands.registerTextEditorCommand('guid.insert', GuidCommands.insertCommand);
-    context.subscriptions.push(disposable);
+    let insertCommand = vscode.commands.registerTextEditorCommand('guid.insert', GuidCommands.insertCommand);
+    let insertManyCommand = vscode.commands.registerTextEditorCommand('guid.insertMany', GuidCommands.insertManyCommand);
+
+    context.subscriptions.push(insertCommand, insertManyCommand);
 }

@@ -19,7 +19,6 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-import {workspace} from 'vscode';
 import {v4, parse, unparse} from 'node-uuid';
 import * as util from 'util';
 
@@ -34,7 +33,7 @@ export class Guid {
      */
     constructor() {
         this._buffer = new Buffer(16);
-        this._buffer = v4(null, this._buffer);
+        this._buffer = v4(undefined, this._buffer);
     }
 
     /**
@@ -78,7 +77,7 @@ export class Guid {
         } else if (format === 'braced' || format === 'b') {
             return util.format('{%s}', this.toString());
         } else if (format === 'no-hyphen') {
-            return this.toString().replace(/-/g,'')
+            return this.toString().replace(/-/g,'');
         } else {
             return unparse(this._buffer);
         }
