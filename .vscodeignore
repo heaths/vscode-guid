@@ -9,5 +9,7 @@ res/**
 **/*.vsix
 .gitignore
 gulpfile.js
+package-lock.json
 tsconfig.json
 tsd.json
+tslint.json
