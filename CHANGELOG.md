@@ -1,3 +1,8 @@
+## 1.4.1 (2019-02-27)
+
+* Updated lodash for [CVE-2018-16487](https://nvd.nist.gov/vuln/detail/CVE-2018-16487).
+* Updated node.extend for [CVE-2018-16491](https://nvd.nist.gov/vuln/detail/CVE-2018-16491).
+
 ## 1.4.0 (2018-09-05)
 
 * Added command to insert many different GUIDs ([#13](https://github.com/heaths/vscode-guid/issues/13))
