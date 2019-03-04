@@ -2,6 +2,7 @@
 
 * Updated lodash for [CVE-2018-16487](https://nvd.nist.gov/vuln/detail/CVE-2018-16487).
 * Updated node.extend for [CVE-2018-16491](https://nvd.nist.gov/vuln/detail/CVE-2018-16491).
+* Change logo image.
 
 ## 1.4.0 (2018-09-05)
 
