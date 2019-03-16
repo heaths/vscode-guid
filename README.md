@@ -2,7 +2,7 @@
 
 A simple command extension for [Visual Studio Code](https://code.visualstudio.com) to insert globally unique identifiers (GUIDs) into the Code text editor in a variety of formats.
 
-![Insert GUID](https://i.giphy.com/l2JI7IDkCA2ZzPoSk.gif)
+![Insert GUID](https://media.giphy.com/media/3danYPtfh3iQBjd6ef/giphy.gif)
 
 This provides the same useful formats as _Create GUID_ that ships with Visual Studio, but without specific language syntaxes for some formats and without unwanted line feeds. Currently, formats supported include:
 

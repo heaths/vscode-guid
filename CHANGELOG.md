@@ -1,3 +1,10 @@
+## 1.4.2 (2019-03-06)
+
+* Updated animated screenshot GIF with modern UI and new extension features:
+  * Multi-select support
+  * Insert many different GUIDs
+* Changed hue in new logo image.
+
 ## 1.4.1 (2019-02-27)
 
 * Updated lodash for [CVE-2018-16487](https://nvd.nist.gov/vuln/detail/CVE-2018-16487).
