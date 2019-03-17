@@ -19,45 +19,61 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-import {v4, parse, unparse} from 'node-uuid';
+import { v4 } from 'uuid';
 import * as util from 'util';
 
 /**
  * A globally unique identifier.
  */
 export class Guid {
-    private _buffer : Buffer;
+    private _buffer: Buffer;
 
     /**
      * Creates a new globally unique identifier.
      */
-    constructor() {
-        this._buffer = new Buffer(16);
-        this._buffer = v4(undefined, this._buffer);
+    constructor(input? : string) {
+        this._buffer = Buffer.alloc(16);
+
+        if (input == null) {
+            this._buffer = v4(undefined, this._buffer);
+        } else {
+            let i = 0;
+            input.replace(/[0-9a-fA-F]{2}/g, (octet : string) => {
+                if (i < 16) {
+                    this._buffer[i++] = parseInt(octet, 16);
+                }
+
+                return octet;
+            });
+
+            // Fill remaining bytes with 0.
+            while (i < 16) {
+                this._buffer[i++] = 0;
+            }
+        }
     }
 
     /**
      * Gets an identifier consisting of all zeroes.
      */
-    static EMPTY : Guid = Guid.parse('0');
+    static EMPTY: Guid = new Guid('0');
 
     /**
-     * Parses a string representing a globally unique identifier.
-     * @param input A string representing a globally unique identifier.
-     * @returns The parsed globally unique identifier.
+     * Formats a b as a GUID string representation.
      */
-    static parse(input : string) : Guid {
-        let guid = new Guid();
-        guid._buffer = parse(input, guid._buffer);
-
-        return guid;
+    static unparse(b: Buffer): string {
+        return b.toString('hex', 0, 4) + '-'
+            + b.toString('hex', 4, 6) + '-'
+            + b.toString('hex', 6, 8) + '-'
+            + b.toString('hex', 8, 10) + '-'
+            + b.toString('hex', 10, 16);
     }
 
     /**
      * Returns the raw _buffer.
      * @returns The raw _buffer.
      */
-    toBuffer() : Buffer {
+    toBuffer(): Buffer {
         return this._buffer;
     }
 
@@ -66,9 +82,9 @@ export class Guid {
      * @param format Optional format specifier: 'struct' ('x'), 'braced' ('b'), or other (default).
      * @returns The string representation of a globally unique identifier.
      */
-    toString(format? : string) : string {
+    toString(format?: string): string {
+        let b = this._buffer;
         if (format === 'struct' || format === 'x') {
-            let b = this._buffer;
             return util.format('{0x%s, 0x%s, 0x%s, {0x%s, 0x%s, 0x%s, 0x%s, 0x%s, 0x%s, 0x%s, 0x%s}}',
                 b.toString('hex', 0, 4), b.toString('hex', 4, 6), b.toString('hex', 6, 8),
                 b.toString('hex', 8, 9), b.toString('hex', 9, 10),
@@ -77,9 +93,13 @@ export class Guid {
         } else if (format === 'braced' || format === 'b') {
             return util.format('{%s}', this.toString());
         } else if (format === 'no-hyphen') {
-            return this.toString().replace(/-/g,'');
+            return this.toString().replace(/-/g, '');
         } else {
-            return unparse(this._buffer);
+            return b.toString('hex', 0, 4) + '-'
+                + b.toString('hex', 4, 6) + '-'
+                + b.toString('hex', 6, 8) + '-'
+                + b.toString('hex', 8, 10) + '-'
+                + b.toString('hex', 10, 16);
         }
     }
 }

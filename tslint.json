@@ -1,5 +1,8 @@
 {
-  "extends": "tslint:latest",
+  "extends": [
+    "tslint-eslint-rules",
+    "tslint-microsoft-contrib"
+  ],
   "rules": {
     "no-string-throw": true,
     "no-unused-expression": true,

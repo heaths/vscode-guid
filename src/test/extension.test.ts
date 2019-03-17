@@ -20,9 +20,5 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import * as assert from 'assert';
-import * as vscode from 'vscode';
-import * as myExtension from '../src/extension';
-
 suite("Extension", () => {
 });

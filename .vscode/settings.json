@@ -2,7 +2,6 @@
     "editor.insertSpaces": true,
     "diffEditor.ignoreTrimWhitespace": true,
     "files.exclude": {
-        "typings": true,
         "**/*.vsix": true,
         "npm-debug.log": true
     },

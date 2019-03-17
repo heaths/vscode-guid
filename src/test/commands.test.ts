@@ -21,13 +21,12 @@
 // SOFTWARE.
 
 import * as assert from 'assert';
-import * as vscode from 'vscode';
-import {Guid} from '../src/guid';
-import {GuidCommands} from '../src/commands';
+import {Guid} from '../guid';
+import {GuidCommands} from '../commands';
 
 suite('GuidCommands', () => {
     test('quick pick 1 is simple string with default options', () => {
-        var g = Guid.parse('12341234-1234-1234-1234-123412341234');
+        var g = new Guid('12341234-1234-1234-1234-123412341234');
         var items = GuidCommands.getQuickPickItems(g, true, false, true);
 
         assert.equal(items.length, 5);
@@ -39,7 +38,7 @@ suite('GuidCommands', () => {
     });
 
     test('quick pick 2 is registry string with default options', () => {
-        var g = Guid.parse('12341234-1234-1234-1234-123412341234');
+        var g = new Guid('12341234-1234-1234-1234-123412341234');
         var items = GuidCommands.getQuickPickItems(g, true, false, true);
 
         assert.equal(items.length, 5);
@@ -51,7 +50,7 @@ suite('GuidCommands', () => {
     });
 
     test('quick pick 3 is C structure with default options', () => {
-        var g = Guid.parse('12341234-1234-1234-1234-123412341234');
+        var g = new Guid('12341234-1234-1234-1234-123412341234');
         var items = GuidCommands.getQuickPickItems(g, true, false, true);
 
         assert.equal(items.length, 5);
@@ -68,7 +67,7 @@ suite('GuidCommands', () => {
     });
 
     test('quick pick 4 is C macro with default options', () => {
-        var g = Guid.parse('12341234-1234-1234-1234-123412341234');
+        var g = new Guid('12341234-1234-1234-1234-123412341234');
         var items = GuidCommands.getQuickPickItems(g, true, false, true);
 
         assert.equal(items.length, 5);
@@ -85,7 +84,7 @@ suite('GuidCommands', () => {
     });
 
     test('quick pick 5 is simple non-hyphenated string with default options', () => {
-        var g = Guid.parse('12341234-1234-1234-1234-123412341234');
+        var g = new Guid('12341234-1234-1234-1234-123412341234');
         var items = GuidCommands.getQuickPickItems(g, true, false, true);
 
         assert.equal(items.length, 5);
@@ -97,7 +96,7 @@ suite('GuidCommands', () => {
     });
 
     test('quick pick items are correct when all settings are true', () => {
-        const g = Guid.parse('12341234-dead-beef-1234-123412341234');
+        const g = new Guid('12341234-dead-beef-1234-123412341234');
         const items = GuidCommands.getQuickPickItems(g, true, true, true);
 
         assert.equal(items.length, 8);
@@ -154,7 +153,7 @@ suite('GuidCommands', () => {
     });
 
     test('quick pick items are correct with only lowercase enabled', () => {
-        const g = Guid.parse('12341234-dead-beef-1234-123412341234');
+        const g = new Guid('12341234-dead-beef-1234-123412341234');
         const items = GuidCommands.getQuickPickItems(g, true, false, false);
 
         assert.equal(items.length, 3);
@@ -176,7 +175,7 @@ suite('GuidCommands', () => {
     });
 
     test('quick pick items are correct with only uppercase enabled', () => {
-        const g = Guid.parse('12341234-dead-beef-1234-123412341234');
+        const g = new Guid('12341234-dead-beef-1234-123412341234');
         const items = GuidCommands.getQuickPickItems(g, false, true, false);
 
         assert.equal(items.length, 3);
@@ -199,7 +198,7 @@ suite('GuidCommands', () => {
 
 
     test('quick pick items are correct with only code snippets enabled', () => {
-        const g = Guid.parse('12341234-dead-beef-1234-123412341234');
+        const g = new Guid('12341234-dead-beef-1234-123412341234');
         const items = GuidCommands.getQuickPickItems(g, false, false, true);
 
         assert.equal(items.length, 2);
@@ -226,7 +225,7 @@ suite('GuidCommands', () => {
     });
 
     test('quick pick items are correct with no code snippets enabled', () => {
-        var g = Guid.parse('12341234-dead-beef-1234-123412341234');
+        var g = new Guid('12341234-dead-beef-1234-123412341234');
         var items = GuidCommands.getQuickPickItems(g, false, false, false);
 
         assert.equal(items.length, 3);

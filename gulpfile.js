@@ -20,35 +20,37 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-var gulp = require('gulp');
-var clean = require('gulp-clean');
-var merge = require('gulp-merge');
-var sourcemaps = require('gulp-sourcemaps');
-var svg2png = require('gulp-svg2png');
-var ts = require('gulp-typescript');
+'use strict';
 
-gulp.task('compile', function() {
-    var project = ts.createProject('tsconfig.json');
+const gulp = require('gulp');
+const clean = require('gulp-clean');
+const merge = require('gulp-merge');
+const sourcemaps = require('gulp-sourcemaps');
+const svg2png = require('gulp-svg2png');
+const ts = require('gulp-typescript');
+
+gulp.task('compile', (done) => {
+    const project = ts.createProject('tsconfig.json');
     return merge(
         gulp.src('res/**/*.svg')
             .pipe(svg2png())
             .pipe(gulp.dest('out/res/')),
         project.src()
             .pipe(sourcemaps.init())
-            .pipe(ts(project))
-            .js
-            .pipe(sourcemaps.write('./', { sourceRoot: '../' }))
-            .pipe(gulp.dest('out'))
+            .pipe(project()).js
+            .pipe(sourcemaps.write('./'))
+            .pipe(gulp.dest('out')),
+        done()
     );
 });
 
-gulp.task('watch', ['compile'], function() {
-    gulp.watch(['src/**/*.ts', 'test/**/*.ts'], ['compile']);
+gulp.task('watch', gulp.series('compile'), function() {
+    gulp.watch(['src/**/*.ts'], ['compile']);
 });
 
-gulp.task('clean', function() {
+gulp.task('clean', () => {
     return gulp.src(['out', '**/*.vsix'])
         .pipe(clean({read: false}));
 });
 
-gulp.task('default', ['compile']);
+gulp.task('default', gulp.series('clean', 'compile'));

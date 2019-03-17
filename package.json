@@ -65,35 +65,37 @@
     "color": "#252526",
     "theme": "dark"
   },
-  "main": "./out/src/extension",
+  "main": "./out/extension",
   "scripts": {
     "vscode:prepublish": "gulp compile",
     "compile": "gulp compile",
     "watch": "gulp watch",
     "postinstall": "node ./node_modules/vscode/bin/install",
-    "test": "npm run compile && node ./node_modules/vscode/bin/test"
+    "test": "gulp compile && node ./node_modules/vscode/bin/test"
   },
   "engines": {
     "vscode": "^1.26.0"
   },
   "dependencies": {
     "lodash": "^4.17.11",
-    "node-uuid": "^1.4.7",
+    "uuid": "^3.3.2",
     "node.extend": "^1.1.7"
   },
   "devDependencies": {
-    "graceful-fs": "^4.1.11",
-    "gulp": "^3.9.0",
-    "gulp-clean": "^0.3.1",
+    "@types/mocha": "^5.2.6",
+    "@types/node": "^11.11.3",
+    "@types/uuid": "^3.4.3",
+    "graceful-fs": "^4.1.15",
+    "gulp": "^4.0.0",
+    "gulp-clean": "^0.4.0",
     "gulp-merge": "^0.1.1",
-    "gulp-sourcemaps": "^2.6.0",
+    "gulp-sourcemaps": "^2.6.5",
     "gulp-svg2png": "^2.0.2",
-    "gulp-typescript": "^2.10.0",
-    "minimatch": "^3.0.2",
-    "tsd": "^0.6.5",
-    "tslint": "^5.8.0",
-    "typescript": "^2.6.1",
-    "vscode": "^1.1.21"
+    "gulp-typescript": "^5.0.1",
+    "minimatch": "^3.0.4",
+    "tslint": "^5.14.0",
+    "typescript": "^3.3.1",
+    "vscode": "^1.1.30"
   },
   "repository": {
     "type": "git",
