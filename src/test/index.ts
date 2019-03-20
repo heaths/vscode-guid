@@ -27,7 +27,7 @@ var opts = {
     useColors: true
 };
 
-if (process.env.SYSTEM_TEAMPROJECTID) {
+if (process.env.TEST_RESULTS_PATH) {
     Object.defineProperties(opts, {
         reporter: {
             value: 'mocha-junit-reporter',
@@ -35,7 +35,7 @@ if (process.env.SYSTEM_TEAMPROJECTID) {
         },
         reporterOptions: {
             value: {
-                mochaFile: './test-results.xml'
+                mochaFile: process.env.TEST_RESULTS_PATH
             },
             writable: true
         }

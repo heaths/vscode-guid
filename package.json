@@ -95,7 +95,6 @@
     "graceful-fs": "^4.1.15",
     "gulp": "^4.0.0",
     "gulp-clean": "^0.4.0",
-    "gulp-merge": "^0.1.1",
     "gulp-sourcemaps": "^2.6.5",
     "gulp-svg2png": "^2.0.2",
     "gulp-typescript": "^5.0.1",

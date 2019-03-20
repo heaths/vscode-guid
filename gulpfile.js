@@ -24,28 +24,29 @@
 
 const gulp = require('gulp');
 const clean = require('gulp-clean');
-const merge = require('gulp-merge');
 const sourcemaps = require('gulp-sourcemaps');
 const svg2png = require('gulp-svg2png');
 const ts = require('gulp-typescript');
 
-gulp.task('compile', (done) => {
-    const project = ts.createProject('tsconfig.json');
-    return merge(
-        gulp.src('res/**/*.svg')
-            .pipe(svg2png())
-            .pipe(gulp.dest('out/res/')),
-        project.src()
-            .pipe(sourcemaps.init())
-            .pipe(project()).js
-            .pipe(sourcemaps.write('./'))
-            .pipe(gulp.dest('out')),
-        done()
-    );
+gulp.task('compile:res', () => {
+    return gulp.src('res/**/*.svg')
+        .pipe(svg2png())
+        .pipe(gulp.dest('out/res/'));
 });
 
-gulp.task('watch', gulp.series('compile'), function() {
-    gulp.watch(['src/**/*.ts'], ['compile']);
+gulp.task('compile:src', () => {
+    const project = ts.createProject('tsconfig.json');
+    return project.src()
+        .pipe(sourcemaps.init())
+        .pipe(project()).js
+        .pipe(sourcemaps.write('./'))
+        .pipe(gulp.dest('out'));
+});
+
+gulp.task('compile', gulp.parallel('compile:res', 'compile:src'));
+
+gulp.task('watch', gulp.series('compile:src'), () => {
+    gulp.watch('src/**/*.ts', ['compile:src']);
 });
 
 gulp.task('clean', () => {

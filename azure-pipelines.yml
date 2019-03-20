@@ -79,12 +79,12 @@ jobs:
     displayName: Test (stable)
     env:
       DISPLAY: :10
+      TEST_RESULTS_PATH: $(System.DefaultWorkingDirectory)/.vscode-test/stable/test-results.xml
 
   - task: PublishTestResults@2
     displayName: Publish test results (stable)
     inputs:
-      searchFolder: $(System.DefaultWorkingDirectory)/.vscode-test/stable
-      testResultsFiles: '**/test-*.xml'
+      testResultsFiles: $(System.DefaultWorkingDirectory)/.vscode-test/stable/test-results.xml
       testRunTitle: $(platform)-stable
       buildPlatform: $(platform)
     condition: succeededOrFailed()
@@ -95,12 +95,12 @@ jobs:
     env:
       CODE_VERSION: insiders
       DISPLAY: :10
+      TEST_RESULTS_PATH: $(System.DefaultWorkingDirectory)/.vscode-test/insiders/test-results.xml
 
   - task: PublishTestResults@2
     displayName: Publish test results (insiders)
     inputs:
-      searchFolder: $(System.DefaultWorkingDirectory)/.vscode-test/insiders
-      testResultsFiles: '**/test-*.xml'
+      testResultsFiles: $(System.DefaultWorkingDirectory)/.vscode-test/stable/test-results.xml
       testRunTitle: $(platform)-insiders
       buildPlatform: $(platform)
     condition: succeededOrFailed()
