@@ -38,13 +38,13 @@ jobs:
   strategy:
     matrix:
       linux:
-        package: true
         platform: linux
         vmImage: ubuntu-16.04
       mac:
         platform: mac
         vmImage: macos-10.13
       windows:
+        package: true
         platform: windows
         vmImage: vs2017-win2016
 
@@ -83,7 +83,8 @@ jobs:
   - task: PublishTestResults@2
     displayName: Publish test results (stable)
     inputs:
-      testResultsFiles: .vscode-test/stable/test-results.xml
+      searchFolder: $(System.DefaultWorkingDirectory)/.vscode-test/stable
+      testResultsFiles: '**/test-*.xml'
       testRunTitle: $(platform)-stable
       buildPlatform: $(platform)
     condition: succeededOrFailed()
@@ -98,7 +99,8 @@ jobs:
   - task: PublishTestResults@2
     displayName: Publish test results (insiders)
     inputs:
-      testResultsFiles: .vscode-test/insiders/test-results.xml
+      searchFolder: $(System.DefaultWorkingDirectory)/.vscode-test/insiders
+      testResultsFiles: '**/test-*.xml'
       testRunTitle: $(platform)-insiders
       buildPlatform: $(platform)
     condition: succeededOrFailed()
