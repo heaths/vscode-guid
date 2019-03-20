@@ -66,6 +66,13 @@
     "theme": "dark"
   },
   "main": "./out/extension",
+  "badges": [
+    {
+      "description": "Build status: master",
+      "href": "https://dev.azure.com/heaths/public/_build/latest?definitionId=16&branchName=master",
+      "url": "https://dev.azure.com/heaths/public/_apis/build/status/vscode-guid-CI?branchName=master"
+    }
+  ],
   "scripts": {
     "vscode:prepublish": "gulp compile",
     "compile": "gulp compile",

@@ -1,5 +1,7 @@
 # Insert GUID
 
+[![Build status: master](https://dev.azure.com/heaths/public/_apis/build/status/vscode-guid-CI?branchName=master)](https://dev.azure.com/heaths/public/_build/latest?definitionId=16&branchName=master)
+
 A simple command extension for [Visual Studio Code](https://code.visualstudio.com) to insert globally unique identifiers (GUIDs) into the Code text editor in a variety of formats.
 
 ![Insert GUID](https://media.giphy.com/media/3danYPtfh3iQBjd6ef/giphy.gif)

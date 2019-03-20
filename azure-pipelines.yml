@@ -78,7 +78,6 @@ jobs:
       node ./node_modules/vscode/bin/test
     displayName: Test (stable)
     env:
-      CODE_VERSION: stable
       DISPLAY: :10
 
   - task: PublishTestResults@2
