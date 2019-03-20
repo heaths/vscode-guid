@@ -1,0 +1,146 @@
+# The MIT License (MIT)
+#
+# Copyright (c) Heath Stewart
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+trigger:
+  batch: true
+  branches:
+    include:
+    - master
+    - develop
+
+pr:
+  branches:
+    include:
+    - master
+    - develop
+
+jobs:
+- job: Build
+  strategy:
+    matrix:
+      linux:
+        package: true
+        platform: linux
+        vmImage: ubuntu-16.04
+      mac:
+        platform: mac
+        vmImage: macos-10.13
+      windows:
+        platform: windows
+        vmImage: vs2017-win2016
+
+  pool:
+    vmImage: $(vmImage)
+
+  steps:
+  - task: NodeTool@0
+    displayName: Use Node 8.x
+    inputs:
+      versionSpec: 8.x
+
+  - task: Npm@1
+    displayName: Install dependencies
+    inputs:
+      verbose: false
+
+  - task: Gulp@0
+    displayName: Compile
+    inputs:
+      targets: compile
+
+  - script: |
+      set -e
+      /usr/bin/Xvfb :10 -ac >> /tmp/Xvfb.out 2>&1 &
+      disown -ar
+    displayName: Start Xvfb
+    condition: and(succeeded(), eq(variables['Agent.OS'], 'Linux'))
+
+  - script: |
+      node ./node_modules/vscode/bin/test
+    displayName: Test (stable)
+    env:
+      CODE_VERSION: stable
+      DISPLAY: :10
+
+  - task: PublishTestResults@2
+    displayName: Publish test results (stable)
+    inputs:
+      testResultsFiles: .vscode-test/stable/test-results.xml
+      testRunTitle: $(platform)-stable
+      buildPlatform: $(platform)
+    condition: succeededOrFailed()
+
+  - script: |
+      node ./node_modules/vscode/bin/test
+    displayName: Test (insiders)
+    env:
+      CODE_VERSION: insiders
+      DISPLAY: :10
+
+  - task: PublishTestResults@2
+    displayName: Publish test results (insiders)
+    inputs:
+      testResultsFiles: .vscode-test/insiders/test-results.xml
+      testRunTitle: $(platform)-insiders
+      buildPlatform: $(platform)
+    condition: succeededOrFailed()
+
+  - script: |
+      npm install -g vsce
+      vsce package -o "$(Build.ArtifactStagingDirectory)"
+    displayName: Package
+    condition: and(succeeded(), eq(variables['package'], 'true'))
+
+  - task: PublishPipelineArtifact@0
+    displayName: Publish drop
+    inputs:
+      artifactName: drop
+      targetPath: $(Build.ArtifactStagingDirectory)
+    condition: and(succeeded(), eq(variables['package'], 'true'))
+
+- job: Deploy
+  dependsOn: Build
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  pool:
+    vmImage: ubuntu-16.04
+
+  steps:
+  - task: NodeTool@0
+    displayName: Use Node 8.x
+    inputs:
+      versionSpec: 8.x
+
+  - task: DownloadPipelineArtifact@1
+    displayName: Download drop
+    inputs:
+      artifactName: drop
+      downloadPath: $(System.ArtifactsDirectory)
+
+  - script: |
+      npm install -g vsce
+      for fname in $(System.ArtifactsDirectory)/drop/*.vsix; do
+        if [ -f "$fname" ]; then
+          vsce publish -p $(Marketplace.AccessToken) --packagePath "$fname"
+          break
+        fi
+      done
+    displayName: Publish extension

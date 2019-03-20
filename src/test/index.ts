@@ -22,9 +22,26 @@
 
 var testRunner = require('vscode/lib/testrunner');
 
-testRunner.configure({
+var opts = {
     ui: 'tdd',
     useColors: true
-});
+};
+
+if (process.env.SYSTEM_TEAMPROJECTID) {
+    Object.defineProperties(opts, {
+        reporter: {
+            value: 'mocha-junit-reporter',
+            writable: true
+        },
+        reporterOptions: {
+            value: {
+                mochaFile: './test-results.xml'
+            },
+            writable: true
+        }
+    });
+}
+
+testRunner.configure(opts);
 
 module.exports = testRunner;
