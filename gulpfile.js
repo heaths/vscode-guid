@@ -24,6 +24,7 @@
 
 const gulp = require('gulp');
 const clean = require('gulp-clean');
+const nbgv = require('nerdbank-gitversioning');
 const sourcemaps = require('gulp-sourcemaps');
 const svg2png = require('gulp-svg2png');
 const ts = require('gulp-typescript');
@@ -48,6 +49,16 @@ gulp.task('compile', gulp.parallel('compile:res', 'compile:src'));
 gulp.task('watch', gulp.series('compile:src'), () => {
     gulp.watch('src/**/*.ts', ['compile:src']);
 });
+
+gulp.task('set-version', () => {
+    nbgv.getVersion().then((version) => {
+        if (process.env.SYSTEM_TEAMPROJECTID) {
+            console.log(`##vso[build.updatebuildnumber]${version.npmPackageVersion}`);
+        }
+    });
+
+    return nbgv.setPackageVersion();
+})
 
 gulp.task('clean', () => {
     return gulp.src(['out', '**/*.vsix'])

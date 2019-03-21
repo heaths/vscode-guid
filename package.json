@@ -1,6 +1,6 @@
 {
   "name": "vscode-guid",
-  "version": "1.4.2",
+  "version": "0.0.0-placeholder",
   "publisher": "heaths",
   "displayName": "Insert GUID",
   "description": "Insert GUIDs in different formats directly into the editor.",
@@ -100,6 +100,7 @@
     "gulp-typescript": "^5.0.1",
     "minimatch": "^3.0.4",
     "mocha-junit-reporter": "^1.18.0",
+    "nerdbank-gitversioning": "^2.3.138",
     "tslint": "^5.14.0",
     "typescript": "^3.3.1",
     "vscode": "^1.1.30"

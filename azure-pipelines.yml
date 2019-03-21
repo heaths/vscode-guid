@@ -65,7 +65,8 @@ jobs:
   - task: Gulp@0
     displayName: Compile
     inputs:
-      targets: compile
+      targets: set-version compile
+      arguments: --series
 
   - script: |
       set -e
