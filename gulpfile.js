@@ -58,7 +58,7 @@ gulp.task('set-version', () => {
     });
 
     return nbgv.setPackageVersion();
-})
+});
 
 gulp.task('clean', () => {
     return gulp.src(['out', '**/*.vsix'])
