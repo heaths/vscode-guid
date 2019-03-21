@@ -44,7 +44,6 @@ jobs:
         platform: mac
         vmImage: macos-10.13
       windows:
-        package: true
         platform: windows
         vmImage: vs2017-win2016
 
@@ -52,6 +51,9 @@ jobs:
     vmImage: $(vmImage)
 
   steps:
+  - checkout: self
+    lfs: true
+
   - task: NodeTool@0
     displayName: Use Node 8.x
     inputs:
@@ -108,16 +110,27 @@ jobs:
 
   - script: |
       npm install -g vsce
-      vsce package -o "$(Build.ArtifactStagingDirectory)"
+    displayName: Install vsce
+    condition: and(succeeded(), eq(variables['platform'], 'windows'))
+
+  - script: |
+      vsce package -o "$(Build.ArtifactStagingDirectory)/vscode-guid-$(Build.BuildNumber).vsix"
     displayName: Package
-    condition: and(succeeded(), eq(variables['package'], 'true'))
+    condition: and(succeeded(), eq(variables['platform'], 'windows'))
 
   - task: PublishPipelineArtifact@0
     displayName: Publish drop
     inputs:
       artifactName: drop
       targetPath: $(Build.ArtifactStagingDirectory)
-    condition: and(succeeded(), eq(variables['package'], 'true'))
+    condition: and(succeeded(), eq(variables['platform'], 'windows'))
+
+  - script: |
+      echo Persisting BuildNumber = %BUILD_BUILDNUMBER%
+      echo ##vso[task.setvariable variable=BuildNumber;isOutput=true]%BUILD_BUILDNUMBER%
+    displayName: Persist variables
+    name: vars
+    condition: and(succeeded(), eq(variables['platform'], 'windows'))
 
 - job: Deploy
   dependsOn: Build
@@ -126,6 +139,15 @@ jobs:
     vmImage: ubuntu-16.04
 
   steps:
+  - checkout: none
+
+  - script: |
+      echo Setting Build.BuildNumber = $VARS_BUILDNUMBER
+      echo ##vso[build.updatebuildnumber]$VARS_BUILDNUMBER
+    displayName: Set variables
+    env:
+      VARS_BUILDNUMBER: $[dependencies.Build.outputs['windows.vars.BuildNumber']]
+
   - task: NodeTool@0
     displayName: Use Node 8.x
     inputs:
@@ -150,7 +172,10 @@ jobs:
 
   - script: |
       npm install -g vsce
-      for fname in $(System.ArtifactsDirectory)/drop/*.vsix; do
+    displayName: Install vsce
+
+  - script: |
+      for fname in $(System.ArtifactsDirectory)/**/*.vsix; do
         if [ -f "$fname" ]; then
           vsce publish -p $(Marketplace.AccessToken) --packagePath "$fname"
           break
