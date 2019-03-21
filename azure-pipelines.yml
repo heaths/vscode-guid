@@ -137,6 +137,17 @@ jobs:
       artifactName: drop
       downloadPath: $(System.ArtifactsDirectory)
 
+  - task: GitHubRelease@0
+    displayName: Create release
+    inputs:
+      gitHubConnection: GitHub
+      repositoryName: heaths/vscode-guid
+      tagSource: manual
+      tag: v$(Build.BuildNumber)
+      assets: |
+        $(Build.ArtifactStagingDirectory)/**/*.vsix
+      isPreRelease: $[ne(variables['Build.SourceBranch'], 'refs/heads/master')]
+
   - script: |
       npm install -g vsce
       for fname in $(System.ArtifactsDirectory)/drop/*.vsix; do
