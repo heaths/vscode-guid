@@ -147,6 +147,7 @@ jobs:
 
   variables:
     BuildNumber: $[dependencies.Build.outputs['windows.vars.BuildNumber']]
+    Prerelease: $[ne(variables['Build.SourceBranch'], 'refs/heads/master')]
 
   steps:
   - checkout: none
@@ -179,7 +180,7 @@ jobs:
       tag: v$(BuildNumber)
       assets: |
         $(Build.ArtifactStagingDirectory)/**/*.vsix
-      isPreRelease: $[ne(variables['Build.SourceBranch'], 'refs/heads/master')]
+      isPreRelease: $(Prerelease)
     condition: and(succeeded(), eq(variables['Publish'], 'true'))
 
   # Only publish to Marketplace from master.
