@@ -169,7 +169,7 @@ jobs:
       gitHubConnection: GitHub
       repositoryName: heaths/vscode-guid
       tagSource: manual
-      tag: v$(Build.BuildNumber)
+      tag: v$(BuildNumber)
       assets: |
         $(Build.ArtifactStagingDirectory)/**/*.vsix
       isPreRelease: $[ne(variables['Build.SourceBranch'], 'refs/heads/master')]
@@ -184,10 +184,10 @@ jobs:
       for fname in $(System.ArtifactsDirectory)/**/*.vsix; do
         if [ -f "$fname" ]; then
           if [[ "$PUBLISH" == "true" ]]; then
-            echo Publishing: $(System.ArtifactsDirectory)/$fname
-            vsce publish -p $(Marketplace.AccessToken) --packagePath $(System.ArtifactsDirectory)/$fname
+            echo Publishing: $fname
+            vsce publish -p $(Marketplace.AccessToken) --packagePath $fname
           else
-            echo Publishing skipped: $(System.ArtifactsDirectory)/$fname
+            echo Publishing skipped: $fname
           fi
         fi
       done
