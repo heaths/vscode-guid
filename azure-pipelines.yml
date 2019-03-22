@@ -126,7 +126,7 @@ jobs:
     condition: and(succeeded(), eq(variables['platform'], 'windows'))
 
   - script: |
-      echo Persisting BuildNumber = %BUILD_BUILDNUMBER%
+      echo Persisting BuildNumber: %BUILD_BUILDNUMBER%
       echo ##vso[task.setvariable variable=BuildNumber;isOutput=true]%BUILD_BUILDNUMBER%
     displayName: Persist variables
     name: vars
@@ -135,18 +135,22 @@ jobs:
 - job: Deploy
   dependsOn: Build
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+
   pool:
     vmImage: ubuntu-16.04
+
+  variables:
+    BuildNumber: $[dependencies.Build.outputs['windows.vars.BuildNumber']]
 
   steps:
   - checkout: none
 
   - script: |
-      echo Setting Build.BuildNumber = $VARS_BUILDNUMBER
-      echo ##vso[build.updatebuildnumber]$VARS_BUILDNUMBER
+      echo Setting BuildNumber: $BUILDNUMBER
+      echo ##vso[build.updatebuildnumber]$BUILDNUMBER
     displayName: Set variables
     env:
-      VARS_BUILDNUMBER: $[dependencies.Build.outputs['windows.vars.BuildNumber']]
+      BUILDNUMBER: $(BuildNumber)
 
   - task: NodeTool@0
     displayName: Use Node 8.x
@@ -169,16 +173,24 @@ jobs:
       assets: |
         $(Build.ArtifactStagingDirectory)/**/*.vsix
       isPreRelease: $[ne(variables['Build.SourceBranch'], 'refs/heads/master')]
+    condition: and(succeeded(), eq(variables['Publish'], 'true'))
 
   - script: |
       npm install -g vsce
     displayName: Install vsce
 
   - script: |
+      shopt -s globstar nocaseglob nocasematch nullglob
       for fname in $(System.ArtifactsDirectory)/**/*.vsix; do
         if [ -f "$fname" ]; then
-          vsce publish -p $(Marketplace.AccessToken) --packagePath "$fname"
-          break
+          if [[ "$PUBLISH" == "true" ]]; then
+            echo Publishing: $(System.ArtifactsDirectory)/$fname
+            vsce publish -p $(Marketplace.AccessToken) --packagePath $(System.ArtifactsDirectory)/$fname
+          else
+            echo Publishing skipped: $(System.ArtifactsDirectory)/$fname
+          fi
         fi
       done
     displayName: Publish extension
+    env:
+      PUBLISH: $(Publish)

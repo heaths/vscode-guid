@@ -84,9 +84,7 @@
     "vscode": "^1.26.0"
   },
   "dependencies": {
-    "lodash": "^4.17.11",
-    "uuid": "^3.3.2",
-    "node.extend": "^1.1.7"
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "@types/mocha": "^5.2.6",
