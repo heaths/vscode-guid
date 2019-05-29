@@ -125,6 +125,7 @@ jobs:
       targetPath: $(Build.ArtifactStagingDirectory)
     condition: and(succeeded(), eq(variables['platform'], 'windows'))
 
+  # Need to persist Build.BuildNumber since subsequent jobs are unaffected (agent-scoped).
   - script: |
       echo Persisting BuildNumber: %BUILD_BUILDNUMBER%
       echo ##vso[task.setvariable variable=BuildNumber;isOutput=true]%BUILD_BUILDNUMBER%
@@ -134,13 +135,19 @@ jobs:
 
 - job: Deploy
   dependsOn: Build
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  condition: >-
+    and(
+      succeeded(),
+      in(variables['Build.SourceBranch'], 'refs/heads/master', 'refs/heads/develop'),
+      in(variables['Build.Reason'], 'Manual', 'IndividualCI', 'BatchedCI')
+    )
 
   pool:
     vmImage: ubuntu-16.04
 
   variables:
     BuildNumber: $[dependencies.Build.outputs['windows.vars.BuildNumber']]
+    Prerelease: $[ne(variables['Build.SourceBranch'], 'refs/heads/master')]
 
   steps:
   - checkout: none
@@ -163,6 +170,7 @@ jobs:
       artifactName: drop
       downloadPath: $(System.ArtifactsDirectory)
 
+  # Publish builds from master and develop to GitHub.
   - task: GitHubRelease@0
     displayName: Create release
     inputs:
@@ -172,12 +180,14 @@ jobs:
       tag: v$(BuildNumber)
       assets: |
         $(Build.ArtifactStagingDirectory)/**/*.vsix
-      isPreRelease: $[ne(variables['Build.SourceBranch'], 'refs/heads/master')]
+      isPreRelease: $(Prerelease)
     condition: and(succeeded(), eq(variables['Publish'], 'true'))
 
+  # Only publish to Marketplace from master.
   - script: |
       npm install -g vsce
     displayName: Install vsce
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
 
   - script: |
       shopt -s globstar nocaseglob nocasematch nullglob
@@ -194,3 +204,4 @@ jobs:
     displayName: Publish extension
     env:
       PUBLISH: $(Publish)
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
