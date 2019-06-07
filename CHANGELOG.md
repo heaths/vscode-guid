@@ -1,3 +1,10 @@
+For a complete list of changes, see the [commit history](https://github.com/heaths/vscode-guid/commits/master).
+
+## 1.4.15 (2019-06-07)
+
+* Fixed [#21](https://github.com/heaths/vscode-guid/issues/21) to use setting correctly.
+* Fixed vulnerabilities detected by [@dependabot](https://github.com/apps/dependabot).
+
 ## 1.4.2 (2019-03-06)
 
 * Updated animated screenshot GIF with modern UI and new extension features:
