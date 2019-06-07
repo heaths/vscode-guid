@@ -176,9 +176,9 @@ export class GuidCommands {
     static insertCommandImpl(textEditor : vscode.TextEditor, edit : vscode.TextEditorEdit, unique: boolean) {
         const g = new Guid();
         const settings = vscode.workspace.getConfiguration('insertGuid');
-        const showLowercase = settings.get<boolean>('showLowercase') || true;
-        const showUppercase = settings.get<boolean>('showUppercase') || false;
-        const showCodeSnippets = settings.get<boolean>('showCodeSnippets') || true;
+        const showLowercase = settings.get<boolean>('showLowercase', true);
+        const showUppercase = settings.get<boolean>('showUppercase', false);
+        const showCodeSnippets = settings.get<boolean>('showCodeSnippets', true);
         const items = GuidCommands.getQuickPickItems(g, showLowercase, showUppercase, showCodeSnippets);
 
         // Prompt the user for a format.
