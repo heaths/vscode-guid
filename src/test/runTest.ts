@@ -20,28 +20,35 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-var testRunner = require('vscode/lib/testrunner');
+import * as path from 'path';
 
-var opts = {
-    ui: 'tdd',
-    useColors: true
-};
+import { runTests } from 'vscode-test';
 
-if (process.env.TEST_RESULTS_PATH) {
-    Object.defineProperties(opts, {
-        reporter: {
-            value: 'mocha-junit-reporter',
-            writable: true
-        },
-        reporterOptions: {
-            value: {
-                mochaFile: process.env.TEST_RESULTS_PATH
-            },
-            writable: true
-        }
-    });
+async function main() {
+  try {
+    // The folder containing the Extension Manifest package.json
+    // Passed to `--extensionDevelopmentPath`
+    const extensionDevelopmentPath = path.resolve(__dirname, '../../');
+
+    // The path to the extension test runner script
+    // Passed to --extensionTestsPath
+    const extensionTestsPath = path.resolve(__dirname, './suite/index');
+
+    var options = {
+      extensionDevelopmentPath: extensionDevelopmentPath,
+      extensionTestsPath: extensionTestsPath,
+      launchArgs: [
+        '--disable-extensions'
+      ],
+      version: process.env.CODE_VERSION || 'stable'
+    };
+
+    // Download VS Code, unzip it and run the integration test
+    await runTests(options);
+  } catch (err) {
+    console.error('Failed to run tests');
+    process.exit(1);
+  }
 }
 
-testRunner.configure(opts);
-
-module.exports = testRunner;
+main();

@@ -78,7 +78,7 @@ jobs:
     condition: and(succeeded(), eq(variables['Agent.OS'], 'Linux'))
 
   - script: |
-      node ./node_modules/vscode/bin/test
+      node ./out/test/runTest.js
     displayName: Test (stable)
     env:
       DISPLAY: :10
@@ -93,7 +93,7 @@ jobs:
     condition: succeededOrFailed()
 
   - script: |
-      node ./node_modules/vscode/bin/test
+      node ./out/test/runTest.js
     displayName: Test (insiders)
     env:
       CODE_VERSION: insiders
@@ -103,7 +103,7 @@ jobs:
   - task: PublishTestResults@2
     displayName: Publish test results (insiders)
     inputs:
-      testResultsFiles: $(System.DefaultWorkingDirectory)/.vscode-test/stable/test-results.xml
+      testResultsFiles: $(System.DefaultWorkingDirectory)/.vscode-test/insiders/test-results.xml
       testRunTitle: $(platform)-insiders
       buildPlatform: $(platform)
     condition: succeededOrFailed()
