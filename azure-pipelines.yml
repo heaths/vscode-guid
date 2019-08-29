@@ -25,13 +25,11 @@ trigger:
   branches:
     include:
     - master
-    - develop
 
 pr:
   branches:
     include:
     - master
-    - develop
 
 jobs:
 - job: Build
@@ -78,7 +76,7 @@ jobs:
     condition: and(succeeded(), eq(variables['Agent.OS'], 'Linux'))
 
   - script: |
-      node ./node_modules/vscode/bin/test
+      node ./out/test/runTest.js
     displayName: Test (stable)
     env:
       DISPLAY: :10
@@ -93,7 +91,7 @@ jobs:
     condition: succeededOrFailed()
 
   - script: |
-      node ./node_modules/vscode/bin/test
+      node ./out/test/runTest.js
     displayName: Test (insiders)
     env:
       CODE_VERSION: insiders
@@ -103,7 +101,7 @@ jobs:
   - task: PublishTestResults@2
     displayName: Publish test results (insiders)
     inputs:
-      testResultsFiles: $(System.DefaultWorkingDirectory)/.vscode-test/stable/test-results.xml
+      testResultsFiles: $(System.DefaultWorkingDirectory)/.vscode-test/insiders/test-results.xml
       testRunTitle: $(platform)-insiders
       buildPlatform: $(platform)
     condition: succeededOrFailed()
@@ -138,7 +136,7 @@ jobs:
   condition: >-
     and(
       succeeded(),
-      in(variables['Build.SourceBranch'], 'refs/heads/master', 'refs/heads/develop'),
+      eq(variables['Build.SourceBranch'], 'refs/heads/master'),
       in(variables['Build.Reason'], 'Manual', 'IndividualCI', 'BatchedCI')
     )
 
@@ -170,7 +168,6 @@ jobs:
       artifactName: drop
       downloadPath: $(System.ArtifactsDirectory)
 
-  # Publish builds from master and develop to GitHub.
   - task: GitHubRelease@0
     displayName: Create release
     inputs:
