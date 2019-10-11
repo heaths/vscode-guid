@@ -1,5 +1,9 @@
 For a complete list of changes, see the [commit history](https://github.com/heaths/vscode-guid/commits/master).
 
+## 1.4.19 (2019-10-11)
+
+* Fixed [CVE-2019-10747](https://nvd.nist.gov/vuln/detail/CVE-2019-10747).
+
 ## 1.4.15 (2019-06-07)
 
 * Fixed [#21](https://github.com/heaths/vscode-guid/issues/21) to use setting correctly.
