@@ -59,11 +59,17 @@ jobs:
     - name: Publish test results
       uses: actions/upload-artifact@v1
       with:
-        name: test-results
+        name: test-results-${{ matrix.os }}-${{ matrix.vscode-channel }}
         path: .vscode-test/test-results.xml
 
     - name: Package
       run: |
         npm install -g vsce
         vsce package -o "${{ runner.temp }}/vscode-guid-${{ env.BUILD_VERSION }}.vsix"
-      if: runner.os == 'Linux'
+      if: runner.os == 'Linux' && matrix.vscode-channel == 'stable'
+
+    - name: Publish package
+      uses: actions/upload-artifact@v1
+      with:
+        name: artifacts
+        path: ${{ runner.temp }}/vscode-guid-${{ env.BUILD_VERSION }}.vsix
