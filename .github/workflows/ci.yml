@@ -1,0 +1,59 @@
+on:
+  pull_request:
+    branches:
+    - master
+
+  push:
+    branches:
+    - master
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version:
+        - '8.x'
+        os:
+        - macos-latest
+        - ubuntu-latest
+        - windows-latest
+        vscode-channel:
+        - stable
+        - insiders
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Node ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Compile
+      run: node ./node_modules/gulp/bin/gulp set-version compile
+
+    - name: Start Xvfb
+      run: |
+        set -e
+        /usr/bin/Xvfb :10 -ac >> /tmp/Xvfb.out 2>&1 &
+        disown -ar
+      if: runner.os == 'Linux'
+
+    - name: Test
+      run: node ./out/test/runTest
+      env:
+        CODE_VERSION: ${{ matrix.vscode-channel }}
+        DISPLAY: ':10'
+        TEST_RESULTS_PATH: .vscode-test/test-results.xml
+
+    - name: Package
+      run: |
+        npm install -g vsce
+        vsce package -o "${{ runner.temp }}/vscode-guid-${{ env.BUILD_VERSION }}.vsix"
+      if: runner.os == 'Linux'
