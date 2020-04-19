@@ -55,6 +55,10 @@ gulp.task('set-version', () => {
         if (process.env.SYSTEM_TEAMPROJECTID) {
             console.log(`##vso[build.updatebuildnumber]${version.npmPackageVersion}`);
         }
+        // TODO: Migrate to aarnott/nbgv or even manual versions when only on GitHub Actions.
+        else if (process.env.GITHUB_ACTIONS) {
+            console.log(`::set-env name=BUILD_VERSION::${version.npmPackageVersion}`);
+        }
     });
 
     return nbgv.setPackageVersion();

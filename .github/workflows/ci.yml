@@ -1,0 +1,76 @@
+on:
+  pull_request:
+    branches:
+    - master
+    - develop
+
+  push:
+    branches:
+    - master
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version:
+        - '8.x'
+        os:
+        - macos-latest
+        - ubuntu-16.04
+        - windows-latest
+        vscode-channel:
+        - stable
+        - insiders
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        # Work around https://github.com/dotnet/Nerdbank.GitVersioning/issues/423
+        fetch-depth: 0
+
+    - name: Setup Node ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Compile
+      run: node ./node_modules/gulp/bin/gulp set-version compile
+
+    - name: Start Xvfb
+      run: |
+        set -e
+        /usr/bin/Xvfb :10 -ac >> /tmp/Xvfb.out 2>&1 &
+        disown -ar
+      if: runner.os == 'Linux'
+
+    - name: Test
+      run: node ./out/test/runTest
+      env:
+        CODE_VERSION: ${{ matrix.vscode-channel }}
+        DISPLAY: ':10'
+        TEST_RESULTS_PATH: ${{ github.workspace }}/.vscode-test/test-results.xml
+
+    - name: Publish test results
+      uses: actions/upload-artifact@v1
+      with:
+        name: test-results-${{ matrix.os }}-${{ matrix.vscode-channel }}
+        path: .vscode-test/test-results.xml
+
+    - name: Package
+      run: |
+        npm install -g vsce
+        vsce package -o "${{ runner.temp }}/vscode-guid-${{ env.BUILD_VERSION }}.vsix"
+      if: runner.os == 'Linux' && matrix.vscode-channel == 'stable'
+
+    - name: Publish package
+      uses: actions/upload-artifact@v1
+      if: runner.os == 'Linux' && matrix.vscode-channel == 'stable'
+      with:
+        name: artifacts
+        path: ${{ runner.temp }}/vscode-guid-${{ env.BUILD_VERSION }}.vsix
