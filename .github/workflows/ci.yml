@@ -54,7 +54,13 @@ jobs:
       env:
         CODE_VERSION: ${{ matrix.vscode-channel }}
         DISPLAY: ':10'
-        TEST_RESULTS_PATH: .vscode-test/test-results.xml
+        TEST_RESULTS_PATH: ${{ github.workspace }}/.vscode-test/test-results.xml
+
+    - name: Publish test results
+      uses: actions/upload-artifact@v1
+      with:
+        name: test-results
+        path: .vscode-test/test-results.xml
 
     - name: Package
       run: |

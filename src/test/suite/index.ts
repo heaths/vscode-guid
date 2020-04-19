@@ -32,9 +32,12 @@ export function run(): Promise<void> {
   }
 
   if (process.env.TEST_RESULTS_PATH) {
-    options.reporter = 'mocha-junit-reporter';
+    options.reporter = 'mocha-multi-reporters';
     options.reporterOptions = {
-      mochaFile: process.env.TEST_RESULTS_PATH
+      reporterEnabled: 'spec, mocha-junit-reporter',
+      mochaJunitReporterReporterOptions: {
+        mochaFile: process.env.TEST_RESULTS_PATH
+      }
     };
   }
 
