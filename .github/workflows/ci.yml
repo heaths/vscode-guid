@@ -27,6 +27,9 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+      with:
+        # Work around https://github.com/dotnet/Nerdbank.GitVersioning/issues/423
+        fetch-depth: 0
 
     - name: Setup Node ${{ matrix.node-version }}
       uses: actions/setup-node@v1
