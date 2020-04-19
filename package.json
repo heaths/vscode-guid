@@ -68,9 +68,9 @@
   "main": "./out/extension",
   "badges": [
     {
-      "description": "Build status: master",
-      "href": "https://dev.azure.com/heaths/public/_build/latest?definitionId=16&branchName=master",
-      "url": "https://dev.azure.com/heaths/public/_apis/build/status/vscode-guid-CI?branchName=master"
+      "description": "build status: master",
+      "href": "https://github.com/heaths/vscode-guid",
+      "url": "https://github.com/heaths/vscode-guid/.github/workflows/ci.yml/badge.svg"
     }
   ],
   "scripts": {
