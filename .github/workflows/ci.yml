@@ -18,7 +18,7 @@ jobs:
         - '8.x'
         os:
         - macos-latest
-        - ubuntu-latest
+        - ubuntu-16.04
         - windows-latest
         vscode-channel:
         - stable
