@@ -70,7 +70,7 @@
     {
       "description": "build status: master",
       "href": "https://github.com/heaths/vscode-guid",
-      "url": "https://github.com/heaths/vscode-guid/.github/workflows/ci.yml/badge.svg"
+      "url": "https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fheaths%2Fvscode-guid%2Fbadge"
     }
   ],
   "scripts": {
