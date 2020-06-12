@@ -24,7 +24,6 @@
 
 const gulp = require('gulp');
 const clean = require('gulp-clean');
-const nbgv = require('nerdbank-gitversioning');
 const sourcemaps = require('gulp-sourcemaps');
 const svg2png = require('gulp-svg2png');
 const ts = require('gulp-typescript');
@@ -50,18 +49,17 @@ gulp.task('watch', gulp.series('compile:src'), () => {
     gulp.watch('src/**/*.ts', ['compile:src']);
 });
 
-gulp.task('set-version', () => {
-    nbgv.getVersion().then((version) => {
-        if (process.env.SYSTEM_TEAMPROJECTID) {
-            console.log(`##vso[build.updatebuildnumber]${version.npmPackageVersion}`);
-        }
-        // TODO: Migrate to aarnott/nbgv or even manual versions when only on GitHub Actions.
-        else if (process.env.GITHUB_ACTIONS) {
-            console.log(`::set-env name=BUILD_VERSION::${version.npmPackageVersion}`);
-        }
-    });
+gulp.task('set-version', (done) => {
+    const p = require('./package.json');
 
-    return nbgv.setPackageVersion();
+    if (process.env.SYSTEM_TEAMPROJECTID) {
+        console.log(`##vso[build.updatebuildnumber]${p.version}`);
+    }
+    else if (process.env.GITHUB_ACTIONS) {
+        console.log(`::set-env name=BUILD_VERSION::${p.version}`);
+    }
+
+    done();
 });
 
 gulp.task('clean', () => {

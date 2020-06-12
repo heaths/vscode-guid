@@ -1,6 +1,6 @@
 {
   "name": "vscode-guid",
-  "version": "0.0.0-placeholder",
+  "version": "1.4.20",
   "publisher": "heaths",
   "displayName": "Insert GUID",
   "description": "Insert GUIDs in different formats directly into the editor.",
@@ -70,7 +70,7 @@
     {
       "description": "build status: master",
       "href": "https://github.com/heaths/vscode-guid",
-      "url": "https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fheaths%2Fvscode-guid%2Fbadge"
+      "url": "https://img.shields.io/github/workflow/status/heaths/vscode-guid/ci?logo=github&style=flat-square"
     }
   ],
   "scripts": {
@@ -103,7 +103,6 @@
     "mocha": "^4.1.0",
     "mocha-junit-reporter": "^1.23.3",
     "mocha-multi-reporters": "^1.1.7",
-    "nerdbank-gitversioning": "^2.3.186",
     "tslint": "^5.14.0",
     "typescript": "^3.3.1",
     "vscode-test": "^1.0.0"

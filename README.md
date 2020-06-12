@@ -1,6 +1,6 @@
 # Insert GUID
 
-[![Visual Studio Marketplace version](https://img.shields.io/visual-studio-marketplace/v/heaths.vscode-guid.svg)](https://marketplace.visualstudio.com/items?itemName=heaths.vscode-guid)
+[![Visual Studio Marketplace version](https://img.shields.io/visual-studio-marketplace/v/heaths.vscode-guid.svg?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=heaths.vscode-guid)
 
 A simple command extension for [Visual Studio Code](https://code.visualstudio.com) to insert globally unique identifiers (GUIDs) into the Code text editor in a variety of formats.
 

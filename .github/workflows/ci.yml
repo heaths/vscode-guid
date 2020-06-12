@@ -1,3 +1,5 @@
+name: ci
+
 on:
   pull_request:
     branches:
@@ -23,6 +25,10 @@ jobs:
         vscode-channel:
         - stable
         - insiders
+
+    outputs:
+      package_name: ${{ steps.package.outputs.package_name }}
+      build_version: ${{ steps.package.outputs.build_version }}
 
     steps:
     - name: Checkout
@@ -62,15 +68,55 @@ jobs:
         name: test-results-${{ matrix.os }}-${{ matrix.vscode-channel }}
         path: .vscode-test/test-results.xml
 
-    - name: Package
+    - id: package
+      name: Package
       run: |
         npm install -g vsce
         vsce package -o "${{ runner.temp }}/vscode-guid-${{ env.BUILD_VERSION }}.vsix"
+
+        echo "::set-output name=package_name::vscode-guid-${{ env.BUILD_VERSION }}.vsix"
+        echo "::set-output name=build_version::${{ env.BUILD_VERSION }}"
       if: runner.os == 'Linux' && matrix.vscode-channel == 'stable'
 
-    - name: Publish package
-      uses: actions/upload-artifact@v1
+    - name: Upload package
+      uses: actions/upload-artifact@v2
       if: runner.os == 'Linux' && matrix.vscode-channel == 'stable'
       with:
         name: artifacts
         path: ${{ runner.temp }}/vscode-guid-${{ env.BUILD_VERSION }}.vsix
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    steps:
+    - name: Download package
+      uses: actions/download-artifact@v2
+      with:
+        name: artifacts
+        path: ${{ runner.tmp }}/
+
+    - id: create
+      name: Create release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ needs.build.outputs.build_version }}
+        release_name: v${{ needs.build.outputs.build_version }}
+
+    - name: Upload package to release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create.outputs.upload_url }}
+        asset_name: ${{ needs.build.outputs.package_name }}
+        asset_path: ${{ runner.temp }}/${{ needs.build.outputs.package_name }}
+        asset_content_type: application/zip
+
+    - name: Publish package
+      run: |
+        npm install -g vsce
+        vsce publish -p "${{ secrets.VSCE_TOKEN }}" --packagePath "${{ runner.temp }}/${{ needs.build.outputs.package_name }}"
