@@ -124,4 +124,6 @@ jobs:
     - name: Publish package
       run: |
         npm install -g vsce
-        vsce publish -p "${{ secrets.VSCE_TOKEN }}" --packagePath "${{ runner.temp }}/${{ needs.build.outputs.package_name }}"
+        vsce publish -p "$VSCE_TOKEN" --packagePath "${{ runner.temp }}/${{ needs.build.outputs.package_name }}"
+      env:
+        VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}
