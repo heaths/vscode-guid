@@ -1,5 +1,8 @@
 {
     "recommendations": [
-        "ms-vscode.vscode-typescript-tslint-plugin"
-    ]
+      "dbaeumer.vscode-eslint",
+      "editorconfig.editorconfig",
+      "github.vscode-pull-request-github",
+      "ms-vscode.vscode-typescript-tslint-plugin"
+  ]
 }

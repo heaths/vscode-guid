@@ -1,0 +1,21 @@
+{
+    "name": "VSCode - Extension Development",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "overrideCommand": false,
+    "runArgs": [
+      "--init",
+      "--security-opt", "seccomp=unconfined"
+    ],
+    "remoteUser": "node",
+    "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash"
+    },
+    "extensions": [
+      "dbaeumer.vscode-eslint",
+      "editorconfig.editorconfig",
+      "github.vscode-pull-request-github",
+      "ms-vscode.vscode-typescript-tslint-plugin"
+    ]
+}
