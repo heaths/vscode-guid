@@ -27,6 +27,7 @@ const clean = require('gulp-clean');
 const sourcemaps = require('gulp-sourcemaps');
 const svg2png = require('gulp-svg2png');
 const ts = require('gulp-typescript');
+const gh = require('@actions/core');
 
 gulp.task('compile:res', () => {
     return gulp.src('res/**/*.svg')
@@ -56,7 +57,7 @@ gulp.task('set-version', (done) => {
         console.log(`##vso[build.updatebuildnumber]${p.version}`);
     }
     else if (process.env.GITHUB_ACTIONS) {
-        console.log(`::set-env name=BUILD_VERSION::${p.version}`);
+        gh.exportVariable('BUILD_VERSION', p.version);
     }
 
     done();
