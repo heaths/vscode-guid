@@ -20,7 +20,7 @@ jobs:
         - '10.x'
         os:
         - macos-latest
-        - ubuntu-16.04
+        - ubuntu-latest
         - windows-latest
         vscode-channel:
         - stable
