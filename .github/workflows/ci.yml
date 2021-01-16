@@ -43,18 +43,18 @@ jobs:
       run: npm install
 
     - name: Compile
-      run: node ./node_modules/gulp/bin/gulp set-version compile
+      run: npm run compile set-version
 
     - name: Test (Linux)
       if: runner.os == 'Linux'
-      run: xvfb-run -a node ./out/test/runTest
+      run: xvfb-run -a npm test
       env:
         CODE_VERSION: ${{ matrix.vscode-channel }}
         TEST_RESULTS_PATH: ${{ github.workspace }}/.vscode-test/test-results.xml
 
     - name: Test
       if: runner.os != 'Linux'
-      run: node ./out/test/runTest
+      run: npm test
       env:
         CODE_VERSION: ${{ matrix.vscode-channel }}
         TEST_RESULTS_PATH: ${{ github.workspace }}/.vscode-test/test-results.xml
@@ -81,6 +81,14 @@ jobs:
       with:
         name: artifacts
         path: ${{ runner.temp }}/vscode-guid-${{ env.BUILD_VERSION }}.vsix
+
+  check:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check
+      run: echo "All required checks passed"
 
   publish:
     needs: build

@@ -29,3 +29,6 @@ insert_final_newline = true
 
 [*.json]
 indent_size = 2
+
+[*.yml]
+indent_size = 2
