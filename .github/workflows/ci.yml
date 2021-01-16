@@ -45,18 +45,18 @@ jobs:
     - name: Compile
       run: node ./node_modules/gulp/bin/gulp set-version compile
 
-    - name: Start Xvfb
-      run: |
-        set -e
-        /usr/bin/Xvfb :10 -ac >> /tmp/Xvfb.out 2>&1 &
-        disown -ar
+    - name: Test (Linux)
       if: runner.os == 'Linux'
+      run: xvfb-run -a node ./out/test/runTest
+      env:
+        CODE_VERSION: ${{ matrix.vscode-channel }}
+        TEST_RESULTS_PATH: ${{ github.workspace }}/.vscode-test/test-results.xml
 
     - name: Test
+      if: runner.os != 'Linux'
       run: node ./out/test/runTest
       env:
         CODE_VERSION: ${{ matrix.vscode-channel }}
-        DISPLAY: ':10'
         TEST_RESULTS_PATH: ${{ github.workspace }}/.vscode-test/test-results.xml
 
     - name: Publish test results
