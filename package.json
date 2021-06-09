@@ -38,6 +38,11 @@
           "type": "boolean",
           "default": true,
           "description": "Show code snippets for C++ when presenting possible GUID formats to insert."
+        },
+        "insertGuid.pasteAutomatically": {
+          "type": "boolean",
+          "default": false,
+          "description": "Paste the default format without showing menu."
         }
       }
     },

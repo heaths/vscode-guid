@@ -173,41 +173,46 @@ export class GuidCommands {
         GuidCommands.insertCommandImpl(textEditor, edit, true);
     }
 
-    static insertCommandImpl(textEditor : vscode.TextEditor, edit : vscode.TextEditorEdit, unique: boolean) {
+    static async insertCommandImpl(textEditor : vscode.TextEditor, edit : vscode.TextEditorEdit, unique: boolean) {
         const g = new Guid();
         const settings = vscode.workspace.getConfiguration('insertGuid');
         const showLowercase = settings.get<boolean>('showLowercase', true);
         const showUppercase = settings.get<boolean>('showUppercase', false);
         const showCodeSnippets = settings.get<boolean>('showCodeSnippets', true);
-        const items = GuidCommands.getQuickPickItems(g, showLowercase, showUppercase, showCodeSnippets);
+        const pasteAutomatically = settings.get<boolean>('pasteAutomatically', false);
 
-        // Prompt the user for a format.
-        vscode.window.showQuickPick<GuidPickItem>(items)
-            .then(item => {
-                if (typeof item === 'undefined') {
-                    // Selection canceled.
-                    return;
+        const items = GuidCommands.getQuickPickItems(g, showLowercase, showUppercase, showCodeSnippets);
+        var item = items[0]
+
+        if (!pasteAutomatically) {
+            // Let user select format
+            const selection = await vscode.window.showQuickPick<GuidPickItem>(items)
+            if (!selection) {
+                // Selection canceled.
+                return
+            }
+
+            item = selection!!
+        }
+
+        // 'edit' no longer valid so start a new edit.
+        textEditor.edit(edit => {
+            for (const selection of textEditor.selections) {
+                if (selection.isEmpty) {
+                    edit.insert(selection.start, item.text);
+                } else {
+                    edit.replace(selection, item.text);
                 }
 
-                // 'edit' no longer valid so start a new edit.
-                textEditor.edit(edit => {
-                    for (const selection of textEditor.selections) {
-                        if (selection.isEmpty) {
-                            edit.insert(selection.start, item.text);
-                        } else {
-                            edit.replace(selection, item.text);
-                        }
+                if (unique) {
+                    item.generate();
+                }
+            }
 
-                        if (unique) {
-                            item.generate();
-                        }
-                    }
-
-                    if (item.named) {
-                        // TODO: Change selection to cover NAME?
-                    }
-                });
-            });
+            if (item.named) {
+                // TODO: Change selection to cover NAME?
+            }
+        });
     }
 
     /**
