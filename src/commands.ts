@@ -28,6 +28,7 @@ enum FormatType {
     LOWERCASE,
     UPPERCASE,
     SNIPPET,
+    CUSTOM
 }
 
 interface GuidPickFormat {
@@ -179,12 +180,37 @@ export class GuidCommands {
         const showLowercase = settings.get<boolean>('showLowercase', true);
         const showUppercase = settings.get<boolean>('showUppercase', false);
         const showCodeSnippets = settings.get<boolean>('showCodeSnippets', true);
-        const pasteAutomatically = settings.get<boolean>('pasteAutomatically', false);
+        const pasteAutomatically = settings.get<string>('pasteAutomatically', "");
+
+        if (pasteAutomatically) {
+            // Format with the specified string and insert immediately
+        }
 
         const items = GuidCommands.getQuickPickItems(g, showLowercase, showUppercase, showCodeSnippets);
-        var item = items[0]
+        var item = items[0];
 
-        if (!pasteAutomatically) {
+        if (pasteAutomatically !== "") {
+            // Format with the specified string and insert without user selection
+            type Dict = { [key: string]: (g: Guid) => string}
+            const replacements: Dict = {
+                '{b}': (g: Guid) => g.toString(),
+                '{B}': (g: Guid) => g.toString().toUpperCase(),
+                '{n}': (g: Guid) => g.toString('no-hyphen'),
+                '{N}': (g: Guid) => g.toString('no-hyphen').toUpperCase()
+            }
+            const customFormatter = {
+                format: (g: Guid) => {
+                    var ret = pasteAutomatically;
+                    for (const replacement in replacements) {
+                        const fn = replacements[replacement]
+                        ret = ret.replace(replacement, fn(g));
+                    }
+                    return ret;
+                },
+                type: FormatType.CUSTOM
+            }
+            item = new GuidPickItem(-1, g, customFormatter)
+        } else {
             // Let user select format
             const selection = await vscode.window.showQuickPick<GuidPickItem>(items)
             if (!selection) {
