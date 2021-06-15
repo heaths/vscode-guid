@@ -182,10 +182,6 @@ export class GuidCommands {
         const showCodeSnippets = settings.get<boolean>('showCodeSnippets', true);
         const pasteAutomatically = settings.get<string>('pasteAutomatically', "");
 
-        if (pasteAutomatically) {
-            // Format with the specified string and insert immediately
-        }
-
         const items = GuidCommands.getQuickPickItems(g, showLowercase, showUppercase, showCodeSnippets);
         var item = items[0];
 
