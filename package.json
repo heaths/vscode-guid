@@ -42,7 +42,7 @@
         "insertGuid.pasteAutomatically": {
           "type": "string",
           "default": "",
-          "markdownDescription":"Paste GUID without selection, using the specified format. Available GUID formats are:  \n&nbsp;&nbsp;&nbsp;&nbsp;*{b}|{B}*: Simple string in lowercase or uppercase  \n&nbsp;&nbsp;&nbsp;&nbsp;*{n}|{N}*: Unformatted string in lowercase or uppercase  \n&nbsp;  \nOther characters will be interpreted literally.  \n&nbsp;  \nExamples:  \n&nbsp;&nbsp;&nbsp;&nbsp;*'{n}'* => '03afd966b18446079325cd58313ad637'  \n&nbsp;&nbsp;&nbsp;&nbsp;*new GUID(\"{B}\")* => new GUID(\"123CF48A-16ED-469D-B38E-A465DDCD667E\")"
+          "markdownDescription":"Paste GUID without selection, using the specified format. Available GUID formats are:  \n&nbsp;&nbsp;&nbsp;&nbsp;*{d}|{D}*: Simple string in lowercase or uppercase  \n&nbsp;&nbsp;&nbsp;&nbsp;*{n}|{N}*: Unformatted string in lowercase or uppercase  \n&nbsp;  \nOther characters will be interpreted literally.  \n&nbsp;  \nExamples:  \n&nbsp;&nbsp;&nbsp;&nbsp;*'{n}'* => '03afd966b18446079325cd58313ad637'  \n&nbsp;&nbsp;&nbsp;&nbsp;*new GUID(\"{D}\")* => new GUID(\"123CF48A-16ED-469D-B38E-A465DDCD667E\")"
         }
       }
     },

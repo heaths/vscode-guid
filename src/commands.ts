@@ -189,8 +189,8 @@ export class GuidCommands {
             // Format with the specified string and insert without user selection
             type Dict = { [key: string]: (g: Guid) => string}
             const replacements: Dict = {
-                '{b}': (g: Guid) => g.toString(),
-                '{B}': (g: Guid) => g.toString().toUpperCase(),
+                '{d}': (g: Guid) => g.toString(),
+                '{D}': (g: Guid) => g.toString().toUpperCase(),
                 '{n}': (g: Guid) => g.toString('no-hyphen'),
                 '{N}': (g: Guid) => g.toString('no-hyphen').toUpperCase()
             }
