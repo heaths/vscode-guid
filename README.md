@@ -48,6 +48,7 @@ You can set different configuration options to control the format of GUIDs that 
 * insertGuid.showLowercase: Show lowercase GUIDs (with and without braces) when presenting possible GUID formats to insert. The default is `true`.
 * insertGuid.showUppercase: Show uppercase GUIDs (with and without braces) when presenting possible GUID formats to insert. The default is `false`.
 * insertGuid.showCodeSnippets: Show code snippets for C++ when presenting possible GUID formats to insert. The default is `true`.
+* insertGuid.pasteAutomatically: When not empty, paste the GUID in a specified format without showing selection menu. The default is "".
 
 ## License
 

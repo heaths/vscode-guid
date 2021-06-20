@@ -38,6 +38,11 @@
           "type": "boolean",
           "default": true,
           "description": "Show code snippets for C++ when presenting possible GUID formats to insert."
+        },
+        "insertGuid.pasteAutomatically": {
+          "type": "string",
+          "default": "",
+          "markdownDescription":"Paste GUID without selection, using the specified format. Available GUID formats are:  \n* *{d}|{D}*: Simple string in lowercase or uppercase  \n* *{n}|{N}*: Unformatted string in lowercase or uppercase  \n\n&nbsp;  \nOther characters will be interpreted literally.  \n\n&nbsp;  \nExamples:  \n* *'{n}'* => '03afd966b18446079325cd58313ad637'  \n* *new GUID(\"{D}\")* => new GUID(\"123CF48A-16ED-469D-B38E-A465DDCD667E\")"
         }
       }
     },
