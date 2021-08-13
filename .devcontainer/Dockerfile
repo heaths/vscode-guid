@@ -34,6 +34,7 @@ RUN apt-get update \
     && export DEBIAN_FRONTEND=noninteractive \
     && apt-get install -y --no-install-recommends \
         libasound2 \
+        libgbm1 \
         libgtk-3-0 \
         libnss3 \
         libsecret-1-dev \
