@@ -10,7 +10,13 @@
     ],
     "remoteUser": "node",
     "settings": {
-        "terminal.integrated.shell.linux": "/bin/bash"
+        "terminal.integrated.profiles.linux": {
+          "bash": {
+            "path": "bash",
+            "icon": "terminal-bash"
+          }
+        },
+        "terminal.integrated.defaultProfile.linux": "bash"
     },
     "extensions": [
       "dbaeumer.vscode-eslint",
