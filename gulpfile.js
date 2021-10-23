@@ -64,7 +64,7 @@ gulp.task('set-version', (done) => {
 });
 
 gulp.task('clean', () => {
-    return gulp.src(['out', '**/*.vsix'])
+    return gulp.src(['out', '**/*.vsix'], {allowEmpty: true})
         .pipe(clean({read: false}));
 });
 

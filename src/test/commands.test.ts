@@ -29,38 +29,38 @@ suite('GuidCommands', () => {
         var g = new Guid('12341234-1234-1234-1234-123412341234');
         var items = GuidCommands.getQuickPickItems(g, true, false, true);
 
-        assert.equal(items.length, 5);
+        assert.strictEqual(items.length, 5);
 
         var item = items[0];
         assert.strictEqual(item.label, '1');
-        assert.equal(item.description, '12341234-1234-1234-1234-123412341234');
-        assert.equal(item.text, '12341234-1234-1234-1234-123412341234');
+        assert.strictEqual(item.description, '12341234-1234-1234-1234-123412341234');
+        assert.strictEqual(item.text, '12341234-1234-1234-1234-123412341234');
     });
 
     test('quick pick 2 is registry string with default options', () => {
         var g = new Guid('12341234-1234-1234-1234-123412341234');
         var items = GuidCommands.getQuickPickItems(g, true, false, true);
 
-        assert.equal(items.length, 5);
+        assert.strictEqual(items.length, 5);
 
         var item = items[1];
         assert.strictEqual(item.label, '2');
-        assert.equal(item.description, '{12341234-1234-1234-1234-123412341234}');
-        assert.equal(item.text, '{12341234-1234-1234-1234-123412341234}');
+        assert.strictEqual(item.description, '{12341234-1234-1234-1234-123412341234}');
+        assert.strictEqual(item.text, '{12341234-1234-1234-1234-123412341234}');
     });
 
     test('quick pick 3 is C structure with default options', () => {
         var g = new Guid('12341234-1234-1234-1234-123412341234');
         var items = GuidCommands.getQuickPickItems(g, true, false, true);
 
-        assert.equal(items.length, 5);
+        assert.strictEqual(items.length, 5);
 
         var item = items[2];
         assert.strictEqual(item.label, '3');
-        assert.equal(item.description,
+        assert.strictEqual(item.description,
             'static const struct GUID __NAME__ = {0x12341234, 0x1234, 0x1234, {0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34}};'
         );
-        assert.equal(item.text,
+        assert.strictEqual(item.text,
             '// {12341234-1234-1234-1234-123412341234}\n' +
             'static const struct GUID __NAME__ = {0x12341234, 0x1234, 0x1234, {0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34}};\n'
         );
@@ -70,14 +70,14 @@ suite('GuidCommands', () => {
         var g = new Guid('12341234-1234-1234-1234-123412341234');
         var items = GuidCommands.getQuickPickItems(g, true, false, true);
 
-        assert.equal(items.length, 5);
+        assert.strictEqual(items.length, 5);
 
         var item = items[3];
         assert.strictEqual(item.label, '4');
-        assert.equal(item.description,
+        assert.strictEqual(item.description,
             'DEFINE_GUID(__NAME__, 0x12341234, 0x1234, 0x1234, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34);'
         );
-        assert.equal(item.text,
+        assert.strictEqual(item.text,
             '// {12341234-1234-1234-1234-123412341234}\n' +
             'DEFINE_GUID(__NAME__, 0x12341234, 0x1234, 0x1234, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34);\n'
         );
@@ -87,113 +87,113 @@ suite('GuidCommands', () => {
         var g = new Guid('12341234-1234-1234-1234-123412341234');
         var items = GuidCommands.getQuickPickItems(g, true, false, true);
 
-        assert.equal(items.length, 5);
+        assert.strictEqual(items.length, 5);
 
         var item = items[4];
         assert.strictEqual(item.label, '5');
-        assert.equal(item.description, '12341234123412341234123412341234');
-        assert.equal(item.text, '12341234123412341234123412341234');
+        assert.strictEqual(item.description, '12341234123412341234123412341234');
+        assert.strictEqual(item.text, '12341234123412341234123412341234');
     });
 
     test('quick pick items are correct when all settings are true', () => {
         const g = new Guid('12341234-dead-beef-1234-123412341234');
         const items = GuidCommands.getQuickPickItems(g, true, true, true);
 
-        assert.equal(items.length, 8);
+        assert.strictEqual(items.length, 8);
 
         const item1 = items[0];
         assert.strictEqual(item1.label, '1');
-        assert.equal(item1.description, '12341234-dead-beef-1234-123412341234');
-        assert.equal(item1.text, '12341234-dead-beef-1234-123412341234');
+        assert.strictEqual(item1.description, '12341234-dead-beef-1234-123412341234');
+        assert.strictEqual(item1.text, '12341234-dead-beef-1234-123412341234');
 
         const item2 = items[1];
         assert.strictEqual(item2.label, '2');
-        assert.equal(item2.description, '{12341234-dead-beef-1234-123412341234}');
-        assert.equal(item2.text, '{12341234-dead-beef-1234-123412341234}');
+        assert.strictEqual(item2.description, '{12341234-dead-beef-1234-123412341234}');
+        assert.strictEqual(item2.text, '{12341234-dead-beef-1234-123412341234}');
 
         const item3 = items[2];
         assert.strictEqual(item3.label, '3');
-        assert.equal(item3.description, '12341234-DEAD-BEEF-1234-123412341234');
-        assert.equal(item3.text, '12341234-DEAD-BEEF-1234-123412341234');
+        assert.strictEqual(item3.description, '12341234-DEAD-BEEF-1234-123412341234');
+        assert.strictEqual(item3.text, '12341234-DEAD-BEEF-1234-123412341234');
 
         const item4 = items[3];
         assert.strictEqual(item4.label, '4');
-        assert.equal(item4.description, '{12341234-DEAD-BEEF-1234-123412341234}');
-        assert.equal(item4.text, '{12341234-DEAD-BEEF-1234-123412341234}');
+        assert.strictEqual(item4.description, '{12341234-DEAD-BEEF-1234-123412341234}');
+        assert.strictEqual(item4.text, '{12341234-DEAD-BEEF-1234-123412341234}');
 
         const item5 = items[4];
         assert.strictEqual(item5.label, '5');
-        assert.equal(item5.description,
+        assert.strictEqual(item5.description,
             'static const struct GUID __NAME__ = {0x12341234, 0xdead, 0xbeef, {0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34}};'
         );
-        assert.equal(item5.text,
+        assert.strictEqual(item5.text,
             '// {12341234-dead-beef-1234-123412341234}\n' +
             'static const struct GUID __NAME__ = {0x12341234, 0xdead, 0xbeef, {0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34}};\n'
         );
 
         const item6 = items[5];
         assert.strictEqual(item6.label, '6');
-        assert.equal(item6.description,
+        assert.strictEqual(item6.description,
             'DEFINE_GUID(__NAME__, 0x12341234, 0xdead, 0xbeef, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34);'
         );
-        assert.equal(item6.text,
+        assert.strictEqual(item6.text,
             '// {12341234-dead-beef-1234-123412341234}\n' +
             'DEFINE_GUID(__NAME__, 0x12341234, 0xdead, 0xbeef, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34);\n'
         );
 
         const item7 = items[6];
         assert.strictEqual(item7.label, '7');
-        assert.equal(item7.description, '12341234deadbeef1234123412341234');
-        assert.equal(item7.text, '12341234deadbeef1234123412341234');
+        assert.strictEqual(item7.description, '12341234deadbeef1234123412341234');
+        assert.strictEqual(item7.text, '12341234deadbeef1234123412341234');
 
         const item8 = items[7];
         assert.strictEqual(item8.label, '8');
-        assert.equal(item8.description, '12341234DEADBEEF1234123412341234');
-        assert.equal(item8.text, '12341234DEADBEEF1234123412341234');
+        assert.strictEqual(item8.description, '12341234DEADBEEF1234123412341234');
+        assert.strictEqual(item8.text, '12341234DEADBEEF1234123412341234');
     });
 
     test('quick pick items are correct with only lowercase enabled', () => {
         const g = new Guid('12341234-dead-beef-1234-123412341234');
         const items = GuidCommands.getQuickPickItems(g, true, false, false);
 
-        assert.equal(items.length, 3);
+        assert.strictEqual(items.length, 3);
 
         const item1 = items[0];
         assert.strictEqual(item1.label, '1');
-        assert.equal(item1.description, '12341234-dead-beef-1234-123412341234');
-        assert.equal(item1.text, '12341234-dead-beef-1234-123412341234');
+        assert.strictEqual(item1.description, '12341234-dead-beef-1234-123412341234');
+        assert.strictEqual(item1.text, '12341234-dead-beef-1234-123412341234');
 
         const item2 = items[1];
         assert.strictEqual(item2.label, '2');
-        assert.equal(item2.description, '{12341234-dead-beef-1234-123412341234}');
-        assert.equal(item2.text, '{12341234-dead-beef-1234-123412341234}');
+        assert.strictEqual(item2.description, '{12341234-dead-beef-1234-123412341234}');
+        assert.strictEqual(item2.text, '{12341234-dead-beef-1234-123412341234}');
 
         const item3 = items[2];
         assert.strictEqual(item3.label, '3');
-        assert.equal(item3.description, '12341234deadbeef1234123412341234');
-        assert.equal(item3.text, '12341234deadbeef1234123412341234');
+        assert.strictEqual(item3.description, '12341234deadbeef1234123412341234');
+        assert.strictEqual(item3.text, '12341234deadbeef1234123412341234');
     });
 
     test('quick pick items are correct with only uppercase enabled', () => {
         const g = new Guid('12341234-dead-beef-1234-123412341234');
         const items = GuidCommands.getQuickPickItems(g, false, true, false);
 
-        assert.equal(items.length, 3);
+        assert.strictEqual(items.length, 3);
 
         const item1 = items[0];
         assert.strictEqual(item1.label, '1');
-        assert.equal(item1.description, '12341234-DEAD-BEEF-1234-123412341234');
-        assert.equal(item1.text, '12341234-DEAD-BEEF-1234-123412341234');
+        assert.strictEqual(item1.description, '12341234-DEAD-BEEF-1234-123412341234');
+        assert.strictEqual(item1.text, '12341234-DEAD-BEEF-1234-123412341234');
 
         const item2 = items[1];
         assert.strictEqual(item2.label, '2');
-        assert.equal(item2.description, '{12341234-DEAD-BEEF-1234-123412341234}');
-        assert.equal(item2.text, '{12341234-DEAD-BEEF-1234-123412341234}');
+        assert.strictEqual(item2.description, '{12341234-DEAD-BEEF-1234-123412341234}');
+        assert.strictEqual(item2.text, '{12341234-DEAD-BEEF-1234-123412341234}');
 
         const item3 = items[2];
         assert.strictEqual(item3.label, '3');
-        assert.equal(item3.description, '12341234DEADBEEF1234123412341234');
-        assert.equal(item3.text, '12341234DEADBEEF1234123412341234');
+        assert.strictEqual(item3.description, '12341234DEADBEEF1234123412341234');
+        assert.strictEqual(item3.text, '12341234DEADBEEF1234123412341234');
     });
 
 
@@ -201,24 +201,24 @@ suite('GuidCommands', () => {
         const g = new Guid('12341234-dead-beef-1234-123412341234');
         const items = GuidCommands.getQuickPickItems(g, false, false, true);
 
-        assert.equal(items.length, 2);
+        assert.strictEqual(items.length, 2);
 
         const item1 = items[0];
         assert.strictEqual(item1.label, '1');
-        assert.equal(item1.description,
+        assert.strictEqual(item1.description,
             'static const struct GUID __NAME__ = {0x12341234, 0xdead, 0xbeef, {0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34}};'
         );
-        assert.equal(item1.text,
+        assert.strictEqual(item1.text,
             '// {12341234-dead-beef-1234-123412341234}\n' +
             'static const struct GUID __NAME__ = {0x12341234, 0xdead, 0xbeef, {0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34}};\n'
         );
 
         const item2 = items[1];
         assert.strictEqual(item2.label, '2');
-        assert.equal(item2.description,
+        assert.strictEqual(item2.description,
             'DEFINE_GUID(__NAME__, 0x12341234, 0xdead, 0xbeef, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34);'
         );
-        assert.equal(item2.text,
+        assert.strictEqual(item2.text,
             '// {12341234-dead-beef-1234-123412341234}\n' +
             'DEFINE_GUID(__NAME__, 0x12341234, 0xdead, 0xbeef, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34);\n'
         );
@@ -228,22 +228,22 @@ suite('GuidCommands', () => {
         var g = new Guid('12341234-dead-beef-1234-123412341234');
         var items = GuidCommands.getQuickPickItems(g, false, false, false);
 
-        assert.equal(items.length, 3);
+        assert.strictEqual(items.length, 3);
 
         // with all options set to false, only the lowercase options are shown
         const item1 = items[0];
         assert.strictEqual(item1.label, '1');
-        assert.equal(item1.description, '12341234-dead-beef-1234-123412341234');
-        assert.equal(item1.text, '12341234-dead-beef-1234-123412341234');
+        assert.strictEqual(item1.description, '12341234-dead-beef-1234-123412341234');
+        assert.strictEqual(item1.text, '12341234-dead-beef-1234-123412341234');
 
         const item2 = items[1];
         assert.strictEqual(item2.label, '2');
-        assert.equal(item2.description, '{12341234-dead-beef-1234-123412341234}');
-        assert.equal(item2.text, '{12341234-dead-beef-1234-123412341234}');
+        assert.strictEqual(item2.description, '{12341234-dead-beef-1234-123412341234}');
+        assert.strictEqual(item2.text, '{12341234-dead-beef-1234-123412341234}');
 
         const item3 = items[2];
         assert.strictEqual(item3.label, '3');
-        assert.equal(item3.description, '12341234deadbeef1234123412341234');
-        assert.equal(item3.text, '12341234deadbeef1234123412341234');
+        assert.strictEqual(item3.description, '12341234deadbeef1234123412341234');
+        assert.strictEqual(item3.text, '12341234deadbeef1234123412341234');
     });
 });

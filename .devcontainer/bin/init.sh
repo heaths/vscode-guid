@@ -23,7 +23,7 @@
 # SOFTWARE.
 
 log() {
-    echo -e "[$(date) $@"
+    echo -e "[$(date)] $@"
 }
 
 # Start Xvfb in the background for testing.
