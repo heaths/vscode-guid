@@ -1,4 +1,6 @@
-For a complete list of changes, see the [commit history](https://github.com/heaths/vscode-guid/commits/master).
+# Changelog
+
+For a complete list of changes, see the [commit history](https://github.com/heaths/vscode-guid/commits/main).
 
 ## 1.4.19 (2019-10-11)
 
