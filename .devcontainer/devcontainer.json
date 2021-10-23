@@ -3,6 +3,7 @@
     "build": {
         "dockerfile": "Dockerfile"
     },
+    "postCreateCommand": "npm install",
     "overrideCommand": false,
     "runArgs": [
       "--init",

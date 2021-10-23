@@ -28,6 +28,7 @@ ARG USERNAME="node"
 ENV DISPLAY="${DISPLAY}" \
     EDITOR="nano" \
     LANG="en_US.UTF-8" \
+    OPENSSL_CONF="/etc/ssl" \
     VISUAL="nano"
 
 RUN apt-get update \
