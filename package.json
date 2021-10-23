@@ -68,7 +68,7 @@
   "main": "./out/extension",
   "badges": [
     {
-      "description": "build status: master",
+      "description": "build status: main",
       "href": "https://github.com/heaths/vscode-guid",
       "url": "https://img.shields.io/github/workflow/status/heaths/vscode-guid/ci?logo=github&style=flat-square"
     }
@@ -80,6 +80,8 @@
     "test": "node ./out/test/runTest.js"
   },
   "engines": {
+    "npm": "^6.14.0",
+    "node": "^14.18.0",
     "vscode": "^1.30.0"
   },
   "dependencies": {
@@ -114,7 +116,7 @@
     "type": "git",
     "url": "https://github.com/heaths/vscode-guid.git"
   },
-  "homepage": "https://github.com/heaths/vscode-guid/blob/master/README.md",
+  "homepage": "https://github.com/heaths/vscode-guid/blob/main/README.md",
   "bugs": "https://github.com/heaths/vscode-guid/issues",
   "private": true
 }

@@ -12,25 +12,41 @@ Be sure to add an entry to the [CHANGELOG.md](CHANGELOG.md)! For bug fixes, plea
 
 ## Prerequisites
 
-* [Node.js 12](https://nodejs.org)
+* [Node.js 14](https://nodejs.org)
 * (Recommended) [VSCode](https://code.visualstudio.com)
+
+You can also open this repository in a [devcontainer](https://code.visualstudio.com/docs/remote/containers) but on Windows, will need to disable auto-CRLF before cloning the repository:
+
+```cmd
+git config --global autocrlf false
+```
+
+See [Container Tips](https://code.visualstudio.com/docs/remote/troubleshooting#_container-tips) for more information.
+
+Running in a devcontainer is primarily intended for [GitHub Codespaces](https://code.visualstudio.com/docs/remote/codespaces).
 
 ## Building
 
 NPM should install everything required to build and test on Windows and macOS. Linux requires running X11 to test and debug, though you're welcome to open this project in a [devcontainer](https://code.visualstudio.com/docs/remote/containers) that will start the X virtual framebuffer (Xvfb) automatically.
 
 1. Install dependencies:
+
    ```bash
    npm i
    ```
+
 2. Build:
+
    ```bash
    npm run compile
    ```
+
 3. Run tests:
+
    ```bash
    npm run test
    ```
+
    You can run and debug tests in VSCode by running **Launch Tests** in the **Run** (formerly **Debug**) view.
 
 ## Versioning
