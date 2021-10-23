@@ -80,6 +80,8 @@
     "test": "node ./out/test/runTest.js"
   },
   "engines": {
+    "npm": "^6.14.0",
+    "node": "^14.18.0",
     "vscode": "^1.30.0"
   },
   "dependencies": {
