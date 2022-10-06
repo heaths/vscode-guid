@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.0 (2022-10-06)
+
+* [@rollie42](https://github.com/rollie42) added a setting `insertGuid.pasteAutomatically` to insert a GUID in a user-specified format automatically without prompting.
+
 For a complete list of changes, see the [commit history](https://github.com/heaths/vscode-guid/commits/main).
 
 ## 1.4.19 (2019-10-11)
