@@ -28,6 +28,7 @@ enum FormatType {
     LOWERCASE,
     UPPERCASE,
     SNIPPET,
+    CUSTOM
 }
 
 interface GuidPickFormat {
@@ -173,41 +174,69 @@ export class GuidCommands {
         GuidCommands.insertCommandImpl(textEditor, edit, true);
     }
 
-    static insertCommandImpl(textEditor : vscode.TextEditor, edit : vscode.TextEditorEdit, unique: boolean) {
+    static async insertCommandImpl(textEditor : vscode.TextEditor, edit : vscode.TextEditorEdit, unique: boolean) {
         const g = new Guid();
         const settings = vscode.workspace.getConfiguration('insertGuid');
         const showLowercase = settings.get<boolean>('showLowercase', true);
         const showUppercase = settings.get<boolean>('showUppercase', false);
         const showCodeSnippets = settings.get<boolean>('showCodeSnippets', true);
-        const items = GuidCommands.getQuickPickItems(g, showLowercase, showUppercase, showCodeSnippets);
+        const pasteAutomatically = settings.get<string>('pasteAutomatically', "");
 
-        // Prompt the user for a format.
-        vscode.window.showQuickPick<GuidPickItem>(items)
-            .then(item => {
-                if (typeof item === 'undefined') {
-                    // Selection canceled.
-                    return;
+        const items = GuidCommands.getQuickPickItems(g, showLowercase, showUppercase, showCodeSnippets);
+        var item = items[0];
+
+        if (pasteAutomatically !== "") {
+            // Format with the specified string and insert without user selection
+            type Dict = { [key: string]: (g: Guid) => string}
+            const replacements: Dict = {
+                '{b}': (g: Guid) => g.toString('braced'),
+                '{B}': (g: Guid) => g.toString('braced').toUpperCase(),
+                '{d}': (g: Guid) => g.toString(),
+                '{D}': (g: Guid) => g.toString().toUpperCase(),
+                '{n}': (g: Guid) => g.toString('no-hyphen'),
+                '{N}': (g: Guid) => g.toString('no-hyphen').toUpperCase()
+            }
+            const customFormatter = {
+                format: (g: Guid) => {
+                    var ret = pasteAutomatically;
+                    for (const replacement in replacements) {
+                        const fn = replacements[replacement]
+                        ret = ret.replace(replacement, fn(g));
+                    }
+                    return ret;
+                },
+                type: FormatType.CUSTOM
+            }
+            item = new GuidPickItem(-1, g, customFormatter)
+        } else {
+            // Let user select format
+            const selection = await vscode.window.showQuickPick<GuidPickItem>(items)
+            if (!selection) {
+                // Selection canceled.
+                return
+            }
+
+            item = selection!!
+        }
+
+        // 'edit' no longer valid so start a new edit.
+        textEditor.edit(edit => {
+            for (const selection of textEditor.selections) {
+                if (selection.isEmpty) {
+                    edit.insert(selection.start, item.text);
+                } else {
+                    edit.replace(selection, item.text);
                 }
 
-                // 'edit' no longer valid so start a new edit.
-                textEditor.edit(edit => {
-                    for (const selection of textEditor.selections) {
-                        if (selection.isEmpty) {
-                            edit.insert(selection.start, item.text);
-                        } else {
-                            edit.replace(selection, item.text);
-                        }
+                if (unique) {
+                    item.generate();
+                }
+            }
 
-                        if (unique) {
-                            item.generate();
-                        }
-                    }
-
-                    if (item.named) {
-                        // TODO: Change selection to cover NAME?
-                    }
-                });
-            });
+            if (item.named) {
+                // TODO: Change selection to cover NAME?
+            }
+        });
     }
 
     /**
