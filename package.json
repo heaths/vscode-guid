@@ -42,7 +42,7 @@
         "insertGuid.pasteAutomatically": {
           "type": "string",
           "default": "",
-          "markdownDescription":"Paste GUID without selection, using the specified format. Available GUID formats are:  \n* *{d}|{D}*: Simple string in lowercase or uppercase  \n* *{n}|{N}*: Unformatted string in lowercase or uppercase  \n\n&nbsp;  \nOther characters will be interpreted literally.  \n\n&nbsp;  \nExamples:  \n* *'{n}'* => '03afd966b18446079325cd58313ad637'  \n* *new GUID(\"{D}\")* => new GUID(\"123CF48A-16ED-469D-B38E-A465DDCD667E\")"
+          "markdownDescription": "Paste GUID without prompting using the specified format:\n* `{b}|{B}` inserts a braced string in lowercase `{b}` or uppercase `{B}` e.g., `{880c86bc-384c-4cce-9e9a-4f760ca755c4}`\n* `{d}|{D}` inserts a hyphenated string in lowercase `{d}` or uppercase `{D}` e.g., `880c86bc-384c-4cce-9e9a-4f760ca755c4`\n* `{n}|{N}` inserts an unformatted string in lowercase `{n}` or uppercase `{N}` e.g., `880c86bc384c4cce9e9a4f760ca755c4`\n\nOther characters will be interpreted literally e.g., `new GUID(\"{D}\")` inserts `new GUID(\"880C86BC-384C-4CCE-9E9A-4F760CA755C4\")`"
         }
       }
     },
