@@ -153,7 +153,13 @@ export class GuidCommands {
                 return g.toString('no-hyphen').toUpperCase();
             },
             type: FormatType.UPPERCASE
-        }
+        },
+        {
+            format: (g) => {
+                return g.toString('x');
+            },
+            type: FormatType.SNIPPET
+        },
     ];
 
     /**
@@ -194,7 +200,9 @@ export class GuidCommands {
                 '{d}': (g: Guid) => g.toString(),
                 '{D}': (g: Guid) => g.toString().toUpperCase(),
                 '{n}': (g: Guid) => g.toString('no-hyphen'),
-                '{N}': (g: Guid) => g.toString('no-hyphen').toUpperCase()
+                '{N}': (g: Guid) => g.toString('no-hyphen').toUpperCase(),
+                '{x}': (g: Guid) => g.toString('x'),
+                '{X}': (g: Guid) => g.toString('x').toUpperCase(),
             }
             const customFormatter = {
                 format: (g: Guid) => {
