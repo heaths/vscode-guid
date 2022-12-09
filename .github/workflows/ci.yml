@@ -85,10 +85,17 @@ jobs:
   check:
     needs: build
     runs-on: ubuntu-latest
+    if: ${{ !cancelled() }}
 
     steps:
     - name: Check
-      run: echo "All required checks passed"
+      run: |
+        if [[ "${{ needs.build.result }}" == "success" ]]; then
+          echo -e "\e[32mSuccess\e[0m"
+        else
+          echo -e "\e[31mFailed\e[0m"
+          exit 1
+        fi
 
   publish:
     needs: build
