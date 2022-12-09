@@ -28,12 +28,12 @@ suite('Guid', () => {
         var g1 = new Guid();
         var g2 = new Guid();
 
-        assert.notEqual(g1.toString(), g2.toString());
+        assert.notStrictEqual(g1.toString(), g2.toString());
     });
 
     test('can return empty Guid', () => {
         var e = Guid.EMPTY;
-        assert.equal(e.toString(), '00000000-0000-0000-0000-000000000000');
+        assert.strictEqual(e.toString(), '00000000-0000-0000-0000-000000000000');
     });
 
     test('parses invalid Guid as empty', () => {
@@ -41,74 +41,74 @@ suite('Guid', () => {
         buffer.fill(0);
 
         var g = new Guid('z');
-        assert.deepEqual(g.toBuffer(), buffer);
+        assert.deepStrictEqual(g.toBuffer(), buffer);
     });
 
     test('parses Guid with curly braces', () => {
         var buffer = Buffer.from([0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34, ]);
         var g = new Guid('{12341234-1234-1234-1234-123412341234}');
 
-        assert.deepEqual(g.toBuffer(), buffer);
+        assert.deepStrictEqual(g.toBuffer(), buffer);
     })
 
     test('parses Guid without curly braces', () => {
         var buffer = Buffer.from([0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34, 0x12, 0x34, ]);
         var g = new Guid("12341234-1234-1234-1234-123412341234");
 
-        assert.deepEqual(g.toBuffer(), buffer);
+        assert.deepStrictEqual(g.toBuffer(), buffer);
     });
 
     test('returns 16-byte buffer', () => {
         var g = new Guid();
-        assert.equal(g.toBuffer().length, 16);
+        assert.strictEqual(g.toBuffer().length, 16);
     });
 
     test('returns mutable buffer', () => {
         var g = new Guid('12341234-1234-1234-1234-123412341234');
-        assert.equal(g.toString(), '12341234-1234-1234-1234-123412341234');
+        assert.strictEqual(g.toString(), '12341234-1234-1234-1234-123412341234');
 
         var buffer = g.toBuffer();
         buffer.fill(0xff);
-        assert.equal(g.toString(), 'ffffffff-ffff-ffff-ffff-ffffffffffff');
+        assert.strictEqual(g.toString(), 'ffffffff-ffff-ffff-ffff-ffffffffffff');
     });
 
     test('returns proper "struct" format', () => {
         var g = new Guid('01234567-89ab-cdef-0123-456789abcdef');
-        assert.equal(g.toString('struct'), '{0x01234567, 0x89ab, 0xcdef, {0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef}}');
+        assert.strictEqual(g.toString('struct'), '{0x01234567, 0x89ab, 0xcdef, {0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef}}');
     });
 
     test('returns proper "struct" format for "x"', () => {
         var g = new Guid('01234567-89ab-cdef-0123-456789abcdef');
-        assert.equal(g.toString('x'), '{0x01234567, 0x89ab, 0xcdef, {0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef}}');
+        assert.strictEqual(g.toString('x'), '{0x01234567, 0x89ab, 0xcdef, {0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef}}');
     });
 
     test('returns proper "braced" format', () => {
         var g = new Guid('01234567-89ab-cdef-0123-456789abcdef');
-        assert.equal(g.toString('braced'), '{01234567-89ab-cdef-0123-456789abcdef}');
+        assert.strictEqual(g.toString('braced'), '{01234567-89ab-cdef-0123-456789abcdef}');
     });
 
     test('returns proper "braced" format for "b"', () => {
         var g = new Guid('01234567-89ab-cdef-0123-456789abcdef');
-        assert.equal(g.toString('braced'), '{01234567-89ab-cdef-0123-456789abcdef}');
+        assert.strictEqual(g.toString('braced'), '{01234567-89ab-cdef-0123-456789abcdef}');
     });
 
     test('returns proper "no-hyphen" format', () => {
         var g = new Guid('01234567-89ab-cdef-0123-456789abcdef');
-        assert.equal(g.toString('no-hyphen'), '0123456789abcdef0123456789abcdef');
+        assert.strictEqual(g.toString('no-hyphen'), '0123456789abcdef0123456789abcdef');
     });
 
     test('returns proper string for missing format', () => {
         var g = new Guid('01234567-89ab-cdef-0123-456789abcdef');
-        assert.equal(g.toString(), '01234567-89ab-cdef-0123-456789abcdef');
+        assert.strictEqual(g.toString(), '01234567-89ab-cdef-0123-456789abcdef');
     });
 
     test('returns proper string for invalid format', () => {
         var g = new Guid('01234567-89ab-cdef-0123-456789abcdef');
-        assert.equal(g.toString('invalid'), '01234567-89ab-cdef-0123-456789abcdef');
+        assert.strictEqual(g.toString('invalid'), '01234567-89ab-cdef-0123-456789abcdef');
     });
 
     test('returns proper string for non-string format', () => {
         var g = new Guid('01234567-89ab-cdef-0123-456789abcdef');
-        assert.equal(g.toString(undefined), '01234567-89ab-cdef-0123-456789abcdef');
+        assert.strictEqual(g.toString(undefined), '01234567-89ab-cdef-0123-456789abcdef');
     });
 });

@@ -42,7 +42,7 @@
         "insertGuid.pasteAutomatically": {
           "type": "string",
           "default": "",
-          "markdownDescription": "Paste GUID without prompting using the specified format:\n* `{b}|{B}` inserts a braced string in lowercase `{b}` or uppercase `{B}` e.g., `{880c86bc-384c-4cce-9e9a-4f760ca755c4}`\n* `{d}|{D}` inserts a hyphenated string in lowercase `{d}` or uppercase `{D}` e.g., `880c86bc-384c-4cce-9e9a-4f760ca755c4`\n* `{n}|{N}` inserts an unformatted string in lowercase `{n}` or uppercase `{N}` e.g., `880c86bc384c4cce9e9a4f760ca755c4`\n\nOther characters will be interpreted literally e.g., `new GUID(\"{D}\")` inserts `new GUID(\"880C86BC-384C-4CCE-9E9A-4F760CA755C4\")`"
+          "markdownDescription": "Paste GUID without prompting using the specified format:\n* `{b}|{B}` inserts a braced string in lowercase `{b}` or uppercase `{B}` e.g., `{880c86bc-384c-4cce-9e9a-4f760ca755c4}`\n* `{d}|{D}` inserts a hyphenated string in lowercase `{d}` or uppercase `{D}` e.g., `880c86bc-384c-4cce-9e9a-4f760ca755c4`\n* `{n}|{N}` inserts an unformatted string in lowercase `{n}` or uppercase `{N}` e.g., `880c86bc384c4cce9e9a4f760ca755c4`\n* `{x}|{X}` inserts a struct-formatted string in lowercase `{x}` or uppercase `{X}` e.g., `{0x880c86bc,0x384c,0x4cce,{0x9e,0x9a,0x4f,0x76,0x0c,0xa7,0x55,0xc4}}`\n\nOther characters will be interpreted literally e.g., `new GUID(\"{D}\")` inserts `new GUID(\"880C86BC-384C-4CCE-9E9A-4F760CA755C4\")`"
         }
       }
     },
@@ -85,8 +85,6 @@
     "test": "node ./out/test/runTest.js"
   },
   "engines": {
-    "npm": "^6.14.0",
-    "node": "^14.18.0",
     "vscode": "^1.30.0"
   },
   "dependencies": {
@@ -112,6 +110,7 @@
     "mocha": "^9.0.3",
     "mocha-junit-reporter": "^1.23.3",
     "mocha-multi-reporters": "^1.1.7",
+    "source-map": "^0.7.4",
     "trim-newlines": "^3.0.1",
     "tslint": "^5.14.0",
     "typescript": "^3.3.1",
