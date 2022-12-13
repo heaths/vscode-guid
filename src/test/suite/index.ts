@@ -24,14 +24,14 @@ import * as path from 'path';
 import * as Mocha from 'mocha';
 import * as glob from 'glob';
 
-export function run(): Promise<void> {
+export async function run(): Promise<void> {
   // Create the mocha test
-  var options : Mocha.MochaOptions = {
+  const options: Mocha.MochaOptions = {
     ui: 'tdd',
-    useColors: true
+    color: true,
   }
 
-  if (process.env.TEST_RESULTS_PATH) {
+  if (process.env.TEST_RESULTS_PATH != null) {
     options.reporter = 'mocha-multi-reporters';
     options.reporterOptions = {
       reporterEnabled: 'spec, mocha-junit-reporter',
@@ -44,10 +44,10 @@ export function run(): Promise<void> {
   const mocha = new Mocha(options);
   const testsRoot = path.resolve(__dirname, '..');
 
-  return new Promise((c, e) => {
+  return await new Promise((resolve, reject) => {
     glob('**/**.test.js', { cwd: testsRoot }, (err, files) => {
-      if (err) {
-        return e(err);
+      if (err != null) {
+        return reject(err);
       }
 
       // Add files to the test suite
@@ -57,13 +57,13 @@ export function run(): Promise<void> {
         // Run the mocha test
         mocha.run(failures => {
           if (failures > 0) {
-            e(new Error(`${failures} tests failed.`));
+            reject(new Error(`${failures} tests failed.`));
           } else {
-            c();
+            resolve();
           }
         });
       } catch (err) {
-        e(err);
+        reject(err);
       }
     });
   });

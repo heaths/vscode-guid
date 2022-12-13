@@ -31,14 +31,14 @@ export class Guid {
     /**
      * Creates a new globally unique identifier.
      */
-    constructor(input? : string) {
+    constructor(input?: string) {
         this._buffer = Buffer.alloc(16);
 
         if (input == null) {
             this._buffer = v4(undefined, this._buffer);
         } else {
             let i = 0;
-            input.replace(/[0-9a-fA-F]{2}/g, (octet : string) => {
+            input.replace(/[0-9a-fA-F]{2}/g, (octet: string) => {
                 if (i < 16) {
                     this._buffer[i++] = parseInt(octet, 16);
                 }
@@ -62,11 +62,11 @@ export class Guid {
      * Formats a b as a GUID string representation.
      */
     static unparse(b: Buffer): string {
-        return b.toString('hex', 0, 4) + '-'
-            + b.toString('hex', 4, 6) + '-'
-            + b.toString('hex', 6, 8) + '-'
-            + b.toString('hex', 8, 10) + '-'
-            + b.toString('hex', 10, 16);
+        return b.toString('hex', 0, 4) + '-' +
+            b.toString('hex', 4, 6) + '-' +
+            b.toString('hex', 6, 8) + '-' +
+            b.toString('hex', 8, 10) + '-' +
+            b.toString('hex', 10, 16);
     }
 
     /**
@@ -83,7 +83,7 @@ export class Guid {
      * @returns The string representation of a globally unique identifier.
      */
     toString(format?: string): string {
-        let b = this._buffer;
+        const b = this._buffer;
         if (format === 'struct' || format === 'x') {
             return util.format('{0x%s, 0x%s, 0x%s, {0x%s, 0x%s, 0x%s, 0x%s, 0x%s, 0x%s, 0x%s, 0x%s}}',
                 b.toString('hex', 0, 4), b.toString('hex', 4, 6), b.toString('hex', 6, 8),
@@ -95,11 +95,11 @@ export class Guid {
         } else if (format === 'no-hyphen') {
             return this.toString().replace(/-/g, '');
         } else {
-            return b.toString('hex', 0, 4) + '-'
-                + b.toString('hex', 4, 6) + '-'
-                + b.toString('hex', 6, 8) + '-'
-                + b.toString('hex', 8, 10) + '-'
-                + b.toString('hex', 10, 16);
+            return b.toString('hex', 0, 4) + '-' +
+                b.toString('hex', 4, 6) + '-' +
+                b.toString('hex', 6, 8) + '-' +
+                b.toString('hex', 8, 10) + '-' +
+                b.toString('hex', 10, 16);
         }
     }
 }

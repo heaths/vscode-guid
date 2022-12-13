@@ -21,12 +21,11 @@
 // SOFTWARE.
 
 import * as vscode from 'vscode';
-import {GuidCommands} from './commands';
+import { insertCommand, insertManyCommand } from './commands';
 
-export function activate(context: vscode.ExtensionContext) {
-
-    let insertCommand = vscode.commands.registerTextEditorCommand('guid.insert', GuidCommands.insertCommand);
-    let insertManyCommand = vscode.commands.registerTextEditorCommand('guid.insertMany', GuidCommands.insertManyCommand);
-
-    context.subscriptions.push(insertCommand, insertManyCommand);
+export function activate(context: vscode.ExtensionContext): void {
+    context.subscriptions.push(
+        vscode.commands.registerTextEditorCommand('guid.insert', insertCommand),
+        vscode.commands.registerTextEditorCommand('guid.insertMany', insertManyCommand),
+    );
 }
