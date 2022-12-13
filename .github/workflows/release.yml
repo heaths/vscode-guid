@@ -1,0 +1,61 @@
+name: release
+
+on:
+  push:
+    tags:
+    - "v*"
+
+permissions:
+  contents: write
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  test:
+    uses: ./.github/workflows/ci.yml
+    with:
+      release: true
+
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    steps:
+    # Check out with full history to generate release notes.
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Download package
+      uses: actions/download-artifact@v3
+      with:
+        name: artifacts
+        path: ${{ runner.temp }}/
+
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        cache: npm
+        node-version: '16.x'
+
+    - name: Release
+      run: gh release create ${{ github.ref_name }} --generate-notes
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Upload package to release
+      run: |
+        gh release upload ${{ github.ref_name }} "${{ runner.temp }}/${{ needs.build.outputs.package_name }}"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Publish package
+      run: |
+        npm install -g vsce
+        vsce publish -p "$VSCE_TOKEN" --packagePath "${{ runner.temp }}/${{ needs.build.outputs.package_name }}"
+      env:
+        VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}

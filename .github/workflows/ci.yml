@@ -2,22 +2,29 @@ name: ci
 
 on:
   pull_request:
-    branches:
-    - main
-    - develop
-
   push:
     branches:
     - main
+  workflow_call:
+    inputs:
+      release:
+        description: Whether this is running as part of a release workflow.
+        required: false
+        type: boolean
+        default: false
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
-  build:
+  test:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         node-version:
-        - '14.x'
+        - '16.x'
         os:
         - macos-latest
         - ubuntu-latest
@@ -32,11 +39,12 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Node ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v3
       with:
+        cache: npm
         node-version: ${{ matrix.node-version }}
 
     - name: Install dependencies
@@ -60,7 +68,7 @@ jobs:
         TEST_RESULTS_PATH: ${{ github.workspace }}/.vscode-test/test-results.xml
 
     - name: Publish test results
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v3
       with:
         name: test-results-${{ matrix.os }}-${{ matrix.vscode-channel }}
         path: .vscode-test/test-results.xml
@@ -76,66 +84,23 @@ jobs:
       if: runner.os == 'Linux' && matrix.vscode-channel == 'stable'
 
     - name: Upload package
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       if: runner.os == 'Linux' && matrix.vscode-channel == 'stable'
       with:
         name: artifacts
         path: ${{ runner.temp }}/vscode-guid-${{ env.BUILD_VERSION }}.vsix
 
   check:
-    needs: build
+    needs: test
     runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
 
     steps:
     - name: Check
       run: |
-        if [[ "${{ needs.build.result }}" == "success" ]]; then
+        if [[ "${{ needs.test.result }}" == "success" ]]; then
           echo -e "\e[32mSuccess\e[0m"
         else
           echo -e "\e[31mFailed\e[0m"
           exit 1
         fi
-
-  publish:
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push'
-
-    steps:
-    - name: Setup Node
-      uses: actions/setup-node@v1
-      with:
-        node-version: '14.x'
-
-    - name: Download package
-      uses: actions/download-artifact@v2
-      with:
-        name: artifacts
-        path: ${{ runner.temp }}/
-
-    - id: create
-      name: Create release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: v${{ needs.build.outputs.build_version }}
-        release_name: v${{ needs.build.outputs.build_version }}
-
-    - name: Upload package to release
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create.outputs.upload_url }}
-        asset_name: ${{ needs.build.outputs.package_name }}
-        asset_path: ${{ runner.temp }}/${{ needs.build.outputs.package_name }}
-        asset_content_type: application/zip
-
-    - name: Publish package
-      run: |
-        npm install -g vsce
-        vsce publish -p "$VSCE_TOKEN" --packagePath "${{ runner.temp }}/${{ needs.build.outputs.package_name }}"
-      env:
-        VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}
