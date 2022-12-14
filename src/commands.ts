@@ -22,7 +22,7 @@
 
 import * as vscode from 'vscode';
 import * as util from 'util';
-import {Guid} from './guid';
+import { Guid } from './guid';
 
 enum FormatType {
     LOWERCASE,
@@ -32,33 +32,33 @@ enum FormatType {
 }
 
 interface GuidPickFormat {
-    format : (g : Guid) => string;
-    type : FormatType;
-    preface? : (g : Guid) => string;
-    epilogue? : (g : Guid) => string;
-    named? : boolean;
+    format: (g: Guid) => string
+    type: FormatType
+    preface?: (g: Guid) => string
+    epilogue?: (g: Guid) => string
+    named?: boolean
 }
 
 class GuidPickItem implements vscode.QuickPickItem {
-    private _index : number;
-    private _guid : Guid;
-    private _format : GuidPickFormat;
+    private readonly _index: number;
+    private _guid: Guid;
+    private readonly _format: GuidPickFormat;
 
-    constructor(index : number, guid : Guid, format : GuidPickFormat) {
+    constructor(index: number, guid: Guid, format: GuidPickFormat) {
         this._index = index;
         this._guid = guid;
         this._format = format;
     }
 
-    get label() : string {
+    get label(): string {
         return this._index.toString();
     }
 
-    get description() : string {
+    get description(): string {
         return this._format.format(this._guid);
     }
 
-    get text() : string {
+    get text(): string {
         let s = '';
 
         if (typeof this._format.preface === 'function') {
@@ -74,200 +74,194 @@ class GuidPickItem implements vscode.QuickPickItem {
         return s;
     }
 
-    get named() : boolean {
-        return this._format.named || false;
+    get named(): boolean {
+        return this._format.named ?? false;
     }
 
-    generate() {
+    generate(): void {
         this._guid = new Guid();
     }
 }
 
+// Use placeholder token that completely selects with double click.
+const NAME_PLACEHOLDER: string = '__NAME__';
+
+const FORMATS: GuidPickFormat[] = [
+    {
+        format: (g) => {
+            return g.toString();
+        },
+        type: FormatType.LOWERCASE
+    },
+    {
+        format: (g) => {
+            return g.toString('braced');
+        },
+        type: FormatType.LOWERCASE
+    },
+    {
+        format: (g) => {
+            return g.toString().toUpperCase();
+        },
+        type: FormatType.UPPERCASE
+    },
+    {
+        format: (g) => {
+            return g.toString('braced').toUpperCase();
+        },
+        type: FormatType.UPPERCASE
+    },
+    {
+        named: true,
+        format: (g) => {
+            return util.format('static const struct GUID %s = %s;', NAME_PLACEHOLDER, g.toString('struct'));
+        },
+        preface: (g) => {
+            return util.format('// %s\n', g.toString('braced'));
+        },
+        epilogue: (g) => {
+            return '\n';
+        },
+        type: FormatType.SNIPPET
+    },
+    {
+        named: true,
+        format: (g) => {
+            return util.format('DEFINE_GUID(%s, %s);', NAME_PLACEHOLDER, g.toString('struct').replace(/[{}]/g, ''));
+        },
+        preface: (g) => {
+            return util.format('// %s\n', g.toString('braced'));
+        },
+        epilogue: (g) => {
+            return '\n';
+        },
+        type: FormatType.SNIPPET
+    },
+    {
+        format: (g) => {
+            return g.toString('no-hyphen');
+        },
+        type: FormatType.LOWERCASE
+    },
+    {
+        format: (g) => {
+            return g.toString('no-hyphen').toUpperCase();
+        },
+        type: FormatType.UPPERCASE
+    },
+    {
+        format: (g) => {
+            return g.toString('x');
+        },
+        type: FormatType.SNIPPET
+    },
+];
+
 /**
- * Extension commands for working with GUIDs.
+ * Inserts GUID at the cursor position(s) or replaces active selection(s).
+ * @param textEditor {vscode.TextEditor} The active text editor.
+ * @param edit {vscode.TextEditorEdit} A text edit builder for the intended change.
  */
-export class GuidCommands {
+export function insertCommand(textEditor: vscode.TextEditor, edit: vscode.TextEditorEdit): void {
+    void insertCommandImpl(textEditor, edit, false);
+}
 
-    // Use placeholder token that completely selects with double click.
-    private static _NAME : string = '__NAME__';
+/**
+ * Inserts unique GUIDs at each cursor position or replaces active selection(s).
+ * @param textEditor {vscode.TextEditor} The active text editor.
+ * @param edit {vscode.TextEditorEdit} A text edit builder for the intended change.
+ */
+export function insertManyCommand(textEditor: vscode.TextEditor, edit: vscode.TextEditorEdit): void {
+    void insertCommandImpl(textEditor, edit, true);
+}
 
-    private static _formats : GuidPickFormat[] = [
-        {
-            format: (g) => {
-                return g.toString();
-            },
-            type: FormatType.LOWERCASE
-        },
-        {
-            format: (g) => {
-                return g.toString('braced');
-            },
-            type: FormatType.LOWERCASE
-        },
-        {
-            format: (g) => {
-                return g.toString().toUpperCase();
-            },
-            type: FormatType.UPPERCASE
-        },
-        {
-            format: (g) => {
-                return g.toString('braced').toUpperCase();
-            },
-            type: FormatType.UPPERCASE
-        },
-        {
-            named: true,
-            format: (g) => {
-                return util.format('static const struct GUID %s = %s;', GuidCommands._NAME, g.toString('struct'));
-            },
-            preface: (g) => {
-                return util.format('// %s\n', g.toString('braced'));
-            },
-            epilogue: (g) => {
-                return '\n';
-            },
-            type: FormatType.SNIPPET
-        },
-        {
-            named: true,
-            format: (g) => {
-                return util.format('DEFINE_GUID(%s, %s);', GuidCommands._NAME, g.toString('struct').replace(/[\{\}]/g, ''));
-            },
-            preface: (g) => {
-                return util.format('// %s\n', g.toString('braced'));
-            },
-            epilogue: (g) => {
-                return '\n';
-            },
-            type: FormatType.SNIPPET
-        },
-        {
-            format: (g) => {
-                return g.toString('no-hyphen');
-            },
-            type: FormatType.LOWERCASE
-        },
-        {
-            format: (g) => {
-                return g.toString('no-hyphen').toUpperCase();
-            },
-            type: FormatType.UPPERCASE
-        },
-        {
-            format: (g) => {
-                return g.toString('x');
-            },
-            type: FormatType.SNIPPET
-        },
-    ];
+async function insertCommandImpl(textEditor: vscode.TextEditor, edit: vscode.TextEditorEdit, unique: boolean): Promise<void> {
+    const g = new Guid();
+    const settings = vscode.workspace.getConfiguration('insertGuid');
+    const showLowercase = settings.get<boolean>('showLowercase', true);
+    const showUppercase = settings.get<boolean>('showUppercase', false);
+    const showCodeSnippets = settings.get<boolean>('showCodeSnippets', true);
+    const pasteAutomatically = settings.get<string>('pasteAutomatically', '');
 
-    /**
-     * Inserts GUID at the cursor position(s) or replaces active selection(s).
-     * @param textEditor {vscode.TextEditor} The active text editor.
-     * @param edit {vscode.TextEditorEdit} A text edit builder for the intended change.
-     */
-    static insertCommand(textEditor : vscode.TextEditor, edit : vscode.TextEditorEdit) {
-        GuidCommands.insertCommandImpl(textEditor, edit, false);
-    }
+    const items = getQuickPickItems(g, showLowercase, showUppercase, showCodeSnippets);
+    let item = items[0];
 
-    /**
-     * Inserts unique GUIDs at each cursor position or replaces active selection(s).
-     * @param textEditor {vscode.TextEditor} The active text editor.
-     * @param edit {vscode.TextEditorEdit} A text edit builder for the intended change.
-     */
-    static insertManyCommand(textEditor : vscode.TextEditor, edit : vscode.TextEditorEdit) {
-        GuidCommands.insertCommandImpl(textEditor, edit, true);
-    }
-
-    static async insertCommandImpl(textEditor : vscode.TextEditor, edit : vscode.TextEditorEdit, unique: boolean) {
-        const g = new Guid();
-        const settings = vscode.workspace.getConfiguration('insertGuid');
-        const showLowercase = settings.get<boolean>('showLowercase', true);
-        const showUppercase = settings.get<boolean>('showUppercase', false);
-        const showCodeSnippets = settings.get<boolean>('showCodeSnippets', true);
-        const pasteAutomatically = settings.get<string>('pasteAutomatically', "");
-
-        const items = GuidCommands.getQuickPickItems(g, showLowercase, showUppercase, showCodeSnippets);
-        var item = items[0];
-
-        if (pasteAutomatically !== "") {
-            // Format with the specified string and insert without user selection
-            type Dict = { [key: string]: (g: Guid) => string}
-            const replacements: Dict = {
-                '{b}': (g: Guid) => g.toString('braced'),
-                '{B}': (g: Guid) => g.toString('braced').toUpperCase(),
-                '{d}': (g: Guid) => g.toString(),
-                '{D}': (g: Guid) => g.toString().toUpperCase(),
-                '{n}': (g: Guid) => g.toString('no-hyphen'),
-                '{N}': (g: Guid) => g.toString('no-hyphen').toUpperCase(),
-                '{x}': (g: Guid) => g.toString('x'),
-                '{X}': (g: Guid) => g.toString('x').toUpperCase(),
-            }
-            const customFormatter = {
-                format: (g: Guid) => {
-                    var ret = pasteAutomatically;
-                    for (const replacement in replacements) {
-                        const fn = replacements[replacement]
-                        ret = ret.replace(replacement, fn(g));
-                    }
-                    return ret;
-                },
-                type: FormatType.CUSTOM
-            }
-            item = new GuidPickItem(-1, g, customFormatter)
-        } else {
-            // Let user select format
-            const selection = await vscode.window.showQuickPick<GuidPickItem>(items)
-            if (!selection) {
-                // Selection canceled.
-                return
-            }
-
-            item = selection!!
+    if (pasteAutomatically !== '') {
+        // Format with the specified string and insert without user selection
+        interface Dict { [key: string]: (g: Guid) => string }
+        const replacements: Dict = {
+            '{b}': (g: Guid) => g.toString('braced'),
+            '{B}': (g: Guid) => g.toString('braced').toUpperCase(),
+            '{d}': (g: Guid) => g.toString(),
+            '{D}': (g: Guid) => g.toString().toUpperCase(),
+            '{n}': (g: Guid) => g.toString('no-hyphen'),
+            '{N}': (g: Guid) => g.toString('no-hyphen').toUpperCase(),
+            '{x}': (g: Guid) => g.toString('x'),
+            '{X}': (g: Guid) => g.toString('x').toUpperCase(),
+        }
+        const customFormatter = {
+            format: (g: Guid) => {
+                let ret = pasteAutomatically;
+                for (const replacement in replacements) {
+                    const fn = replacements[replacement]
+                    ret = ret.replace(replacement, fn(g));
+                }
+                return ret;
+            },
+            type: FormatType.CUSTOM
+        }
+        item = new GuidPickItem(-1, g, customFormatter)
+    } else {
+        // Let user select format
+        const selection = await vscode.window.showQuickPick<GuidPickItem>(items)
+        if (selection == null) {
+            // Selection canceled.
+            return
         }
 
-        // 'edit' no longer valid so start a new edit.
-        textEditor.edit(edit => {
-            for (const selection of textEditor.selections) {
-                if (selection.isEmpty) {
-                    edit.insert(selection.start, item.text);
-                } else {
-                    edit.replace(selection, item.text);
-                }
-
-                if (unique) {
-                    item.generate();
-                }
-            }
-
-            if (item.named) {
-                // TODO: Change selection to cover NAME?
-            }
-        });
+        item = selection
     }
 
-    /**
-     * Gets an array of items to display in the Quick Pick window.
-     * @param guid The GUID to render in each Quick Pick item.
-     * @param showLowercase Indicates whether lowercase options should be included in the array.
-     * @param showUppercase Indicates whether uppercase options should be included in the array.
-     * @param showCodeSnippets Indicates whether code snippet options should be included in the array.
-     * @returns An array of items to display in the Quick Pick window.
-     */
-    static getQuickPickItems(guid : Guid, showLowercase : boolean, showUppercase : boolean, showCodeSnippets : boolean) : GuidPickItem[] {
-        let items : GuidPickItem[] = [];
-        let nextIndex = 0;
+    // 'edit' no longer valid so start a new edit.
+    await textEditor.edit(edit => {
+        for (const selection of textEditor.selections) {
+            if (selection.isEmpty) {
+                edit.insert(selection.start, item.text);
+            } else {
+                edit.replace(selection, item.text);
+            }
 
-        for (const format of GuidCommands._formats) {
-            if (((showLowercase || (!showUppercase && !showCodeSnippets)) && format.type === FormatType.LOWERCASE) ||
-                (showUppercase && format.type === FormatType.UPPERCASE) ||
-                (showCodeSnippets && format.type === FormatType.SNIPPET)) {
-                    const item = new GuidPickItem(++nextIndex, guid, format);
-                    items.push(item);
-                }
+            if (unique) {
+                item.generate();
+            }
         }
 
-        return items;
+        if (item.named) {
+            // TODO: Change selection to cover NAME?
+        }
+    });
+}
+
+/**
+ * Gets an array of items to display in the Quick Pick window.
+ * @param guid The GUID to render in each Quick Pick item.
+ * @param showLowercase Indicates whether lowercase options should be included in the array.
+ * @param showUppercase Indicates whether uppercase options should be included in the array.
+ * @param showCodeSnippets Indicates whether code snippet options should be included in the array.
+ * @returns An array of items to display in the Quick Pick window.
+ */
+export function getQuickPickItems(guid: Guid, showLowercase: boolean, showUppercase: boolean, showCodeSnippets: boolean): GuidPickItem[] {
+    const items: GuidPickItem[] = [];
+    let nextIndex = 0;
+
+    for (const format of FORMATS) {
+        if (((showLowercase || (!showUppercase && !showCodeSnippets)) && format.type === FormatType.LOWERCASE) ||
+            (showUppercase && format.type === FormatType.UPPERCASE) ||
+            (showCodeSnippets && format.type === FormatType.SNIPPET)) {
+            const item = new GuidPickItem(++nextIndex, guid, format);
+            items.push(item);
+        }
     }
+
+    return items;
 }

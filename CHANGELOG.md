@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.0 (2022-12-08)
+
+* Added C structure-style option to quick pick, and support for `x` and `X` format options.
+
 ## 1.5.0 (2022-10-06)
 
 * [@rollie42](https://github.com/rollie42) added a setting `insertGuid.pasteAutomatically` to insert a GUID in a user-specified format automatically without prompting.

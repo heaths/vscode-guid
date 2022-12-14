@@ -1,7 +1,6 @@
 {
     "recommendations": [
       "dbaeumer.vscode-eslint",
-      "editorconfig.editorconfig",
-      "github.vscode-pull-request-github"
+      "editorconfig.editorconfig"
   ]
 }

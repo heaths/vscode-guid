@@ -13,6 +13,7 @@ This provides the same useful formats as _Create GUID_ that ships with Visual St
 3. C structure: `static const struct GUID __NAME__ = {0x11d4dc2e, 0x375a, 0x4b89, {0x9a, 0xd4, 0xaa, 0x30, 0x10, 0x53, 0x85, 0xaa}};`
 4. C macro: `DEFINE_GUID(__NAME__, {x11d4dc2e, 0x375a, 0x4b89, 0x9a, 0xd4, 0xaa, 0x30, 0x10, 0x53, 0x85, 0xaa);`
 5. Unformatted string: `11d4dc2e375a4b899ad4aa30105385aa`
+6. C structure only: `{0x11d4dc2e, 0x375a, 0x4b89, {0x9a, 0xd4, 0xaa, 0x30, 0x10, 0x53, 0x85, 0xaa}}`
 
 The token `__NAME__` is easy to replace by double clicking to select every character, unlike `<<name>>` used in the _Create GUID_ tool.
 
