@@ -51,7 +51,7 @@ jobs:
       run: npm install
 
     - name: Compile
-      run: npm run compile set-version
+      run: npm run compile
 
     - name: Test (Linux)
       if: runner.os == 'Linux'

@@ -24,7 +24,8 @@ import * as path from 'path';
 import * as Mocha from 'mocha';
 import * as glob from 'glob';
 
-export async function run(): Promise<void> {
+// eslint-disable-next-line @typescript-eslint/promise-function-async
+export function run(): Promise<void> {
   // Create the mocha test
   const options: Mocha.MochaOptions = {
     ui: 'tdd',
@@ -44,7 +45,7 @@ export async function run(): Promise<void> {
   const mocha = new Mocha(options);
   const testsRoot = path.resolve(__dirname, '..');
 
-  return await new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     glob('**/**.test.js', { cwd: testsRoot }, (err, files) => {
       if (err != null) {
         return reject(err);

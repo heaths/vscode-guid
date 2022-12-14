@@ -80,9 +80,9 @@
   ],
   "scripts": {
     "lint": "eslint --ext .ts src",
-    "compile": "tsc --p .",
+    "compile": "tsc -p .",
     "watch": "tsc -p . -w",
-    "pretest": "npm run compile",
+    "pretest": "tsc -p .",
     "test": "node ./out/test/runTest.js",
     "package": "npm run compile",
     "vscode:prepublish": "npm run package"
