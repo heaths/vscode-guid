@@ -16,12 +16,11 @@ jobs:
   test:
     uses: ./.github/workflows/ci.yml
     with:
-      release: true
+      version: ${{ github.ref_name }}
 
   publish:
     needs: test
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
 
     steps:
     # Check out with full history to generate release notes.
@@ -33,14 +32,14 @@ jobs:
     - name: Download package
       uses: actions/download-artifact@v3
       with:
-        name: artifacts
+        name: artifact
         path: ${{ runner.temp }}/
 
     - name: Setup Node
       uses: actions/setup-node@v3
       with:
         cache: npm
-        node-version: '16.x'
+        node-version: ${{ needs.test.outputs.node-version }}
 
     - name: Release
       run: gh release create ${{ github.ref_name }} --generate-notes
@@ -49,13 +48,13 @@ jobs:
 
     - name: Upload package to release
       run: |
-        gh release upload ${{ github.ref_name }} "${{ runner.temp }}/${{ needs.build.outputs.package_name }}"
+        gh release upload ${{ github.ref_name }} "${{ runner.temp }}/${{ needs.test.outputs.package-name }}"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Publish package
-      run: |
-        npm install -g vsce
-        vsce publish -p "$VSCE_TOKEN" --packagePath "${{ runner.temp }}/${{ needs.build.outputs.package_name }}"
-      env:
-        VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}
+    # - name: Publish package
+    #   run: |
+    #     npm install -g vsce
+    #     vsce publish -p "$VSCE_TOKEN" --packagePath "${{ runner.temp }}/${{ needs.build.outputs.package-name }}"
+    #   env:
+    #     VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}

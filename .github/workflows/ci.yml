@@ -7,11 +7,18 @@ on:
     - main
   workflow_call:
     inputs:
-      release:
-        description: Whether this is running as part of a release workflow.
+      version:
+        description: Version to build.
         required: false
-        type: boolean
-        default: false
+        type: string
+        default: ''
+    outputs:
+      node-version:
+        description: Version of node used to build package.
+        value: ${{ jobs.test.outputs.node-version }}
+      package-name:
+        description: Name of the package built.
+        value: ${{ jobs.test.outputs.package-name }}
 
 defaults:
   run:
@@ -32,10 +39,14 @@ jobs:
         vscode-channel:
         - stable
         - insiders
+        include:
+        - os: ubuntu-latest
+          vscode-channel: stable
+          build-package: true
 
     outputs:
-      package_name: ${{ steps.package.outputs.package_name }}
-      build_version: ${{ steps.package.outputs.build_version }}
+      node-version: ${{ steps.package.outputs.node-version }}
+      package-name: ${{ steps.package.outputs.package-name }}
 
     steps:
     - name: Checkout
@@ -49,9 +60,6 @@ jobs:
 
     - name: Install dependencies
       run: npm ci
-
-    - name: Compile
-      run: npm run compile
 
     - name: Test (Linux)
       if: runner.os == 'Linux'
@@ -68,27 +76,35 @@ jobs:
         TEST_RESULTS_PATH: ${{ github.workspace }}/.vscode-test/test-results.xml
 
     - name: Publish test results
-      uses: actions/upload-artifact@v3
+      uses: dorny/test-reporter@v1
       with:
         name: test-results-${{ matrix.os }}-${{ matrix.vscode-channel }}
         path: .vscode-test/test-results.xml
+        reporter: jest-junit
 
     - id: package
       name: Package
       run: |
-        npm install -g vsce
-        vsce package -o "${{ runner.temp }}/vscode-guid-${{ env.BUILD_VERSION }}.vsix"
+        BUILD_VERSION="${{ inputs.version }}"
+        if [[ -z "${BUILD_VERSION}" ]]; then
+          BUILD_VERSION="$(npm pkg get version | tr -d \")-pre"
+        fi
+        BUILD_VERSION="${BUILD_VERSION#v}"
+        echo "BUILD_VERSION=${BUILD_VERSION}" >> $GITHUB_ENV
 
-        echo "::set-output name=package_name::vscode-guid-${{ env.BUILD_VERSION }}.vsix"
-        echo "::set-output name=build_version::${{ env.BUILD_VERSION }}"
-      if: runner.os == 'Linux' && matrix.vscode-channel == 'stable'
+        npm install -g vsce
+        vsce package -o "${{ runner.temp }}/vscode-guid-${BUILD_VERSION}.vsix"
+
+        echo "node-version=${{ matrix.node-version }}" >> $GITHUB_OUTPUT
+        echo "package-name=vscode-guid-${BUILD_VERSION}.vsix" >> $GITHUB_OUTPUT
+      if: matrix.build-package
 
     - name: Upload package
       uses: actions/upload-artifact@v3
-      if: runner.os == 'Linux' && matrix.vscode-channel == 'stable'
       with:
-        name: artifacts
+        name: artifact
         path: ${{ runner.temp }}/vscode-guid-${{ env.BUILD_VERSION }}.vsix
+      if: matrix.build-package
 
   check:
     needs: test
@@ -98,9 +114,7 @@ jobs:
     steps:
     - name: Check
       run: |
-        if [[ "${{ needs.test.result }}" == "success" ]]; then
-          echo -e "\e[32mSuccess\e[0m"
-        else
-          echo -e "\e[31mFailed\e[0m"
+        if [[ "${{ needs.test.result }}" != "success" ]]; then
           exit 1
         fi
+        echo "All tests passed :tada:" >> $GITHUB_STEP_SUMMARY
