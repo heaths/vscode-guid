@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.0 (Unreleased)
+
+* Webpack extension for smaller size and to support vscode.dev.
+
 ## 1.6.0 (2022-12-08)
 
 * Added C structure-style option to quick pick, and support for `x` and `X` format options.

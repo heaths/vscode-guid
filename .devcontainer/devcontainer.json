@@ -1,26 +1,28 @@
 {
-    "name": "VSCode - Extension Development",
-    "build": {
-        "dockerfile": "Dockerfile"
+  "name": "VSCode - Extension Development",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "postCreateCommand": "npm install",
+  "overrideCommand": false,
+  "runArgs": [
+    "--init",
+    "--security-opt",
+    "seccomp=unconfined"
+  ],
+  "remoteUser": "node",
+  "settings": {
+    "terminal.integrated.profiles.linux": {
+      "bash": {
+        "path": "bash",
+        "icon": "terminal-bash"
+      }
     },
-    "postCreateCommand": "npm install",
-    "overrideCommand": false,
-    "runArgs": [
-      "--init",
-      "--security-opt", "seccomp=unconfined"
-    ],
-    "remoteUser": "node",
-    "settings": {
-        "terminal.integrated.profiles.linux": {
-          "bash": {
-            "path": "bash",
-            "icon": "terminal-bash"
-          }
-        },
-        "terminal.integrated.defaultProfile.linux": "bash"
-    },
-    "extensions": [
-      "dbaeumer.vscode-eslint",
-      "editorconfig.editorconfig"
-    ]
+    "terminal.integrated.defaultProfile.linux": "bash"
+  },
+  "extensions": [
+    "amodio.tsl-problem-matcher",
+    "dbaeumer.vscode-eslint",
+    "editorconfig.editorconfig"
+  ]
 }

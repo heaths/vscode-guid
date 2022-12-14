@@ -2,12 +2,54 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "lint",
       "type": "npm",
       "script": "lint",
       "problemMatcher": [
         "$eslint-stylish"
+      ]
+    },
+    {
+      "type": "npm",
+      "script": "watch",
+      "problemMatcher": "$ts-webpack-watch",
+      "isBackground": true,
+      "presentation": {
+        "reveal": "never",
+        "group": "watchers"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "type": "npm",
+      "script": "watch-tests",
+      "problemMatcher": "$tsc-watch",
+      "isBackground": true,
+      "presentation": {
+        "reveal": "never",
+        "group": "watchers"
+      },
+      "group": "build"
+    },
+    {
+      "label": "watch",
+      "dependsOn": [
+        "npm: watch",
+        "npm: watch-tests"
       ],
-      "label": "npm: lint"
+      "problemMatcher": []
+    },
+    {
+      "label": "test",
+      "type": "npm",
+      "script": "test",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      }
     }
   ]
 }

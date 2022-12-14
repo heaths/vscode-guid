@@ -1,28 +1,29 @@
 {
-    "root": true,
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "ecmaVersion": 6,
-        "project": "tsconfig.json",
-        "sourceType": "module"
-    },
-    "plugins": [
-        "@typescript-eslint"
-    ],
-    "extends": "standard-with-typescript",
-    "rules": {
-        "curly": "warn",
-        "eqeqeq": "error",
-        "no-throw-literal": "warn",
-        "semi": "off",
-        "@typescript-eslint/comma-dangle": "off",
-        "@typescript-eslint/indent": "off",
-        "@typescript-eslint/semi": "off",
-        "@typescript-eslint/space-before-function-paren": "off"
-    },
-    "ignorePatterns": [
-        "out/",
-        "dist/",
-        "**/*.d.ts"
-    ]
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "project": "tsconfig.json",
+    "sourceType": "module"
+  },
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "extends": "standard-with-typescript",
+  "rules": {
+    "curly": "warn",
+    "eqeqeq": "error",
+    "indent": "off",
+    "no-throw-literal": "warn",
+    "semi": "off",
+    "@typescript-eslint/comma-dangle": "off",
+    "@typescript-eslint/indent": "off",
+    "@typescript-eslint/semi": "off",
+    "@typescript-eslint/space-before-function-paren": "off"
+  },
+  "ignorePatterns": [
+    "out/",
+    "dist/",
+    "**/*.d.ts"
+  ]
 }
