@@ -1,14 +1,15 @@
 {
-    "editor.insertSpaces": true,
-    "diffEditor.ignoreTrimWhitespace": true,
-    "files.exclude": {
-        "**/*.vsix": true,
-        "npm-debug.log": true
-    },
-    "files.trimTrailingWhitespace": true,
-    "search.exclude": {
-        "out": true
-    },
-    "typescript.tsc.autoDetect": "off",
-    "typescript.tsdk": "./node_modules/typescript/lib"
+  "editor.insertSpaces": true,
+  "diffEditor.ignoreTrimWhitespace": true,
+  "files.exclude": {
+    "**/*.vsix": true,
+    "npm-debug.log": true
+  },
+  "files.trimTrailingWhitespace": true,
+  "search.exclude": {
+    "dist": true,
+    "out": true
+  },
+  "typescript.tsc.autoDetect": "off",
+  "typescript.tsdk": "./node_modules/typescript/lib"
 }
