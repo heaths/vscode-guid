@@ -6,6 +6,7 @@ on:
     - "v*"
 
 permissions:
+  checks: write
   contents: write
 
 defaults:
