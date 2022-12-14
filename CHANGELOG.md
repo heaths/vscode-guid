@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.7.0 (Unreleased)
+## 1.7.0 (2022-12-14)
 
 * Support installing extension into VSCode for the Web e.g., vscode.dev.
 * Webpack extension for smaller size and to support vscode.dev.
