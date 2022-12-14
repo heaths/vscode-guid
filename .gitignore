@@ -3,4 +3,5 @@ node_modules
 out
 npm-debug.log
 **/*.vsix
+**/*.zip
 *.db

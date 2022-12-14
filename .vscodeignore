@@ -1,13 +1,12 @@
+.devcontainer/**
 .gitattributes
+.github/**
 .gitignore
 .vscode-test/**
 .vscode/**
-**/*.
 **/*.map
 out/test/**
-res/**
-src/**
-test/**
 package-lock.json
+res/*.svg
+src/**
 tsconfig.json
-tslint.json
