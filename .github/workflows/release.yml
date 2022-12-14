@@ -53,9 +53,9 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    # - name: Publish package
-    #   run: |
-    #     npm install -g vsce
-    #     vsce publish -p "$VSCE_TOKEN" --packagePath "${{ runner.temp }}/${{ needs.build.outputs.package-name }}"
-    #   env:
-    #     VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}
+    - name: Publish package
+      run: |
+        npm install -g vsce
+        vsce publish -p "$VSCE_TOKEN" --packagePath "${{ runner.temp }}/${{ needs.build.outputs.package-name }}"
+      env:
+        VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}
