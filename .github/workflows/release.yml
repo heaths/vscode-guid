@@ -55,7 +55,7 @@ jobs:
 
     - name: Publish package
       run: |
-        npm install -g vsce
-        vsce publish -p "$VSCE_TOKEN" --packagePath "${{ runner.temp }}/${{ needs.build.outputs.package-name }}"
+        npm install -g @vscode/vsce
+        vsce publish -p "$VSCE_TOKEN" --packagePath "${{ runner.temp }}/${{ needs.test.outputs.package-name }}"
       env:
         VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}
