@@ -4,6 +4,7 @@
 .github/**
 .gitignore
 .vscode-test/**
+.vscode-test-web/**
 .vscode/**
 **/*.map
 **/*.ts

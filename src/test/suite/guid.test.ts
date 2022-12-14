@@ -21,7 +21,7 @@
 // SOFTWARE.
 
 import * as assert from 'assert';
-import { Guid } from '../guid';
+import { Guid } from '../../guid';
 
 suite('Guid', () => {
     test('creates random Guid', () => {

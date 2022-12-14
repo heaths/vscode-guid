@@ -2,6 +2,7 @@
 
 ## 1.7.0 (Unreleased)
 
+* Support installing extension into VSCode for the Web e.g., vscode.dev.
 * Webpack extension for smaller size and to support vscode.dev.
 
 ## 1.6.0 (2022-12-08)

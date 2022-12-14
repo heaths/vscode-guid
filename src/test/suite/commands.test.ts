@@ -21,8 +21,8 @@
 // SOFTWARE.
 
 import * as assert from 'assert';
-import { Guid } from '../guid';
-import { getQuickPickItems } from '../commands';
+import { Guid } from '../../guid';
+import { getQuickPickItems } from '../../commands';
 
 suite('Commands', () => {
     test('quick pick 1 is simple string with default options', () => {

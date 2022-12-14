@@ -2,7 +2,6 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "lint",
       "type": "npm",
       "script": "lint",
       "problemMatcher": [
@@ -43,7 +42,6 @@
       "problemMatcher": []
     },
     {
-      "label": "test",
       "type": "npm",
       "script": "test",
       "group": {
