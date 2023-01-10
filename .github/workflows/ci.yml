@@ -19,6 +19,9 @@ on:
       package-name:
         description: Name of the package built.
         value: ${{ jobs.test.outputs.package-name }}
+permissions:
+  checks: write
+  statuses: write
 
 defaults:
   run:
