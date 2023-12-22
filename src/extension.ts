@@ -21,11 +21,12 @@
 // SOFTWARE.
 
 import * as vscode from 'vscode';
-import { insertCommand, insertManyCommand } from './commands';
+import { insertCommand, insertManyCommand, insertEmptyCommand } from './commands';
 
 export function activate(context: vscode.ExtensionContext): void {
     context.subscriptions.push(
         vscode.commands.registerTextEditorCommand('guid.insert', insertCommand),
         vscode.commands.registerTextEditorCommand('guid.insertMany', insertManyCommand),
+        vscode.commands.registerTextEditorCommand('guid.insertEmpty', insertEmptyCommand),
     );
 }

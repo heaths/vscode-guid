@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.8.0 (2022-12-22)
+
+* [@crdonnelly](https://github.com/crdonnelly) added command to insert empty guid(s).
+
 ## 1.7.0 (2022-12-14)
 
 * Support installing extension into VSCode for the Web e.g., vscode.dev.

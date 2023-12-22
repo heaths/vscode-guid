@@ -19,6 +19,11 @@
         "command": "guid.insertMany",
         "title": "Insert many GUIDs",
         "description": "Insert unique GUIDs at each position."
+      },
+      {
+        "command": "guid.insertEmpty",
+        "title": "Insert empty GUID",
+        "description": "Insert empty GUID(s) at the current position(s)."
       }
     ],
     "configuration": {
@@ -58,12 +63,19 @@
         "key": "alt+ctrl+shift+[",
         "mac": "alt+cmd+shift+[",
         "when": "editorTextFocus"
+      },
+      {
+        "command": "guid.insertEmpty",
+        "key": "ctrl+shift+]",
+        "mac": "cmd+shift+]",
+        "when": "editorTextFocus"
       }
     ]
   },
   "activationEvents": [
     "onCommand:guid.insert",
-    "onCommand:guid.insertMany"
+    "onCommand:guid.insertMany",
+    "onCommand:guid.insertEmpty"
   ],
   "icon": "res/logo.png",
   "galleryBanner": {
