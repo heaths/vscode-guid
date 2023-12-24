@@ -19,6 +19,7 @@ on:
       package-name:
         description: Name of the package built.
         value: ${{ jobs.test.outputs.package-name }}
+
 permissions:
   checks: write
   statuses: write
@@ -95,7 +96,7 @@ jobs:
         BUILD_VERSION="${BUILD_VERSION#v}"
         echo "BUILD_VERSION=${BUILD_VERSION}" >> $GITHUB_ENV
 
-        npm install -g vsce
+        npm install -g @vscode/vsce
         vsce package -o "${{ runner.temp }}/vscode-guid-${BUILD_VERSION}.vsix"
 
         echo "node-version=${{ matrix.node-version }}" >> $GITHUB_OUTPUT

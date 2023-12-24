@@ -39,6 +39,11 @@ const nodeConfig = {
             }
         ]
     },
+    plugins: [
+        new webpack.ProvidePlugin({
+            Buffer: ['buffer', 'Buffer']
+        })
+    ],
     devtool: 'nosources-source-map',
     infrastructureLogging: {
         level: 'log'

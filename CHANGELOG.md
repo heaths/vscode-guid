@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.8.0 (2022-12-22)
+## 1.8.0 (2022-12-23)
 
 * [@crdonnelly](https://github.com/crdonnelly) added command to insert empty guid(s).
 

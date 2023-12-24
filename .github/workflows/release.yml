@@ -8,6 +8,7 @@ on:
 permissions:
   checks: write
   contents: write
+  statuses: write
 
 defaults:
   run:
