@@ -31,6 +31,12 @@ enum FormatType {
     CUSTOM
 }
 
+enum GuidGenerateType {
+    EMPTY,
+    SINGLE,
+    MULTIPLE
+}
+
 interface GuidPickFormat {
     format: (g: Guid) => string
     type: FormatType
@@ -163,7 +169,7 @@ const FORMATS: GuidPickFormat[] = [
  * @param edit {vscode.TextEditorEdit} A text edit builder for the intended change.
  */
 export function insertCommand(textEditor: vscode.TextEditor, edit: vscode.TextEditorEdit): void {
-    void insertCommandImpl(textEditor, edit, false);
+    void insertCommandImpl(textEditor, edit, GuidGenerateType.SINGLE);
 }
 
 /**
@@ -172,11 +178,20 @@ export function insertCommand(textEditor: vscode.TextEditor, edit: vscode.TextEd
  * @param edit {vscode.TextEditorEdit} A text edit builder for the intended change.
  */
 export function insertManyCommand(textEditor: vscode.TextEditor, edit: vscode.TextEditorEdit): void {
-    void insertCommandImpl(textEditor, edit, true);
+    void insertCommandImpl(textEditor, edit, GuidGenerateType.MULTIPLE);
 }
 
-async function insertCommandImpl(textEditor: vscode.TextEditor, edit: vscode.TextEditorEdit, unique: boolean): Promise<void> {
-    const g = new Guid();
+/**
+ * Inserts an empty GUID at the cursor position(s) or replaces active selection(s).
+ * @param textEditor {vscode.TextEditor} The active text editor.
+ * @param edit {vscode.TextEditorEdit} A text edit builder for the intended change.
+ */
+export function insertEmptyCommand(textEditor: vscode.TextEditor, edit: vscode.TextEditorEdit): void {
+    void insertCommandImpl(textEditor, edit, GuidGenerateType.EMPTY);
+}
+
+async function insertCommandImpl(textEditor: vscode.TextEditor, edit: vscode.TextEditorEdit, type: GuidGenerateType): Promise<void> {
+    const g = type === GuidGenerateType.EMPTY ? Guid.EMPTY : new Guid();
     const settings = vscode.workspace.getConfiguration('insertGuid');
     const showLowercase = settings.get<boolean>('showLowercase', true);
     const showUppercase = settings.get<boolean>('showUppercase', false);
@@ -231,7 +246,7 @@ async function insertCommandImpl(textEditor: vscode.TextEditor, edit: vscode.Tex
                 edit.replace(selection, item.text);
             }
 
-            if (unique) {
+            if (type === GuidGenerateType.MULTIPLE) {
                 item.generate();
             }
         }
