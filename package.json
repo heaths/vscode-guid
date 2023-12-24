@@ -63,12 +63,6 @@
         "key": "alt+ctrl+shift+[",
         "mac": "alt+cmd+shift+[",
         "when": "editorTextFocus"
-      },
-      {
-        "command": "guid.insertEmpty",
-        "key": "ctrl+shift+]",
-        "mac": "cmd+shift+]",
-        "when": "editorTextFocus"
       }
     ]
   },
@@ -117,7 +111,7 @@
     "@types/vscode": "^1.30.0",
     "@typescript-eslint/eslint-plugin": "^5.39.0",
     "@typescript-eslint/parser": "^5.39.0",
-    "@vscode/test-electron": "^2.2.1",
+    "@vscode/test-electron": "^2.3.8",
     "@vscode/test-web": "^0.0.33",
     "eslint": "^8.29.0",
     "eslint-config-standard-with-typescript": "^23.0.0",

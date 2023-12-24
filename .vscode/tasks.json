@@ -24,7 +24,7 @@
     },
     {
       "type": "npm",
-      "script": "watch-tests",
+      "script": "watch-test",
       "problemMatcher": "$tsc-watch",
       "isBackground": true,
       "presentation": {
@@ -37,7 +37,7 @@
       "label": "watch",
       "dependsOn": [
         "npm: watch",
-        "npm: watch-tests"
+        "npm: watch-test"
       ],
       "problemMatcher": []
     },
