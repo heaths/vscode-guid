@@ -112,7 +112,7 @@
     "@typescript-eslint/eslint-plugin": "^5.39.0",
     "@typescript-eslint/parser": "^5.39.0",
     "@vscode/test-electron": "^2.3.8",
-    "@vscode/test-web": "^0.0.33",
+    "@vscode/test-web": "^0.0.50",
     "eslint": "^8.29.0",
     "eslint-config-standard-with-typescript": "^23.0.0",
     "eslint-plugin-import": "^2.26.0",
