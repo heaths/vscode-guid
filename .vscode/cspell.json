@@ -8,6 +8,7 @@
   ],
   "ignorePaths": [
     ".devcontainer/",
+    ".github/",
     ".vscode/",
     "res/logo.svg"
   ],
