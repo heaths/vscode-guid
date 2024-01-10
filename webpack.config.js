@@ -7,6 +7,8 @@ const webpack = require('webpack');
 // @ts-check
 /** @typedef {import('webpack').Configuration} WebpackConfig **/
 
+// cspell:ignore nosources vscodeignore
+
 /** @type WebpackConfig */
 const nodeConfig = {
     target: 'node',

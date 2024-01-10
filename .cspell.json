@@ -1,0 +1,7 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "import": [
+    ".vscode/cspell.json"
+  ]
+}

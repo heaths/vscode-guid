@@ -29,6 +29,26 @@ defaults:
     shell: bash
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    env:
+      NODE_VERSION: '18.x'
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Node ${{ env.NODE_VERSION }}
+      uses: actions/setup-node@v3
+      with:
+        cache: npm
+        node-version: ${{ env.NODE_VERSION }}
+
+    - name: Spell check
+      uses: streetsidesoftware/cspell-action@v5
+      with:
+        config: .vscode/cspell.json
+
   test:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -111,7 +131,9 @@ jobs:
       if: matrix.build-package
 
   check:
-    needs: test
+    needs:
+    - lint
+    - test
     runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
 
