@@ -2,7 +2,7 @@
 
 Contributions are welcome.
 
-Backward compatibility of the user experience (UX) is important. This exstension was designed to be fast and simple - built right into users' workflow unlike the original "Insert GUID" that shipped with Visual Studio I sought to improve and replace. So any changes to bindings or menu order should be avoided unless the user has to opt into new behavior through, for example, changing settings to non-default values.
+Backward compatibility of the user experience (UX) is important. This extension was designed to be fast and simple - built right into users' workflow unlike the original "Insert GUID" that shipped with Visual Studio I sought to improve and replace. So any changes to bindings or menu order should be avoided unless the user has to opt into new behavior through, for example, changing settings to non-default values.
 
 Recommendations from .editorconfig and linting results should be respected, though there are few.
 

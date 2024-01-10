@@ -86,7 +86,8 @@
     }
   ],
   "scripts": {
-    "lint": "eslint --ext .ts src",
+    "eslint:github-action": "npm run lint",
+    "lint": "eslint --ext .ts src/",
     "compile": "webpack",
     "compile-test": "tsc -p .",
     "watch": "webpack --watch",
@@ -114,6 +115,7 @@
     "@typescript-eslint/parser": "^5.39.0",
     "@vscode/test-electron": "^2.3.8",
     "@vscode/test-web": "^0.0.50",
+    "cspell": "^8.3.2",
     "eslint": "^8.29.0",
     "eslint-config-standard-with-typescript": "^23.0.0",
     "eslint-plugin-import": "^2.26.0",

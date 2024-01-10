@@ -11,18 +11,23 @@
     "seccomp=unconfined"
   ],
   "remoteUser": "node",
-  "settings": {
-    "terminal.integrated.profiles.linux": {
-      "bash": {
-        "path": "bash",
-        "icon": "terminal-bash"
-      }
-    },
-    "terminal.integrated.defaultProfile.linux": "bash"
-  },
-  "extensions": [
-    "amodio.tsl-problem-matcher",
-    "dbaeumer.vscode-eslint",
-    "editorconfig.editorconfig"
-  ]
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.profiles.linux": {
+          "bash": {
+            "path": "bash",
+            "icon": "terminal-bash"
+          }
+        },
+        "terminal.integrated.defaultProfile.linux": "bash"
+      },
+      "extensions": [
+        "amodio.tsl-problem-matcher",
+        "dbaeumer.vscode-eslint",
+        "editorconfig.editorconfig",
+        "streetsidesoftware.code-spell-checker"
+      ]
+    }
+  }
 }

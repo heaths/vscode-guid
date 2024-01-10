@@ -61,7 +61,7 @@ export class Guid {
     /**
      * Formats a b as a GUID string representation.
      */
-    static unparse(b: Buffer): string {
+    static unparse(b: Buffer): string { // cspell:ignore unparse
         return b.toString('hex', 0, 4) + '-' +
             b.toString('hex', 4, 6) + '-' +
             b.toString('hex', 6, 8) + '-' +

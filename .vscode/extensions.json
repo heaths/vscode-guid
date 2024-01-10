@@ -2,6 +2,7 @@
   "recommendations": [
     "amodio.tsl-problem-matcher",
     "dbaeumer.vscode-eslint",
-    "editorconfig.editorconfig"
+    "editorconfig.editorconfig",
+    "streetsidesoftware.code-spell-checker"
   ]
 }

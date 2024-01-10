@@ -1,0 +1,38 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": [
+    "Codespaces",
+    "devcontainer",
+    "struct"
+  ],
+  "ignorePaths": [
+    ".devcontainer/",
+    ".github/",
+    ".vscode/",
+    "res/logo.svg"
+  ],
+  "useGitignore": true,
+  "overrides": [
+    {
+      "filename": "CHANGELOG.md",
+      "ignoreRegExpList": [
+        "@\\w+"
+      ]
+    },
+    {
+      "filename": "CONTRIBUTING.md",
+      "words": [
+        "autocrlf",
+        "framebuffer",
+        "Xvfb"
+      ]
+    },
+    {
+      "filename": "package.json",
+      "words": [
+        "preversion"
+      ]
+    }
+  ]
+}
