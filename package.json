@@ -1,6 +1,6 @@
 {
   "name": "vscode-guid",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "publisher": "heaths",
   "displayName": "Insert GUID",
   "description": "Insert GUIDs in different formats directly into the editor.",
@@ -82,7 +82,7 @@
     {
       "description": "build status: main",
       "href": "https://github.com/heaths/vscode-guid",
-      "url": "https://img.shields.io/github/workflow/status/heaths/vscode-guid/ci?logo=github&style=flat-square"
+      "url": "https://github.com/heaths/vscode-guid/actions/workflows/ci.yml/badge.svg?event=push"
     }
   ],
   "scripts": {
