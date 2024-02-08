@@ -28,7 +28,7 @@ enum FormatType {
     LOWERCASE,
     UPPERCASE,
     SNIPPET,
-    CUSTOM
+    CUSTOM,
 }
 
 enum GuidGenerateType {
@@ -158,6 +158,19 @@ const FORMATS: GuidPickFormat[] = [
     {
         format: (g) => {
             return g.toString('x');
+        },
+        type: FormatType.SNIPPET
+    },
+    {
+        named: true,
+        format: (g) => {
+            return util.format('const %s: GUID = GUID%s;', NAME_PLACEHOLDER, g.toString('structrs'));
+        },
+        preface: (g) => {
+            return util.format('// %s\n', g.toString('braced'));
+        },
+        epilogue: (g) => {
+            return '\n';
         },
         type: FormatType.SNIPPET
     },
