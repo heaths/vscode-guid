@@ -94,6 +94,28 @@ export class Guid {
             return util.format('{%s}', this.toString());
         } else if (format === 'no-hyphen') {
             return this.toString().replace(/-/g, '');
+        } else if (format === 'x0') {
+            return b.toString('hex', 0, 4);
+        } else if (format === 'x1') {
+            return b.toString('hex', 4, 6);
+        } else if (format === 'x2') {
+            return b.toString('hex', 6, 8);
+        } else if (format === 'x3') {
+            return b.toString('hex', 8, 9);
+        } else if (format === 'x4') {
+            return b.toString('hex', 9, 10);
+        } else if (format === 'x5') {
+            return b.toString('hex', 10, 11);
+        } else if (format === 'x6') {
+            return b.toString('hex', 11, 12);
+        } else if (format === 'x7') {
+            return b.toString('hex', 12, 13);
+        } else if (format === 'x8') {
+            return b.toString('hex', 13, 14);
+        } else if (format === 'x9') {
+            return b.toString('hex', 14, 15);
+        } else if (format === 'x10') {
+            return b.toString('hex', 15, 16);
         } else {
             return b.toString('hex', 0, 4) + '-' +
                 b.toString('hex', 4, 6) + '-' +

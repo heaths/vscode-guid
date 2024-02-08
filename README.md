@@ -14,6 +14,7 @@ This provides the same useful formats as _Create GUID_ that ships with Visual St
 4. C macro: `DEFINE_GUID(__NAME__, {x11d4dc2e, 0x375a, 0x4b89, 0x9a, 0xd4, 0xaa, 0x30, 0x10, 0x53, 0x85, 0xaa);`
 5. Unformatted string: `11d4dc2e375a4b899ad4aa30105385aa`
 6. C structure only: `{0x11d4dc2e, 0x375a, 0x4b89, {0x9a, 0xd4, 0xaa, 0x30, 0x10, 0x53, 0x85, 0xaa}}`
+7. User-specified formats: any way you wish, see [Options](#options).
 
 The token `__NAME__` is easy to replace by double clicking to select every character, unlike `<<name>>` used in the _Create GUID_ tool.
 
@@ -49,7 +50,7 @@ You can set different configuration options to control the format of GUIDs that 
 * insertGuid.showLowercase: Show lowercase GUIDs (with and without braces) when presenting possible GUID formats to insert. The default is `true`.
 * insertGuid.showUppercase: Show uppercase GUIDs (with and without braces) when presenting possible GUID formats to insert. The default is `false`.
 * insertGuid.showCodeSnippets: Show code snippets for C++ when presenting possible GUID formats to insert. The default is `true`.
-* insertGuid.pasteAutomatically: When not empty, paste the GUID in a specified format without showing selection menu. The default is "".
+* insertGuid.pasteAutomatically: When not empty, paste the GUID in a specified format without showing selection menu. The default is "". See the option description in the settings for more information on the format specification.
 
 ## License
 
