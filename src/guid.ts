@@ -90,6 +90,12 @@ export class Guid {
                 b.toString('hex', 8, 9), b.toString('hex', 9, 10),
                 b.toString('hex', 10, 11), b.toString('hex', 11, 12), b.toString('hex', 12, 13),
                 b.toString('hex', 13, 14), b.toString('hex', 14, 15), b.toString('hex', 15, 16));
+        } else if (format === 'structrs') {
+            return util.format('{data1: 0x%s, data2: 0x%s, data3: 0x%s, data4: [0x%s, 0x%s, 0x%s, 0x%s, 0x%s, 0x%s, 0x%s, 0x%s]}',
+                b.toString('hex', 0, 4), b.toString('hex', 4, 6), b.toString('hex', 6, 8),
+                b.toString('hex', 8, 9), b.toString('hex', 9, 10),
+                b.toString('hex', 10, 11), b.toString('hex', 11, 12), b.toString('hex', 12, 13),
+                b.toString('hex', 13, 14), b.toString('hex', 14, 15), b.toString('hex', 15, 16));
         } else if (format === 'braced' || format === 'b') {
             return util.format('{%s}', this.toString());
         } else if (format === 'no-hyphen') {
