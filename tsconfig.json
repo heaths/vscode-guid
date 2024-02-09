@@ -7,11 +7,19 @@
     ],
     "strict": true,
     "sourceMap": true,
-    "rootDir": "src",
+    "rootDirs": [
+      "src",
+      "."
+    ],
     "outDir": "out",
+    "resolveJsonModule": true,
     "removeComments": true,
     "noUnusedLocals": true
   },
+  "include": [
+    "src/**/*",
+    "package.json"
+  ],
   "exclude": [
     "node_modules",
     ".vscode-test",

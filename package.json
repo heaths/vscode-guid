@@ -29,25 +29,43 @@
     "configuration": {
       "title": "Insert GUID",
       "properties": {
+        "insertGuid.formats": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true,
+          "default": null,
+          "order": 0,
+          "markdownDescription": "An array of string formats to display in a quick pick menu. Each line contains format specifiers from the list below:\n* `{b}` or `{B}` inserts a braced string in lowercase `{b}` or uppercase `{B}` e.g., `{880c86bc-384c-4cce-9e9a-4f760ca755c4}`\n* `{d}` or `{D}` inserts a hyphenated string in lowercase `{d}` or uppercase `{D}` e.g., `880c86bc-384c-4cce-9e9a-4f760ca755c4`\n* `{n}` or `{N}` inserts an unformatted string in lowercase `{n}` or uppercase `{N}` e.g., `880c86bc384c4cce9e9a4f760ca755c4`\n* `{x}` or `{X}` inserts a struct-formatted string in lowercase `{x}` or uppercase `{X}` e.g., `{0x880c86bc,0x384c,0x4cce,{0x9e,0x9a,0x4f,0x76,0x0c,0xa7,0x55\nxc4}}`\n* `{x0}` or `{X0}` inserts the first four bytes as a hexadecimal string in lowercase `{x0}` or uppercase `{X0}` e.g., `0x880c86bc`\n* `{x1}` or `{X1}`, and `{x2}` or `{X2}` insert the second and third two bytes as a hexadecimal string in lowercase `{x1}` and `{x2}`, or uppercase `{X1}` nd \n{X2}` e.g., `0x384c` and `0x4cce`\n* `{x3}` or `{X3}` through `{x10}` or `{X10}` insert the subsequent bytes individually as a hexadecimal string in lowercase `{x3}` or uppercase `{X3}` e.g.,\n0x9e` through `0xc4`.\n* `\\n` or `{nl}` inserts a new line\n\nAll other characters will be interpreted literally e.g., `new GUID(\"{D}\")` inserts `new GUID(\"880C86BC-384C-4CCE-9E9A-4F760CA755C4\")`"
+        },
         "insertGuid.showLowercase": {
           "type": "boolean",
           "default": true,
-          "description": "Show lowercase GUIDs (with and without braces) when presenting possible GUID formats to insert."
+          "order": 1,
+          "description": "Show lowercase GUIDs (with and without braces) when presenting possible GUID formats to insert.",
+          "deprecationMessage": "Add desired lowercase formats to `#insertGuid.formats#`. This setting will be removed in a future version."
         },
         "insertGuid.showUppercase": {
           "type": "boolean",
           "default": false,
-          "description": "Show uppercase GUIDs (with and without braces) when presenting possible GUID formats to insert."
+          "order": 2,
+          "description": "Show uppercase GUIDs (with and without braces) when presenting possible GUID formats to insert.",
+          "deprecationMessage": "Add desired uppercase formats to `#insertGuid.formats#`. This setting will be removed in a future version."
         },
         "insertGuid.showCodeSnippets": {
           "type": "boolean",
           "default": true,
-          "description": "Show code snippets for C++ when presenting possible GUID formats to insert."
+          "order": 3,
+          "description": "Show code snippets for C++ when presenting possible GUID formats to insert.",
+          "deprecationMessage": "Add desired snippet formats to `#insertGuid.formats#`. This setting will be removed in a future version."
         },
         "insertGuid.pasteAutomatically": {
           "type": "string",
           "default": "",
-          "markdownDescription": "Paste GUID without prompting using the specified format:\n* `{b}|{B}` inserts a braced string in lowercase `{b}` or uppercase `{B}` e.g., `{880c86bc-384c-4cce-9e9a-4f760ca755c4}`\n* `{d}|{D}` inserts a hyphenated string in lowercase `{d}` or uppercase `{D}` e.g., `880c86bc-384c-4cce-9e9a-4f760ca755c4`\n* `{n}|{N}` inserts an unformatted string in lowercase `{n}` or uppercase `{N}` e.g., `880c86bc384c4cce9e9a4f760ca755c4`\n* `{x}|{X}` inserts a struct-formatted string in lowercase `{x}` or uppercase `{X}` e.g., `{0x880c86bc,0x384c,0x4cce,{0x9e,0x9a,0x4f,0x76,0x0c,0xa7,0x55,0xc4}}`\n* `{x0}|{X0}` inserts the first four bytes as a hexadecimal string in lowercase `{x0}` or uppercase `{X0}` e.g., `0x880c86bc`\n* `{x1}|{X1}` and `{x2}|{X2}` insert the second and third two bytes as a hexadecimal string in lowercase `{x1}` and `{x2}`, or uppercase `{X1}` and `{X2}` e.g., `0x384c` and `0x4cce`\n* `{x3}|{X3}` through `{x10}|{X10}` insert the subsequent bytes individually as a hexadecimal string in lowercase `{x3}` or uppercase `{X3}` e.g., `0x9e` through `0xc4`.\n* `{nl}` inserts a new line\n* All other characters will be interpreted literally e.g., `new GUID(\"{D}\")` inserts `new GUID(\"880C86BC-384C-4CCE-9E9A-4F760CA755C4\")`"
+          "order": 4,
+          "markdownDescription": "Paste GUID without prompting using format specifiers described on `#insertGuid.formats#`."
         }
       }
     },
@@ -66,11 +84,6 @@
       }
     ]
   },
-  "activationEvents": [
-    "onCommand:guid.insert",
-    "onCommand:guid.insertMany",
-    "onCommand:guid.insertEmpty"
-  ],
   "icon": "res/logo.png",
   "galleryBanner": {
     "color": "#252526",
@@ -93,13 +106,13 @@
     "watch": "webpack --watch",
     "watch-test": "tsc -p . -w",
     "pretest": "npm run compile-test",
-    "test": "node ./out/test/runTest.js",
+    "test": "node ./out/src/test/runTest.js",
     "package": "webpack --mode production --devtool hidden-source-map",
     "preversion": "npm test",
     "vscode:prepublish": "npm run package"
   },
   "engines": {
-    "vscode": "^1.30.0"
+    "vscode": "^1.75.0"
   },
   "dependencies": {
     "buffer": "^6.0.3",

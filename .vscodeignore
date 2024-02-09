@@ -11,7 +11,6 @@
 **/*.zip
 node_modules/**
 out/**
-out/test/**
 package-lock.json
 res/*.svg
 src/**
