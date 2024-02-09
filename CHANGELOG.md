@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.9.0 (2024-02-08)
+## 1.9.0 (2024-02-09)
 
 * [@merlinz01](https://github.com/merlinz01) added more custom format specifiers ([#85](https://github.com/heaths/vscode-guid/pull/85))
 
