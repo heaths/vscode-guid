@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.9.0 (2024-02-08)
+
+* [@merlinz01](https://github.com/merlinz01) added more custom format specifiers ([#85](https://github.com/heaths/vscode-guid/pull/85))
+
 ## 1.8.1 (2024-01-09)
 
 * Fixed CI badge on [Marketplace](https://marketplace.visualstudio.com/items?itemName=heaths.vscode-guid).

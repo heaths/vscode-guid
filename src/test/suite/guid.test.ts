@@ -111,4 +111,31 @@ suite('Guid', () => {
         const g = new Guid('01234567-89ab-cdef-0123-456789abcdef');
         assert.strictEqual(g.toString(undefined), '01234567-89ab-cdef-0123-456789abcdef');
     });
+
+    test('returns proper string for individual parts format', () => {
+        const g = new Guid('9f0a1b2c-4e5f-6a7b-8c9d-0e1f2a3b4c5d');
+        assert.strictEqual(g.toString('x0'), '9f0a1b2c');
+        assert.strictEqual(g.toString('x1'), '4e5f');
+        assert.strictEqual(g.toString('x2'), '6a7b');
+        assert.strictEqual(g.toString('x3'), '8c');
+        assert.strictEqual(g.toString('x4'), '9d');
+        assert.strictEqual(g.toString('x5'), '0e');
+        assert.strictEqual(g.toString('x6'), '1f');
+        assert.strictEqual(g.toString('x7'), '2a');
+        assert.strictEqual(g.toString('x8'), '3b');
+        assert.strictEqual(g.toString('x9'), '4c');
+        assert.strictEqual(g.toString('x10'), '5d');
+    });
+
+    test('returns proper string with format specifiers replaced', () => {
+        const g = new Guid('9f0a1b2c-4e5f-6a7b-8c9d-0e1f2a3b4c5d');
+        const format = 'const G: ::windows::core::GUID = ::windows::core::GUID {{nl}    data1: 0x{x0},{nl}    data2: 0x{x1},{nl}    data3: 0x{x2},{nl}    data4: [0x{x3}, 0x{x4}, 0x{x5}, 0x{x6}, 0x{x7}, 0x{x8}, 0x{x9}, 0x{x10}],{nl}};';
+        const expected = `const G: ::windows::core::GUID = ::windows::core::GUID {
+    data1: 0x9f0a1b2c,
+    data2: 0x4e5f,
+    data3: 0x6a7b,
+    data4: [0x8c, 0x9d, 0x0e, 0x1f, 0x2a, 0x3b, 0x4c, 0x5d],
+};`;
+        assert.strictEqual(g.format(format), expected);
+    });
 });

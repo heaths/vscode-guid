@@ -203,26 +203,8 @@ async function insertCommandImpl(textEditor: vscode.TextEditor, edit: vscode.Tex
 
     if (pasteAutomatically !== '') {
         // Format with the specified string and insert without user selection
-        interface Dict { [key: string]: (g: Guid) => string }
-        const replacements: Dict = {
-            '{b}': (g: Guid) => g.toString('braced'),
-            '{B}': (g: Guid) => g.toString('braced').toUpperCase(),
-            '{d}': (g: Guid) => g.toString(),
-            '{D}': (g: Guid) => g.toString().toUpperCase(),
-            '{n}': (g: Guid) => g.toString('no-hyphen'),
-            '{N}': (g: Guid) => g.toString('no-hyphen').toUpperCase(),
-            '{x}': (g: Guid) => g.toString('x'),
-            '{X}': (g: Guid) => g.toString('x').toUpperCase(),
-        }
         const customFormatter = {
-            format: (g: Guid) => {
-                let ret = pasteAutomatically;
-                for (const replacement in replacements) {
-                    const fn = replacements[replacement]
-                    ret = ret.replace(replacement, fn(g));
-                }
-                return ret;
-            },
+            format: (g: Guid) => g.format(pasteAutomatically),
             type: FormatType.CUSTOM
         }
         item = new GuidPickItem(-1, g, customFormatter)
