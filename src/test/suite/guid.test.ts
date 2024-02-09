@@ -129,7 +129,7 @@ suite('Guid', () => {
 
     test('returns proper string with format specifiers replaced', () => {
         const g = new Guid('9f0a1b2c-4e5f-6a7b-8c9d-0e1f2a3b4c5d');
-        const format = 'const G: ::windows::core::GUID = ::windows::core::GUID {{nl}    data1: 0x{x0},{nl}    data2: 0x{x1},{nl}    data3: 0x{x2},{nl}    data4: [0x{x3}, 0x{x4}, 0x{x5}, 0x{x6}, 0x{x7}, 0x{x8}, 0x{x9}, 0x{x10}],{nl}};';
+        const format = 'const G: ::windows::core::GUID = ::windows::core::GUID {\n    data1: 0x{x0},{nl}    data2: 0x{x1},\n    data3: 0x{x2},{nl}    data4: [0x{x3}, 0x{x4}, 0x{x5}, 0x{x6}, 0x{x7}, 0x{x8}, 0x{x9}, 0x{x10}],\n};';
         const expected = `const G: ::windows::core::GUID = ::windows::core::GUID {
     data1: 0x9f0a1b2c,
     data2: 0x4e5f,

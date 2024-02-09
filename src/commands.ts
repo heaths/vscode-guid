@@ -23,6 +23,7 @@
 import * as vscode from 'vscode';
 import * as util from 'util';
 import { Guid } from './guid';
+import getSettings, { Settings } from './settings';
 
 enum FormatType {
     LOWERCASE,
@@ -50,10 +51,17 @@ class GuidPickItem implements vscode.QuickPickItem {
     private _guid: Guid;
     private readonly _format: GuidPickFormat;
 
-    constructor(index: number, guid: Guid, format: GuidPickFormat) {
+    constructor(index: number, guid: Guid, format: GuidPickFormat | string) {
         this._index = index;
         this._guid = guid;
-        this._format = format;
+        if (typeof format === 'string') {
+            this._format = {
+                format: (g) => g.format(format),
+                type: FormatType.CUSTOM,
+            };
+        } else {
+            this._format = format;
+        }
     }
 
     get label(): string {
@@ -192,16 +200,27 @@ export function insertEmptyCommand(textEditor: vscode.TextEditor, edit: vscode.T
 
 async function insertCommandImpl(textEditor: vscode.TextEditor, edit: vscode.TextEditorEdit, type: GuidGenerateType): Promise<void> {
     const g = type === GuidGenerateType.EMPTY ? Guid.EMPTY : new Guid();
-    const settings = vscode.workspace.getConfiguration('insertGuid');
-    const showLowercase = settings.get<boolean>('showLowercase', true);
-    const showUppercase = settings.get<boolean>('showUppercase', false);
-    const showCodeSnippets = settings.get<boolean>('showCodeSnippets', true);
-    const pasteAutomatically = settings.get<string>('pasteAutomatically', '');
+    const settings = getSettings();
+    const formats = settings.formats;
+    const pasteAutomatically = settings.pasteAutomatically;
 
-    const items = getQuickPickItems(g, showLowercase, showUppercase, showCodeSnippets);
-    let item = items[0];
+    let item: GuidPickItem;
+    if (formats !== null) {
+        const items: GuidPickItem[] = [];
+        let nextIndex = 0;
 
-    if (pasteAutomatically !== '') {
+        for (const format of formats) {
+            items.push(new GuidPickItem(++nextIndex, g, format));
+        }
+
+        const selection = await vscode.window.showQuickPick<GuidPickItem>(items)
+        if (selection == null) {
+            // Selection canceled.
+            return
+        }
+
+        item = selection
+    } else if (pasteAutomatically !== null) {
         // Format with the specified string and insert without user selection
         const customFormatter = {
             format: (g: Guid) => g.format(pasteAutomatically),
@@ -210,6 +229,7 @@ async function insertCommandImpl(textEditor: vscode.TextEditor, edit: vscode.Tex
         item = new GuidPickItem(-1, g, customFormatter)
     } else {
         // Let user select format
+        const items = getQuickPickItems(g, settings);
         const selection = await vscode.window.showQuickPick<GuidPickItem>(items)
         if (selection == null) {
             // Selection canceled.
@@ -239,6 +259,8 @@ async function insertCommandImpl(textEditor: vscode.TextEditor, edit: vscode.Tex
     });
 }
 
+export type QuickPickSettings = Pick<Settings, 'showLowercase' | 'showUppercase' | 'showCodeSnippets'>;
+
 /**
  * Gets an array of items to display in the Quick Pick window.
  * @param guid The GUID to render in each Quick Pick item.
@@ -247,14 +269,14 @@ async function insertCommandImpl(textEditor: vscode.TextEditor, edit: vscode.Tex
  * @param showCodeSnippets Indicates whether code snippet options should be included in the array.
  * @returns An array of items to display in the Quick Pick window.
  */
-export function getQuickPickItems(guid: Guid, showLowercase: boolean, showUppercase: boolean, showCodeSnippets: boolean): GuidPickItem[] {
+export function getQuickPickItems(guid: Guid, settings: QuickPickSettings): GuidPickItem[] {
     const items: GuidPickItem[] = [];
     let nextIndex = 0;
 
     for (const format of FORMATS) {
-        if (((showLowercase || (!showUppercase && !showCodeSnippets)) && format.type === FormatType.LOWERCASE) ||
-            (showUppercase && format.type === FormatType.UPPERCASE) ||
-            (showCodeSnippets && format.type === FormatType.SNIPPET)) {
+        if (((settings.showLowercase || (!settings.showUppercase && !settings.showCodeSnippets)) && format.type === FormatType.LOWERCASE) ||
+            (settings.showUppercase && format.type === FormatType.UPPERCASE) ||
+            (settings.showCodeSnippets && format.type === FormatType.SNIPPET)) {
             const item = new GuidPickItem(++nextIndex, guid, format);
             items.push(item);
         }

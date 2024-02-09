@@ -51,20 +51,20 @@ You can set different configuration options to control the format of GUIDs that 
 * insertGuid.showUppercase: Show uppercase GUIDs (with and without braces) when presenting possible GUID formats to insert. The default is `false`.
 * insertGuid.showCodeSnippets: Show code snippets for C++ when presenting possible GUID formats to insert. The default is `true`.
 * insertGuid.pasteAutomatically: When not empty, paste the GUID in a specified format without showing selection menu. The default is "". The formatting options are:
-  * `{b}|{B}` inserts a braced string in lowercase `{b}` or uppercase `{B}` e.g., `{880c86bc-384c-4cce-9e9a-4f760ca755c4}`
-  * `{d}|{D}` inserts a hyphenated string in lowercase `{d}` or uppercase `{D}` e.g., `880c86bc-384c-4cce-9e9a-4f760ca755c4`
-  * `{n}|{N}` inserts an unformatted string in lowercase `{n}` or uppercase `{N}` e.g., `880c86bc384c4cce9e9a4f760ca755c4`
-  * `{x}|{X}` inserts a struct-formatted string in lowercase `{x}` or uppercase `{X}` e.g., `{0x880c86bc,0x384c,0x4cce,{0x9e,0x9a,0x4f,0x76,0x0c,0xa7,0x55,0xc4}}`
-  * `{x0}|{X0}` inserts the first four bytes as a hexadecimal string in lowercase `{x0}` or uppercase `{X0}` e.g., `0x880c86bc`
-  * `{x1}|{X1}` and `{x2}|{X2}` insert the second and third two bytes as a hexadecimal string in lowercase `{x1}` and `{x2}`, or uppercase `{X1}` and `{X2}` e.g., `0x384c` and `0x4cce`
-  * `{x3}|{X3}` through `{x10}|{X10}` insert the subsequent bytes individually as a hexadecimal string in lowercase `{x3}` or uppercase `{X3}` e.g., `0x9e` through `0xc4`.
-  * `{nl}` inserts a new line
+  * `{b}` or `{B}` inserts a braced string in lowercase `{b}` or uppercase `{B}` e.g., `{880c86bc-384c-4cce-9e9a-4f760ca755c4}`
+  * `{d}` or `{D}` inserts a hyphenated string in lowercase `{d}` or uppercase `{D}` e.g., `880c86bc-384c-4cce-9e9a-4f760ca755c4`
+  * `{n}` or `{N}` inserts an unformatted string in lowercase `{n}` or uppercase `{N}` e.g., `880c86bc384c4cce9e9a4f760ca755c4`
+  * `{x}` or `{X}` inserts a struct-formatted string in lowercase `{x}` or uppercase `{X}` e.g., `{0x880c86bc,0x384c,0x4cce,{0x9e,0x9a,0x4f,0x76,0x0c,0xa7,0x55,0xc4}}`
+  * `{x0}` or `{X0}` inserts the first four bytes as a hexadecimal string in lowercase `{x0}` or uppercase `{X0}` e.g., `0x880c86bc`
+  * `{x1}` or `{X1}`, and `{x2}` or `{X2}` insert the second and third two bytes as a hexadecimal string in lowercase `{x1}` and `{x2}`, or uppercase `{X1}` and `{X2}` e.g., `0x384c` and `0x4cce`
+  * `{x3}` or `{X3}` through `{x10}` or `{X10}` insert the subsequent bytes individually as a hexadecimal string in lowercase `{x3}` or uppercase `{X3}` e.g., `0x9e` through `0xc4`.
+  * `\n` or `{nl}` inserts a new line
   * All other characters will be interpreted literally e.g., `new GUID("{D}")` inserts `new GUID("880C86BC-384C-4CCE-9E9A-4F760CA755C4")`
 
   For example, to generate a `GUID` for the [windows](https://crates.io/crates/windows) crate, you could define:
 
   ```json
-  "const G: ::windows::core::GUID = ::windows::core::GUID {{nl}    data1: 0x{x0},{nl}    data2: 0x{x1},{nl}    data3: 0x{x2},{nl}    data4: [0x{x3}, 0x{x4}, 0x{x5}, 0x{x6}, 0x{x7}, 0x{x8}, 0x{x9}, 0x{x10}],{nl}};"
+  "const G: ::windows::core::GUID = ::windows::core::GUID {\n    data1: 0x{x0},\n    data2: 0x{x1},\n    data3: 0x{x2},\n    data4: [0x{x3}, 0x{x4}, 0x{x5}, 0x{x6}, 0x{x7}, 0x{x8}, 0x{x9}, 0x{x10}],\n};"
   ```
 
   Which would insert a `GUID` like:
