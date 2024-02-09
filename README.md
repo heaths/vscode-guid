@@ -55,9 +55,9 @@ You can set different configuration options to control the format of GUIDs that 
   * `{d}|{D}` inserts a hyphenated string in lowercase `{d}` or uppercase `{D}` e.g., `880c86bc-384c-4cce-9e9a-4f760ca755c4`
   * `{n}|{N}` inserts an unformatted string in lowercase `{n}` or uppercase `{N}` e.g., `880c86bc384c4cce9e9a4f760ca755c4`
   * `{x}|{X}` inserts a struct-formatted string in lowercase `{x}` or uppercase `{X}` e.g., `{0x880c86bc,0x384c,0x4cce,{0x9e,0x9a,0x4f,0x76,0x0c,0xa7,0x55,0xc4}}`
-  * `{x0}|{X0}` inserts the first four bytes as a hexadecimal string in lowercase `{x0}` or uppercase `{X0}` e.g., `0x880c86bc`
-  * `{x1}|{X1}` and `{x2}|{X2}` insert the second and third two bytes as a hexadecimal string in lowercase `{x1}` and `{x2}`, or uppercase `{X1}` and `{X2}` e.g., `0x384c` and `0x4cce`
-  * `{x3}|{X3}` through `{x10}|{X10}` insert the subsequent bytes individually as a hexadecimal string in lowercase `{x3}` or uppercase `{X3}` e.g., `0x9e` through `0xc4`.
+  * `{x0}|{X0}` inserts the first four bytes as a hexadecimal string in lowercase `{x0}` or uppercase `{X0}` e.g., `880c86bc`
+  * `{x1}|{X1}` and `{x2}|{X2}` insert the second and third two bytes as a hexadecimal string in lowercase `{x1}` and `{x2}`, or uppercase `{X1}` and `{X2}` e.g., `384c` and `4cce`
+  * `{x3}|{X3}` through `{x10}|{X10}` insert the subsequent bytes individually as a hexadecimal string in lowercase `{x3}` or uppercase `{X3}` e.g., `9e` through `c4`.
   * `{nl}` inserts a new line
   * All other characters will be interpreted literally e.g., `new GUID("{D}")` inserts `new GUID("880C86BC-384C-4CCE-9E9A-4F760CA755C4")`
 
