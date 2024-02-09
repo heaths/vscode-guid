@@ -22,12 +22,19 @@
 
 import * as assert from 'assert';
 import { Guid } from '../../guid';
-import { getQuickPickItems } from '../../commands';
+import { QuickPickSettings, getQuickPickItems } from '../../commands';
+import { DEFAULTS } from '../../settings';
+
+const DEFAULT_OPTIONS: QuickPickSettings = {
+    showLowercase: DEFAULTS.showLowercase,
+    showUppercase: DEFAULTS.showUppercase,
+    showCodeSnippets: DEFAULTS.showCodeSnippets,
+};
 
 suite('Commands', () => {
     test('quick pick 1 is simple string with default options', () => {
         const g = new Guid('12341234-1234-1234-1234-123412341234');
-        const items = getQuickPickItems(g, true, false, true);
+        const items = getQuickPickItems(g, DEFAULT_OPTIONS);
 
         assert.strictEqual(items.length, 6);
 
@@ -39,7 +46,7 @@ suite('Commands', () => {
 
     test('quick pick 2 is registry string with default options', () => {
         const g = new Guid('12341234-1234-1234-1234-123412341234');
-        const items = getQuickPickItems(g, true, false, true);
+        const items = getQuickPickItems(g, DEFAULT_OPTIONS);
 
         assert.strictEqual(items.length, 6);
 
@@ -51,7 +58,7 @@ suite('Commands', () => {
 
     test('quick pick 3 is C structure with default options', () => {
         const g = new Guid('12341234-1234-1234-1234-123412341234');
-        const items = getQuickPickItems(g, true, false, true);
+        const items = getQuickPickItems(g, DEFAULT_OPTIONS);
 
         assert.strictEqual(items.length, 6);
 
@@ -68,7 +75,7 @@ suite('Commands', () => {
 
     test('quick pick 4 is C macro with default options', () => {
         const g = new Guid('12341234-1234-1234-1234-123412341234');
-        const items = getQuickPickItems(g, true, false, true);
+        const items = getQuickPickItems(g, DEFAULT_OPTIONS);
 
         assert.strictEqual(items.length, 6);
 
@@ -85,7 +92,7 @@ suite('Commands', () => {
 
     test('quick pick 5 is simple non-hyphenated string with default options', () => {
         const g = new Guid('12341234-1234-1234-1234-123412341234');
-        const items = getQuickPickItems(g, true, false, true);
+        const items = getQuickPickItems(g, DEFAULT_OPTIONS);
 
         assert.strictEqual(items.length, 6);
 
@@ -97,7 +104,7 @@ suite('Commands', () => {
 
     test('quick pick 6 is struct-like GUID', () => {
         const g = new Guid('12341234-1234-1234-1234-123412341234');
-        const items = getQuickPickItems(g, true, false, true);
+        const items = getQuickPickItems(g, DEFAULT_OPTIONS);
 
         assert.strictEqual(items.length, 6);
 
@@ -109,7 +116,7 @@ suite('Commands', () => {
 
     test('quick pick items are correct when all settings are true', () => {
         const g = new Guid('12341234-dead-beef-1234-123412341234');
-        const items = getQuickPickItems(g, true, true, true);
+        const items = getQuickPickItems(g, { showLowercase: true, showUppercase: true, showCodeSnippets: true });
 
         assert.strictEqual(items.length, 9);
 
@@ -166,7 +173,7 @@ suite('Commands', () => {
 
     test('quick pick items are correct with only lowercase enabled', () => {
         const g = new Guid('12341234-dead-beef-1234-123412341234');
-        const items = getQuickPickItems(g, true, false, false);
+        const items = getQuickPickItems(g, { showLowercase: true, showUppercase: false, showCodeSnippets: false });
 
         assert.strictEqual(items.length, 3);
 
@@ -188,7 +195,7 @@ suite('Commands', () => {
 
     test('quick pick items are correct with only uppercase enabled', () => {
         const g = new Guid('12341234-dead-beef-1234-123412341234');
-        const items = getQuickPickItems(g, false, true, false);
+        const items = getQuickPickItems(g, { showLowercase: false, showUppercase: true, showCodeSnippets: false });
 
         assert.strictEqual(items.length, 3);
 
@@ -210,7 +217,7 @@ suite('Commands', () => {
 
     test('quick pick items are correct with only code snippets enabled', () => {
         const g = new Guid('12341234-dead-beef-1234-123412341234');
-        const items = getQuickPickItems(g, false, false, true);
+        const items = getQuickPickItems(g, { showLowercase: false, showUppercase: false, showCodeSnippets: true });
 
         assert.strictEqual(items.length, 3);
 
@@ -237,7 +244,7 @@ suite('Commands', () => {
 
     test('quick pick items are correct with no code snippets enabled', () => {
         const g = new Guid('12341234-dead-beef-1234-123412341234');
-        const items = getQuickPickItems(g, false, false, false);
+        const items = getQuickPickItems(g, { showLowercase: false, showUppercase: false, showCodeSnippets: false });
 
         assert.strictEqual(items.length, 3);
 

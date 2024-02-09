@@ -112,7 +112,7 @@ export class Guid {
             const fn = replacements[replacement]
             ret = ret.replace(replacement, fn(this));
         }
-        return ret.replace(/\{nl\}/g, '\n');
+        return ret.replace(/\{nl\}|\\n/g, '\n');
     }
 
     /**
