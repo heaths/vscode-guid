@@ -100,7 +100,7 @@ jobs:
         TEST_RESULTS_PATH: ${{ github.workspace }}/.vscode-test/test-results.xml
 
     - name: Publish test results
-      if: github.repository_owner == 'heaths'
+      continue-on-error: true
       uses: dorny/test-reporter@v1
       with:
         name: test-results-${{ matrix.os }}-${{ matrix.vscode-channel }}
