@@ -100,7 +100,7 @@ jobs:
         TEST_RESULTS_PATH: ${{ github.workspace }}/.vscode-test/test-results.xml
 
     - name: Publish test results
-      continue-on-error: true
+      if: ${{ ! github.event.pull_request.head.repo.fork }}
       uses: dorny/test-reporter@v1
       with:
         name: test-results-${{ matrix.os }}-${{ matrix.vscode-channel }}
