@@ -70,6 +70,52 @@ export class Guid {
     }
 
     /**
+     * Replaces format specifiers according to the package README.md.
+     * @returns A string with all known format specifiers replaced as directed.
+     */
+    format(format: string): string {
+        const replacements: { [key: string]: (g: Guid) => string } = {
+            '{b}': (g: Guid) => g.toString('braced'),
+            '{B}': (g: Guid) => g.toString('braced').toUpperCase(),
+            '{d}': (g: Guid) => g.toString(),
+            '{D}': (g: Guid) => g.toString().toUpperCase(),
+            '{n}': (g: Guid) => g.toString('no-hyphen'),
+            '{N}': (g: Guid) => g.toString('no-hyphen').toUpperCase(),
+            '{x}': (g: Guid) => g.toString('x'),
+            '{X}': (g: Guid) => g.toString('x').toUpperCase(),
+            '{x0}': (g: Guid) => g.toString('x0'),
+            '{x1}': (g: Guid) => g.toString('x1'),
+            '{x2}': (g: Guid) => g.toString('x2'),
+            '{x3}': (g: Guid) => g.toString('x3'),
+            '{x4}': (g: Guid) => g.toString('x4'),
+            '{x5}': (g: Guid) => g.toString('x5'),
+            '{x6}': (g: Guid) => g.toString('x6'),
+            '{x7}': (g: Guid) => g.toString('x7'),
+            '{x8}': (g: Guid) => g.toString('x8'),
+            '{x9}': (g: Guid) => g.toString('x9'),
+            '{x10}': (g: Guid) => g.toString('x10'),
+            '{X0}': (g: Guid) => g.toString('x0').toUpperCase(),
+            '{X1}': (g: Guid) => g.toString('x1').toUpperCase(),
+            '{X2}': (g: Guid) => g.toString('x2').toUpperCase(),
+            '{X3}': (g: Guid) => g.toString('x3').toUpperCase(),
+            '{X4}': (g: Guid) => g.toString('x4').toUpperCase(),
+            '{X5}': (g: Guid) => g.toString('x5').toUpperCase(),
+            '{X6}': (g: Guid) => g.toString('x6').toUpperCase(),
+            '{X7}': (g: Guid) => g.toString('x7').toUpperCase(),
+            '{X8}': (g: Guid) => g.toString('x8').toUpperCase(),
+            '{X9}': (g: Guid) => g.toString('x9').toUpperCase(),
+            '{X10}': (g: Guid) => g.toString('x10').toUpperCase(),
+        };
+
+        let ret = format;
+        for (const replacement in replacements) {
+            const fn = replacements[replacement]
+            ret = ret.replace(replacement, fn(this));
+        }
+        return ret.replace(/\{nl\}/g, '\n');
+    }
+
+    /**
      * Returns the raw _buffer.
      * @returns The raw _buffer.
      */

@@ -203,49 +203,8 @@ async function insertCommandImpl(textEditor: vscode.TextEditor, edit: vscode.Tex
 
     if (pasteAutomatically !== '') {
         // Format with the specified string and insert without user selection
-        interface Dict { [key: string]: (g: Guid) => string }
-        const replacements: Dict = {
-            '{b}': (g: Guid) => g.toString('braced'),
-            '{B}': (g: Guid) => g.toString('braced').toUpperCase(),
-            '{d}': (g: Guid) => g.toString(),
-            '{D}': (g: Guid) => g.toString().toUpperCase(),
-            '{n}': (g: Guid) => g.toString('no-hyphen'),
-            '{N}': (g: Guid) => g.toString('no-hyphen').toUpperCase(),
-            '{x}': (g: Guid) => g.toString('x'),
-            '{X}': (g: Guid) => g.toString('x').toUpperCase(),
-            '{x0}': (g: Guid) => g.toString('x0'),
-            '{x1}': (g: Guid) => g.toString('x1'),
-            '{x2}': (g: Guid) => g.toString('x2'),
-            '{x3}': (g: Guid) => g.toString('x3'),
-            '{x4}': (g: Guid) => g.toString('x4'),
-            '{x5}': (g: Guid) => g.toString('x5'),
-            '{x6}': (g: Guid) => g.toString('x6'),
-            '{x7}': (g: Guid) => g.toString('x7'),
-            '{x8}': (g: Guid) => g.toString('x8'),
-            '{x9}': (g: Guid) => g.toString('x9'),
-            '{x10}': (g: Guid) => g.toString('x10'),
-            '{X0}': (g: Guid) => g.toString('x0').toUpperCase(),
-            '{X1}': (g: Guid) => g.toString('x1').toUpperCase(),
-            '{X2}': (g: Guid) => g.toString('x2').toUpperCase(),
-            '{X3}': (g: Guid) => g.toString('x3').toUpperCase(),
-            '{X4}': (g: Guid) => g.toString('x4').toUpperCase(),
-            '{X5}': (g: Guid) => g.toString('x5').toUpperCase(),
-            '{X6}': (g: Guid) => g.toString('x6').toUpperCase(),
-            '{X7}': (g: Guid) => g.toString('x7').toUpperCase(),
-            '{X8}': (g: Guid) => g.toString('x8').toUpperCase(),
-            '{X9}': (g: Guid) => g.toString('x9').toUpperCase(),
-            '{X10}': (g: Guid) => g.toString('x10').toUpperCase(),
-            '{nl}': (g: Guid) => '\n',
-        }
         const customFormatter = {
-            format: (g: Guid) => {
-                let ret = pasteAutomatically;
-                for (const replacement in replacements) {
-                    const fn = replacements[replacement]
-                    ret = ret.replace(replacement, fn(g));
-                }
-                return ret;
-            },
+            format: (g: Guid) => g.format(pasteAutomatically),
             type: FormatType.CUSTOM
         }
         item = new GuidPickItem(-1, g, customFormatter)

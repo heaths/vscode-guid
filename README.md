@@ -61,6 +61,23 @@ You can set different configuration options to control the format of GUIDs that 
   * `{nl}` inserts a new line
   * All other characters will be interpreted literally e.g., `new GUID("{D}")` inserts `new GUID("880C86BC-384C-4CCE-9E9A-4F760CA755C4")`
 
+  For example, to generate a `GUID` for the [windows](https://crates.io/crates/windows) crate, you could define:
+
+  ```json
+  "const G: ::windows::core::GUID = ::windows::core::GUID {{nl}    data1: 0x{x0},{nl}    data2: 0x{x1},{nl}    data3: 0x{x2},{nl}    data4: [0x{x3}, 0x{x4}, 0x{x5}, 0x{x6}, 0x{x7}, 0x{x8}, 0x{x9}, 0x{x10}],{nl}};"
+  ```
+
+  Which would insert a `GUID` like:
+
+  ```rust
+  const G: ::windows::core::GUID = ::windows::core::GUID {
+      data1: 0x9f0a1b2c,
+      data2: 0x4e5f,
+      data3: 0x6a7b,
+      data4: [0x8c, 0x9d, 0x0e, 0x1f, 0x2a, 0x3b, 0x4c, 0x5d],
+  };
+  ```
+
 ## License
 
 The extension and source are licensed under the [MIT license](LICENSE.txt).
