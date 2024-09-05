@@ -32,7 +32,7 @@ jobs:
         fetch-depth: 0
 
     - name: Download package
-      uses: actions/download-artifact@v4.1.7
+      uses: actions/download-artifact@v4
       with:
         name: artifact
         path: ${{ runner.temp }}/
